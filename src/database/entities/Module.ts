@@ -10,6 +10,7 @@ import {
 import { Course } from './Course';
 import { Lecture } from './Lecture';
 import { Quiz } from './Quiz';
+import { ModuleCompletion } from './ModuleCompletion';
 
 enum ModuleType {
     LECTURE = 'lecture',
@@ -43,5 +44,9 @@ export class Module extends BaseEntity {
 
     @OneToMany(() => Lecture, (lecture) => lecture.module)
     lectures!: Quiz[];
+
+    @OneToMany(() => ModuleCompletion,
+        (moduleCompletion) => moduleCompletion.module)
+    moduleCompletions!: ModuleCompletion[];
 
 }

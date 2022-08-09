@@ -25,7 +25,7 @@ export class ModuleCompletion extends BaseEntity {
     @Column({ name: 'completion_time' })
     completionTime!: Timestamp;
 
-    @ManyToOne(() => Module, (module) => module.lectures)
+    @ManyToOne(() => Module, (module) => module.moduleCompletions)
     @JoinColumn({ name: 'module_id' })
     module!: Module;
 
