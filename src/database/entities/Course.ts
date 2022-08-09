@@ -38,7 +38,7 @@ export class Course extends BaseEntity {
     courseEnrollments!: CourseEnrollment[];
 
     @OneToMany(() => Module,
-        (module) => module)
+        (module) => module.course)
     modules!: Module[];
 
 }
