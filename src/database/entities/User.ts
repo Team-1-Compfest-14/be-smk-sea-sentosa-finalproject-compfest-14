@@ -15,4 +15,13 @@ export class User extends BaseEntity {
     @Column({ length: 64 })
     name!: string;
 
+    @Column()
+    role!: number;
+
+    @Column()
+    is_verified!: boolean;
+
+    @Column()
+    refresh_token!: string;
+
 }
