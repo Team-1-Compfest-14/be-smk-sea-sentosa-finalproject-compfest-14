@@ -43,6 +43,6 @@ export class User extends BaseEntity {
 
     @OneToMany(() => ModuleCompletion,
         (moduleCompletion) => moduleCompletion.user)
-        moduleCompletions!: ModuleCompletion[];
+    moduleCompletions!: ModuleCompletion[];
 
 }
