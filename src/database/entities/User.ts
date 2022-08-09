@@ -6,6 +6,7 @@ import {
     PrimaryGeneratedColumn
 } from 'typeorm';
 import { Course } from './Course';
+import { CourseEnrollment } from './CourseEnrollment';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -34,5 +35,9 @@ export class User extends BaseEntity {
     @OneToMany(() => Course,
         (course) => course.user)
     courses!: Course[];
+
+    @OneToMany(() => CourseEnrollment,
+        (courseEnrollment) => courseEnrollment.user)
+    courseEnrollments!: CourseEnrollment[];
 
 }
