@@ -27,7 +27,7 @@ export class User extends BaseEntity {
     @Column()
     role!: number;
 
-    @Column()
+    @Column({ default: false })
     is_verified!: boolean;
 
     @Column()
