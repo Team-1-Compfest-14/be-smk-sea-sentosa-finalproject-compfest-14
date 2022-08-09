@@ -10,7 +10,8 @@ export class createQuizzes1660032058666 implements MigrationInterface {
 
                 PRIMARY KEY ("id"),
                 FOREIGN KEY ("module_id") REFERENCES "modules"("id")
-            )`);
+            )`
+        );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {

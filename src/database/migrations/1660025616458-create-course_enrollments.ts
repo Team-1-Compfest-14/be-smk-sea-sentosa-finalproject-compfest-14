@@ -5,15 +5,16 @@ implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
-        CREATE TABLE "course_enrollments" (
-            "id" SERIAL NOT NULL,
-            "user_id" INT NOT NULL,
-            "course_id" INT NOT NULL,
+            CREATE TABLE "course_enrollments" (
+                "id" SERIAL NOT NULL,
+                "user_id" INT NOT NULL,
+                "course_id" INT NOT NULL,
 
-            PRIMARY KEY ("id"),
-            FOREIGN KEY ("user_id") REFERENCES "users"("id"),
-            FOREIGN KEY ("course_id") REFERENCES "courses"("id")
-        )`);
+                PRIMARY KEY ("id"),
+                FOREIGN KEY ("user_id") REFERENCES "users"("id"),
+                FOREIGN KEY ("course_id") REFERENCES "courses"("id")
+            )`
+        );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
