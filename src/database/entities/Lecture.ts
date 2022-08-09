@@ -15,7 +15,7 @@ export class Lecture extends BaseEntity {
     id!: number;
 
     @Column({ name: 'module_id' })
-    courseId!: number;
+    moduleId!: number;
 
     @Column({ name: 'lecture_link', length: 64 })
     lectureLink!: string;
