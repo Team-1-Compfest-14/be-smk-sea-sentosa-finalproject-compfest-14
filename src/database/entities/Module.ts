@@ -19,9 +19,8 @@ export class Module extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @ManyToOne(() => Course, (course) => course.modules)
-    @JoinColumn({ name: 'course_id' })
-    course!: Course;
+    @Column({ name: 'course_id' })
+    courseId!: number;
 
     @Column()
     order!: number;
@@ -31,5 +30,9 @@ export class Module extends BaseEntity {
 
     @Column({ type: 'enum', enum: ModuleType })
     type!: ModuleType;
+
+    @ManyToOne(() => Course, (course) => course.modules)
+    @JoinColumn({ name: 'course_id' })
+    course!: Course;
 
 }
