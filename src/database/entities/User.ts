@@ -8,6 +8,7 @@ import {
 import { Course } from './Course';
 import { CourseEnrollment } from './CourseEnrollment';
 import { ModuleCompletion } from './ModuleCompletion';
+import { UsersAnswer } from './UsersAnswer';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -44,5 +45,9 @@ export class User extends BaseEntity {
     @OneToMany(() => ModuleCompletion,
         (moduleCompletion) => moduleCompletion.user)
     moduleCompletions!: ModuleCompletion[];
+
+    @OneToMany(() => UsersAnswer,
+        (usersAnswer) => usersAnswer.user)
+    usersAnswers!: UsersAnswer[];
 
 }
