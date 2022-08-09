@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm';
 import 'reflect-metadata';
 import config from '../configs/config';
 import { User } from './entities/User';
+import { Course } from './entities/Course';
 
 export const AppDataSource = new DataSource({
     type: 'postgres',
@@ -13,7 +14,7 @@ export const AppDataSource = new DataSource({
     synchronize: false,
     migrationsRun: true,
     logging: true,
-    entities: [User],
+    entities: ['./src/database/entities/*.ts'],
     subscribers: [],
     migrations: ['./src/database/migrations/*.ts'],
 });
