@@ -31,6 +31,6 @@ export class ModuleCompletion extends BaseEntity {
 
     @ManyToOne(() => User, (user) => user.moduleCompletions)
     @JoinColumn({ name: 'user_id' })
-    user!: Module;
+    user!: User;
 
 }
