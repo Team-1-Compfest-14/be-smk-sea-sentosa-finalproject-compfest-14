@@ -1,4 +1,11 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    BaseEntity,
+    Column,
+    Entity,
+    OneToMany,
+    PrimaryGeneratedColumn
+} from 'typeorm';
+import { Course } from './Course';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -23,5 +30,9 @@ export class User extends BaseEntity {
 
     @Column()
     refresh_token!: string;
+
+    @OneToMany(() => Course,
+        (course) => course.user)
+    courses!: Course[];
 
 }
