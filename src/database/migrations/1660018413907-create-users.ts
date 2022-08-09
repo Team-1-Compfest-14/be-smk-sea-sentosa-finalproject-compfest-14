@@ -12,10 +12,6 @@ export class createUsers1660018413907 implements MigrationInterface {
             "role" SERIAL NOT NULL,
             "is_verified" boolean NOT NULL,
 
-            "created_at" TIMESTAMP NOT NULL DEFAULT now(),
-            "updated_at" TIMESTAMP NOT NULL DEFAULT now(),
-            "deleted_at" TIMESTAMP,
-
             PRIMARY KEY ("id")
         )`);
     }
