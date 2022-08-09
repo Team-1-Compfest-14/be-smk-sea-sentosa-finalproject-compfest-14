@@ -7,8 +7,8 @@ implements MigrationInterface {
         await queryRunner.query(`
         CREATE TABLE "course_enrollments" (
             "id" SERIAL NOT NULL,
-            "user_id" SERIAL NOT NULL,
-            "course_id" SERIAL NOT NULL,
+            "user_id" INT NOT NULL,
+            "course_id" INT NOT NULL,
 
             PRIMARY KEY ("id"),
             FOREIGN KEY ("user_id") REFERENCES "users"("id"),
