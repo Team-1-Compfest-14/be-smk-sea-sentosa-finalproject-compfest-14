@@ -4,8 +4,10 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn
 } from 'typeorm';
+import { CourseEnrollment } from './CourseEnrollment';
 import { User } from './User';
 
 @Entity('courses')
@@ -15,7 +17,7 @@ export class Course extends BaseEntity {
     id!: number;
 
     @ManyToOne(() => User, (user) => user.courses)
-    @JoinColumn({ name: 'user_id' })
+    @JoinColumn({ name: 'instructor_id' })
     user!: User;
 
     @Column({ length: 64 })
@@ -26,5 +28,9 @@ export class Course extends BaseEntity {
 
     @Column()
     is_verified!: boolean;
+
+    @OneToMany(() => CourseEnrollment,
+        (courseEnrollment) => courseEnrollment.course)
+    courseEnrollments!: CourseEnrollment[];
 
 }
