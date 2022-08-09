@@ -8,6 +8,7 @@ import {
     PrimaryGeneratedColumn
 } from 'typeorm';
 import { Course } from './Course';
+import { Lecture } from './Lecture';
 import { Quiz } from './Quiz';
 
 enum ModuleType {
@@ -39,5 +40,8 @@ export class Module extends BaseEntity {
 
     @OneToMany(() => Quiz, (quiz) => quiz.module)
     quizzes!: Quiz[];
+
+    @OneToMany(() => Lecture, (lecture) => lecture.module)
+    lectures!: Quiz[];
 
 }
