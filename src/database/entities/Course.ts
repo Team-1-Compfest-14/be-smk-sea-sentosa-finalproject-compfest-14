@@ -16,9 +16,8 @@ export class Course extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @ManyToOne(() => User, (user) => user.courses)
-    @JoinColumn({ name: 'instructor_id' })
-    user!: User;
+    @Column({ name: 'instructor_id' })
+    instructorId!: number;
 
     @Column({ length: 64 })
     name!: string;
@@ -28,6 +27,10 @@ export class Course extends BaseEntity {
 
     @Column()
     is_verified!: boolean;
+
+    @ManyToOne(() => User, (user) => user.courses)
+    @JoinColumn({ name: 'instructor_id' })
+    user!: User;
 
     @OneToMany(() => CourseEnrollment,
         (courseEnrollment) => courseEnrollment.course)
