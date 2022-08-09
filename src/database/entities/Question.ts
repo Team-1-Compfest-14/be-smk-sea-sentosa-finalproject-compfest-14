@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { QuestionOption } from './QuestionOption';
 import { Quiz } from './Quiz';
+import { UsersAnswer } from './UsersAnswer';
 
 @Entity('questions')
 export class Question extends BaseEntity {
@@ -29,5 +30,9 @@ export class Question extends BaseEntity {
     @OneToMany(() => QuestionOption,
         (questionOption) => questionOption.question)
     questionOptions!: QuestionOption[];
+
+    @OneToMany(() => UsersAnswer,
+        (usersAnswer) => usersAnswer.question)
+    usersAnswers!: UsersAnswer[];
 
 }
