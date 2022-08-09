@@ -4,13 +4,15 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn
 } from 'typeorm';
 import { Course } from './Course';
+import { Quiz } from './Quiz';
 
 enum ModuleType {
-    Lecture = 'lecture',
-    Quiz = 'quiz'
+    LECTURE = 'lecture',
+    QUIZ = 'quiz'
 }
 
 @Entity('modules')
@@ -34,5 +36,8 @@ export class Module extends BaseEntity {
     @ManyToOne(() => Course, (course) => course.modules)
     @JoinColumn({ name: 'course_id' })
     course!: Course;
+
+    @OneToMany(() => Quiz, (quiz) => quiz.module)
+    quizzes!: Quiz[];
 
 }
