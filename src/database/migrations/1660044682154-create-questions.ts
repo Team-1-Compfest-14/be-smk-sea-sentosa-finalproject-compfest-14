@@ -7,6 +7,7 @@ export class createQuestions1660044682154 implements MigrationInterface {
             CREATE TABLE "questions" (
                 "id" SERIAL NOT NULL,
                 "quiz_id" INT NOT NULL,
+                "question" VARCHAR(128) NOT NULL,
 
                 PRIMARY KEY ("id"),
                 FOREIGN KEY ("quiz_id") REFERENCES "quizzes"("id")
