@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { CourseEnrollment } from './CourseEnrollment';
 import { User } from './User';
+import { Module } from './Module';
 
 @Entity('courses')
 export class Course extends BaseEntity {
@@ -35,5 +36,9 @@ export class Course extends BaseEntity {
     @OneToMany(() => CourseEnrollment,
         (courseEnrollment) => courseEnrollment.course)
     courseEnrollments!: CourseEnrollment[];
+
+    @OneToMany(() => Module,
+        (module) => module)
+    modules!: Module[];
 
 }
