@@ -1,11 +1,11 @@
 import joi from 'joi';
 
-export interface EnrollCourseInterface {
+export interface CourseEnrollmentInterface {
     userId: number;
     courseId: number;
 }
 
-export const enrollCourseSchema = joi.object<EnrollCourseInterface>({
+export const courseEnrollmentSchema = joi.object<CourseEnrollmentInterface>({
     userId: joi.number()
         .required(),
 

@@ -1,12 +1,12 @@
 import { CourseEnrollment } from '../database/entities/CourseEnrollment';
 import type {
-    EnrollCourseInterface
-} from '../validations/enrollCourse.validate';
+    CourseEnrollmentInterface
+} from '../validations/courseEnrollment.validate';
 import { Errors } from '../utils/error.util';
 
-class EnrollCourseService {
+class CourseEnrollmentService {
 
-    async create(rawEnrollCourse: EnrollCourseInterface) {
+    async create(rawEnrollCourse: CourseEnrollmentInterface) {
         try {
             const enrollCourse = CourseEnrollment.create(
                 { ...rawEnrollCourse });
@@ -18,4 +18,4 @@ class EnrollCourseService {
 
 }
 
-export const enrollCourseService = new EnrollCourseService();
+export const courseEnrollmentService = new CourseEnrollmentService();
