@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { authService } from '../services/auth.service';
 import { sendResponse } from '../utils/api.util';
 import { validate } from '../utils/validate.util';
-import { createUserSchema } from '../validations/user.validate';
+import { registerSchema } from '../validations/user.validate';
 
 class AuthController {
 
