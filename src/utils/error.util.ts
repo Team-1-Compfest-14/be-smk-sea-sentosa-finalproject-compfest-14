@@ -8,6 +8,7 @@ export class ResponseError extends Error {
     constructor(message: string, statusCode: StatusCodes) {
         super(message);
         this.statusCode = statusCode;
+        this.name = ResponseError.name;
     }
 
     static toResponseBody(error: ResponseError): APIResponse {

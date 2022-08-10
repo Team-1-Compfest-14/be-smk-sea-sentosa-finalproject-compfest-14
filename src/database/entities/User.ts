@@ -10,6 +10,11 @@ import { CourseEnrollment } from './CourseEnrollment';
 import { ModuleCompletion } from './ModuleCompletion';
 import { UsersAnswer } from './UsersAnswer';
 
+export enum UserRole {
+    STUDENT,
+    INSTRUCTOR
+}
+
 @Entity('users')
 export class User extends BaseEntity {
 
@@ -28,10 +33,10 @@ export class User extends BaseEntity {
     @Column()
     role!: number;
 
-    @Column({ default: false })
+    @Column({ name: 'is_verified' })
     isVerified!: boolean;
 
-    @Column()
+    @Column({ name: 'refresh_token', nullable: true })
     refreshToken!: string;
 
     @OneToMany(() => Course,
