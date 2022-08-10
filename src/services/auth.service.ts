@@ -20,6 +20,8 @@ class AuthService {
         user.password = await this.hashPassword(user.password);
         if (user.role === UserRole.STUDENT) {
             user.isVerified = true;
+        } else {
+            user.isVerified = false;
         }
 
         await User.save(user);
