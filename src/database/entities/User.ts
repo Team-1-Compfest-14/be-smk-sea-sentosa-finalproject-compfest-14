@@ -33,7 +33,7 @@ export class User extends BaseEntity {
     @Column()
     role!: number;
 
-    @Column({ name: 'is_verified', default: false })
+    @Column({ name: 'is_verified' })
     isVerified!: boolean;
 
     @Column({ name: 'refresh_token', nullable: true })
