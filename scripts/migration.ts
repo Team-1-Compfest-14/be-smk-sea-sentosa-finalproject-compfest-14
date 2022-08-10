@@ -1,6 +1,6 @@
 import { argv } from 'process';
 import {
-    DATASOURCE_PATH, executeCommand, MIGRATIONS_DIR_PATH, ORM_CMD
+    DATASOURCE_PATH, executeCommand, MIGRATIONS_DIR_PATH
 } from '.';
 
 const args = argv.slice(2);
@@ -31,4 +31,4 @@ switch (subCommand) {
         throw Error('Invalid sub-command . . .');
 }
 
-executeCommand(`${ORM_CMD} ${command}`);
+executeCommand(`yarn typeorm ${command}`);
