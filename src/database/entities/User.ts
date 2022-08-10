@@ -10,6 +10,11 @@ import { CourseEnrollment } from './CourseEnrollment';
 import { ModuleCompletion } from './ModuleCompletion';
 import { UsersAnswer } from './UsersAnswer';
 
+export enum UserRole {
+    STUDENT,
+    INSTRUCTOR
+}
+
 @Entity('users')
 export class User extends BaseEntity {
 
