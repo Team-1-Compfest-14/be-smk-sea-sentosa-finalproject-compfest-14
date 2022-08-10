@@ -20,6 +20,13 @@ class AuthController {
 
     async login(req: Request, res: Response) {
         const body = validate(req, loginSchema, 'body');
+        const { accessToken, refreshToken } = await authService.login(body);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully logged in'
+        });
     }
 
 }
