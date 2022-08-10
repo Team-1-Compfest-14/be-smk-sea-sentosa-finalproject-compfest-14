@@ -42,6 +42,11 @@ class AuthService {
                 'Password is incorrect!', StatusCodes.BAD_REQUEST);
         }
 
+        if (!user.isVerified) {
+            throw new ResponseError(
+                'Your account is not verified!', StatusCodes.BAD_REQUEST);
+        }
+
         const accessToken = await this.generateToken(user, 'ACCESS');
         const refreshToken = await this.generateToken(user, 'REFRESH');
 
