@@ -1,7 +1,7 @@
 {
-    "name": "express-ts-boilerplate",
+    "name": "be-smk-sea-sentosa-finalproject-compfest-14",
     "version": "1.0.0",
-    "author": "rahmat",
+    "author": "tim bebas",
     "license": "MIT",
     "scripts": {
         "dev": "ts-node ./src/app.ts",
