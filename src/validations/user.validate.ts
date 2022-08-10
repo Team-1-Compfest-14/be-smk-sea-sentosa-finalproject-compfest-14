@@ -7,6 +7,11 @@ export interface RegisterType {
     role: number;
 }
 
+export interface LoginType {
+    email: string;
+    password: string;
+}
+
 export const registerSchema = joi.object<RegisterType>({
     email: joi.string()
         .email()
@@ -22,5 +27,16 @@ export const registerSchema = joi.object<RegisterType>({
         .required(),
 
     role: joi.number()
+        .required()
+});
+
+export const loginSchema = joi.object<LoginType>({
+    email: joi.string()
+        .email()
+        .max(64)
+        .required(),
+
+    password: joi.string()
+        .max(64)
         .required()
 });
