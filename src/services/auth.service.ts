@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import config from '../configs/config';
-import { User } from '../database/entities/User';
+import { User, UserRole } from '../database/entities/User';
 import { ResponseError } from '../utils/error.util';
 import type { RegisterType } from '../validations/user.validate';
 import bcrypt from 'bcrypt';
@@ -18,6 +18,9 @@ class AuthService {
         }
 
         user.password = await this.hashPassword(user.password);
+        if (user.role === UserRole.STUDENT) {
+            user.isVerified = true;
+        }
 
         await User.save(user);
     }

@@ -2,8 +2,9 @@ import joi from 'joi';
 
 export interface RegisterType {
     email: string;
-    name: string;
     password: string;
+    name: string;
+    role: number;
 }
 
 export const registerSchema = joi.object<RegisterType>({
@@ -12,11 +13,14 @@ export const registerSchema = joi.object<RegisterType>({
         .max(64)
         .required(),
 
+    password: joi.string()
+        .max(64)
+        .required(),
+
     name: joi.string()
         .max(64)
         .required(),
 
-    password: joi.string()
-        .max(64)
+    role: joi.number()
         .required()
 });
