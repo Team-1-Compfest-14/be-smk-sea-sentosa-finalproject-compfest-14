@@ -32,7 +32,8 @@ class AuthController {
         return sendResponse(res, {
             statusCode: StatusCodes.OK,
             success: true,
-            message: 'Successfully logged in'
+            message: 'Successfully logged in',
+            data: { accessToken }
         });
     }
 
