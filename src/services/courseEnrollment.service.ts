@@ -28,7 +28,7 @@ class CourseEnrollmentService {
         }
 
         const course = await Course.findOneBy({ id: courseId });
-        if (course?.isVerified) {
+        if (!course?.isVerified) {
             throw new ResponseError(
                 'Course not verified.',
                 StatusCodes.BAD_REQUEST);
