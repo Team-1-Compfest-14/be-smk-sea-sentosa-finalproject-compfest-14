@@ -6,9 +6,6 @@ export interface CourseEnrollmentInterface {
 }
 
 export const courseEnrollmentSchema = joi.object<CourseEnrollmentInterface>({
-    userId: joi.number()
-        .required(),
-
     courseId: joi.number()
         .required()
 });
