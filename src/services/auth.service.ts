@@ -56,6 +56,10 @@ class AuthService {
         return { accessToken, refreshToken };
     }
 
+    async logout(refreshToken: string) {
+        const user = await User.findOneBy({ refreshToken });
+    }
+
     async refresh(userPayload: UserPayload) {
         const user = await User.findOneBy({ id: userPayload.userId });
 
