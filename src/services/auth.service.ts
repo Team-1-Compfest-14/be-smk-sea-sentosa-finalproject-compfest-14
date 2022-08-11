@@ -56,6 +56,12 @@ class AuthService {
         return { accessToken, refreshToken };
     }
 
+    async refresh(userPayload: UserPayload) {
+        const user = await User.findOneBy({ id: userPayload.userId });
+
+        return this.generateToken(user!, 'ACCESS');
+    }
+
     async hashPassword(password: string) {
         return bcrypt.hash(password, config.hashRounds);
     }
