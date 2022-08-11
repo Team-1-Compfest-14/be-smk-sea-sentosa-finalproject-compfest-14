@@ -7,6 +7,7 @@ async function errorHandling(
     error: Error, req: Request, res: Response, _: NextFunction) {
 
     let err;
+    console.log(error.stack);
     if (error.name === ResponseError.name) {
         err = error as ResponseError;
     } else {
