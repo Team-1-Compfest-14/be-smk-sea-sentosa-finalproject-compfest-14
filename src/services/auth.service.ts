@@ -6,6 +6,8 @@ import type { LoginType, RegisterType } from '../validations/user.validate';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import type { TokenType } from '../typings/auth';
+import type { Request } from 'express';
+import { REFRESH_TOKEN_COOKIE } from '../utils/api.util';
 
 class AuthService {
 
@@ -80,6 +82,25 @@ class AuthService {
 
         return token;
     }
+
+    async getToken(req: Request, tokenType: TokenType) {
+        let token: string;
+
+        if (tokenType === 'ACCESS') {
+            const rawToken = req.header('authorization');
+            if (!rawToken || !rawToken.startsWith('Bearer ')) {
+                return;
+            }
+
+            token = rawToken.split(' ')[1];
+        } else {
+            token = req.cookies(REFRESH_TOKEN_COOKIE);
+        }
+
+        return token;
+    }
+
+    
 
 }
 
