@@ -26,4 +26,4 @@ class CourseEnrollmentController {
 
 }
 
-export const courseEnrollmentController = new CourseEnrollmentController;
+export const courseEnrollmentController = new CourseEnrollmentController();
