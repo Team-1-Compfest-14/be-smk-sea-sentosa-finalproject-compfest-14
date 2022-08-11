@@ -25,8 +25,6 @@ class AuthService {
         user.password = await this.hashPassword(user.password);
         if (user.role === UserRole.STUDENT) {
             user.isVerified = true;
-        } else {
-            user.isVerified = false;
         }
 
         await User.save(user);
@@ -54,6 +52,18 @@ class AuthService {
         const refreshToken = await this.generateToken(user, 'REFRESH');
 
         return { accessToken, refreshToken };
+    }
+
+    async logout(refreshToken: string) {
+        const user = await User.findOneBy({ refreshToken });
+        if (!user) {
+            throw new ResponseError(
+                'User doesn\'t exists!', StatusCodes.BAD_REQUEST);
+        }
+
+        user.refreshToken = undefined;
+
+        await User.save(user);
     }
 
     async refresh(userPayload: UserPayload) {
@@ -101,7 +111,7 @@ class AuthService {
 
             token = rawToken.split(' ')[1];
         } else {
-            token = req.cookies(REFRESH_TOKEN_COOKIE);
+            token = req.cookies[REFRESH_TOKEN_COOKIE];
         }
 
         return token;
