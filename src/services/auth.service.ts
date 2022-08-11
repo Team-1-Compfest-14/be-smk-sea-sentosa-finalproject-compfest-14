@@ -25,8 +25,6 @@ class AuthService {
         user.password = await this.hashPassword(user.password);
         if (user.role === UserRole.STUDENT) {
             user.isVerified = true;
-        } else {
-            user.isVerified = false;
         }
 
         await User.save(user);
@@ -63,7 +61,7 @@ class AuthService {
                 'User doesn\'t exists!', StatusCodes.BAD_REQUEST);
         }
 
-        user.refreshToken = null;
+        user.refreshToken = undefined;
 
         await User.save(user);
     }
