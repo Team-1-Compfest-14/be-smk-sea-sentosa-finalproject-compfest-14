@@ -2,7 +2,6 @@ import Router from 'express';
 import { authController } from '../controllers/auth.controller';
 import authenticate from '../middlewares/authenticate.middleware';
 
-
 const router = Router();
 
 router.post('/auth/register', authController.register);
