@@ -12,7 +12,7 @@ class CourseEnrollmentController {
 
     async enrollNewCourse(req: Request, res: Response) {
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
-        const courseId = validate(req, courseEnrollmentSchema, 'body');
+        const courseId = validate(req, courseEnrollmentSchema, 'params');
 
         await courseEnrollmentService.enrollNewCourse(
             userPayload!, courseId);
@@ -20,7 +20,7 @@ class CourseEnrollmentController {
         return sendResponse(res, {
             statusCode: StatusCodes.OK,
             success: true,
-            message: 'Successfully enrolled a new course'
+            message: 'Successfully enrolled a new course.'
         });
     }
 

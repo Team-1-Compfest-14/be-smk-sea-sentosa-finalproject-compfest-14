@@ -13,7 +13,7 @@ router.post('/auth/login', authController.login);
 router.post('/auth/refresh', authenticate('ACCESS'), authController.refresh);
 
 // Course Enrollments
-router.post('/course/enroll', authenticate('ACCESS'),
+router.post('/courses/:courseId/enroll', authenticate('ACCESS'),
     courseEnrollmentController.enrollNewCourse);
 
 export default router;
