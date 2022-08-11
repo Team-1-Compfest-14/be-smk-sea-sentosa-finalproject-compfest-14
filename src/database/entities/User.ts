@@ -37,7 +37,7 @@ export class User extends BaseEntity {
     isVerified!: boolean;
 
     @Column({ name: 'refresh_token', nullable: true })
-    refreshToken!: string;
+    refreshToken!: string | null;
 
     @OneToMany(() => Course,
         (course) => course.user)

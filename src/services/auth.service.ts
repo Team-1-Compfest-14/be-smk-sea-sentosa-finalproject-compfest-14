@@ -58,6 +58,14 @@ class AuthService {
 
     async logout(refreshToken: string) {
         const user = await User.findOneBy({ refreshToken });
+        if (!user) {
+            throw new ResponseError(
+                'User doesn\'t exists!', StatusCodes.BAD_REQUEST);
+        }
+
+        user.refreshToken = null;
+
+        await User.save(user);
     }
 
     async refresh(userPayload: UserPayload) {
