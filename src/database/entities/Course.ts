@@ -26,7 +26,7 @@ export class Course extends BaseEntity {
     @Column({ length: 128 })
     description!: string;
 
-    @Column({ name: 'is_verified' })
+    @Column({ name: 'is_verified', default: false })
     isVerified!: boolean;
 
     @ManyToOne(() => User, (user) => user.courses)
