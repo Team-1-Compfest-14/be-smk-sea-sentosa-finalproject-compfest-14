@@ -30,11 +30,11 @@ router.post('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
 router.get('/approval/register', authenticate('ACCESS'),
     userController.getAllNewInstructor);
 router.post('/approval/:userId', authenticate('ACCESS'),
-    approvalController.approvalAction);
+    approvalController.approvalActionForNewInstructor);
 router.get('/approval/course', authenticate('ACCESS'),
     courseController.getProposedCourse);
-router.post('/approval/course/:userId', authenticate('ACCESS'),
-);
+router.post('/approval/course/:courseId', authenticate('ACCESS'),
+    approvalController.approvalActionForProposedCourse);
 
 
 export default router;
