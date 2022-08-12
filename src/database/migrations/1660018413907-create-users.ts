@@ -10,7 +10,7 @@ export class createUsers1660018413907 implements MigrationInterface {
                 "password" VARCHAR(64) NOT NULL,
                 "name" VARCHAR(64) NOT NULL,
                 "role" SERIAL NOT NULL,
-                "is_verified" boolean NOT NULL,
+                "is_verified" boolean NOT NULL DEFAULT FALSE,
                 "refresh_token" VARCHAR(255),
 
                 PRIMARY KEY ("id")
