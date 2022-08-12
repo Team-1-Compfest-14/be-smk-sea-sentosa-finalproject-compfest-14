@@ -1,15 +1,16 @@
 import { StatusCodes } from 'http-status-codes';
 import { Course } from '../database/entities/Course';
 import { UserRole } from '../database/entities/User';
+import type { UserPayload } from '../typings/auth';
 import { ResponseError, Errors } from '../utils/error.util';
 import type { AddCourseType } from '../validations/course.validate';
-import { userService } from './user.service';
 
 class CourseService {
 
-    async add(instructorId: number, rawCourse: AddCourseType) {
-        const user = await userService.get(instructorId);
-        if (user.role !== UserRole.INSTRUCTOR) {
+    async add(
+        { userId: instructorId, role }: UserPayload,
+        rawCourse: AddCourseType) {
+        if (role !== UserRole.INSTRUCTOR) {
             throw Errors.NO_PERMISSION;
         }
 
@@ -26,6 +27,15 @@ class CourseService {
                 StatusCodes.NOT_FOUND);
         }
 
+        return course;
+    }
+
+    async getNewCourse({ role }: UserPayload) {
+        if (role !== UserRole.ADMIN) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const course = await Course.findBy({ isVerified: false });
         return course;
     }
 
