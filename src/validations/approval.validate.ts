@@ -1,15 +1,16 @@
 import joi from 'joi';
+import type { ActionType } from '../typings/action';
 
 export interface ApprovalType {
-    id: number;
+    userId: number;
 }
 
 export interface ApprovalQueryType {
-    action: string;
+    action: ActionType;
 }
 
 export const approvalSchema = joi.object<ApprovalType>({
-    id: joi.number()
+    userId: joi.number()
         .required()
 });
 
