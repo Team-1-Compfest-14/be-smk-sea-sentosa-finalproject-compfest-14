@@ -16,6 +16,10 @@ class ApprovalService {
         return instructorNotVerified;
     }
 
+    async approveOrRejectInstructor(id: ApprovalType, query: string) {
+      
+    }
+
 }
 
 export const approvalService = new ApprovalService();
