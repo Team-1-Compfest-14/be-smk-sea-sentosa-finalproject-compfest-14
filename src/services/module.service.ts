@@ -1,25 +1,36 @@
-import type { ModuleInterface } from '../validations/module.validate';
+import type { LectureInterface } from '../validations/module.validate';
 import { courseService } from '../services/course.service';
 import { Errors } from '../utils/error.util';
 import { Module, ModuleType } from '../database/entities/Module';
+import { Lecture } from '../database/entities/Lecture';
 
 class ModuleService {
 
     async addLecture(
         instructorId: number,
-        courseId: ModuleInterface['courseId'],
-        rawModule: ModuleInterface) {
+        courseId: LectureInterface['courseId'],
+        rawModule: LectureInterface) {
 
         rawModule.courseId = courseId;
         rawModule.type = ModuleType.LECTURE;
+
         const course = await courseService.get(courseId);
         if (course.instructorId !== instructorId) {
             throw Errors.NO_PERMISSION;
         }
 
-        const module = Module.create({ ...rawModule });
+        const moduleData = Module.create({ ...rawModule });
+        const module = await Module.save(moduleData);
 
-        await Module.save(module);
+        const moduleId = module.id;
+        const lectureLink = rawModule.lecture_link;
+
+        const lectureData = await Lecture.create({
+            moduleId,
+            lectureLink
+        });
+
+        await Lecture.save(lectureData);
     }
 
 }
