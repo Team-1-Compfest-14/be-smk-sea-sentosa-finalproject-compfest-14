@@ -12,7 +12,8 @@ import { UsersAnswer } from './UsersAnswer';
 
 export enum UserRole {
     STUDENT,
-    INSTRUCTOR
+    INSTRUCTOR,
+    ADMIN
 }
 
 @Entity('users')
