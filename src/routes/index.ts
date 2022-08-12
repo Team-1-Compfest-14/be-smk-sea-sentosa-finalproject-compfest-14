@@ -6,6 +6,7 @@ import {
     courseEnrollmentController
 } from '../controllers/courseEnrollment.controller';
 import { moduleController } from '../controllers/module.controller';
+import { userController } from '../controllers/user.controller';
 import authenticate from '../middlewares/authenticate.middleware';
 
 const router = Router();
@@ -22,15 +23,18 @@ router.post('/courses/:courseId/enroll', authenticate('ACCESS'),
 
 // Course
 router.post('/courses', authenticate('ACCESS'), courseController.add);
-router.get('/courses/proposed', authenticate('ACCESS'),
-    courseController.getProposedCourse);
 router.post('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
     moduleController.addLecture);
 
 // Approval
 router.get('/approval/register', authenticate('ACCESS'),
-    approvalController.getAllNewInstructor);
+    userController.getAllNewInstructor);
 router.post('/approval/:userId', authenticate('ACCESS'),
     approvalController.approvalAction);
+router.get('/approval/course', authenticate('ACCESS'),
+    courseController.getProposedCourse);
+router.post('/approval/course/:userId', authenticate('ACCESS'),
+);
+
 
 export default router;
