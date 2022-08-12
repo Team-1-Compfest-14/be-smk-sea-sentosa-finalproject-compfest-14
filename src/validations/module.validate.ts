@@ -1,16 +1,16 @@
 import joi from 'joi';
 import type { ModuleType } from '../database/entities/Module';
 
-export interface ModuleInterface {
+export interface AddModuleType {
     courseId: number;
     order: number;
     name: string;
     type: ModuleType;
 }
 
-export interface LectureInterface extends ModuleInterface {
-    module_id: number;
-    lecture_link: string;
+export interface AddLectureType extends AddModuleType {
+    moduleId: number;
+    lectureLink: string;
 }
 
 // Module
@@ -20,20 +20,22 @@ export const courseIdModuleSchema = joi.object({
 });
 
 // Lecture
-export const lectureSchema = joi.object<LectureInterface>({
+export const addLectureSchema = joi.object<AddLectureType>({
     order: joi.number()
         .required()
         .description('The order of the module in the course.'),
 
     name: joi.string()
         .required()
+        .max(64)
         .description('The name of the module.'),
 
-    module_id: joi.number()
+    moduleId: joi.number()
         .required()
         .description('The id of the module the lecture belongs to.'),
 
-    lecture_link: joi.string()
+    lectureLink: joi.string()
         .required()
+        .max(64)
         .description('The link to the lecture.')
 });

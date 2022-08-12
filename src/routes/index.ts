@@ -21,7 +21,7 @@ router.post('/courses/:courseId/enroll', authenticate('ACCESS'),
 
 // Course
 router.post('/courses', authenticate('ACCESS'), courseController.add);
-router.post('/courses/:courseId/lecture', authenticate('ACCESS'),
+router.post('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
     moduleController.addLecture);
 
 export default router;

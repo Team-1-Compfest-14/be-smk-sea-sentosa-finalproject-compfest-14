@@ -5,14 +5,14 @@ import { moduleService } from '../services/module.service';
 import { sendResponse } from '../utils/api.util';
 import { validate } from '../utils/validate.util';
 import {
-    lectureSchema, courseIdModuleSchema
+    addLectureSchema, courseIdModuleSchema
 } from '../validations/module.validate';
 
 class ModuleController {
 
     async addLecture(req: Request, res: Response) {
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
-        const body = validate(req, lectureSchema, 'body');
+        const body = validate(req, addLectureSchema, 'body');
         const courseId = validate(req, courseIdModuleSchema, 'params');
 
         await moduleService.addLecture(userPayload!.userId, courseId, body);
