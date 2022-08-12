@@ -25,7 +25,7 @@ class ModuleService {
         const moduleId = module.id;
         const lectureLink = rawModule.lecture_link;
 
-        const lectureData = await Lecture.create({
+        const lectureData = Lecture.create({
             moduleId,
             lectureLink
         });
