@@ -23,7 +23,8 @@ router.post('/courses/:courseId/enroll', authenticate('ACCESS'),
 router.post('/courses', authenticate('ACCESS'), courseController.add);
 
 // Approval
-router.get('/approval/register', approvalController.getAllNewInstructor);
+router.get('/approval/register', authenticate('ACCESS'),
+    approvalController.getAllNewInstructor);
 router.post('/approval/:id', authenticate('ACCESS'),
     approvalController.approvalAction);
 
