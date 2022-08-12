@@ -1,4 +1,5 @@
 import { User, UserRole } from '../database/entities/User';
+import type { UserPayload } from '../typings/auth';
 import { Errors } from '../utils/error.util';
 import type {
     ApprovalQueryType,
@@ -21,29 +22,35 @@ class ApprovalService {
     }
 
     async approveOrRejectInstructor(
+        { role }: UserPayload,
         { id }: ApprovalType,
         { action }: ApprovalQueryType) {
-        const user = await User.findOneBy({ id });
 
-        if (!user) {
+        if (role !== UserRole.ADMIN) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const instructor = await User.findOneBy({ id });
+        if (!instructor) {
             throw Errors.USER_NOT_FOUND;
         }
 
-        const status = await this.authorizationNewInstructor(user, action);
+        const status = await this
+            .authorizationNewInstructor(instructor, action);
         return status;
     }
 
-    async authorizationNewInstructor(user: User, action: string) {
+    async authorizationNewInstructor(instructor: User, action: string) {
         if (action === 'approve') {
-            user.isVerified = true;
-            await user.save();
+            instructor.isVerified = true;
+            await instructor.save();
 
             return 'approve';
         } else if (action === 'reject') {
-            if (user.isVerified === true) {
+            if (instructor.isVerified === true) {
                 throw Errors.USER_ALREADY_VERIFIED;
             }
-            await user.remove();
+            await instructor.remove();
 
             return 'reject';
         }
