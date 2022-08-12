@@ -3,7 +3,10 @@ import { StatusCodes } from 'http-status-codes';
 import { approvalService } from '../services/approval.service';
 import { sendResponse } from '../utils/api.util';
 import { validate } from '../utils/validate.util';
-import { approvalSchema } from '../validations/approval.validate';
+import {
+    approvalQuerySchema,
+    approvalSchema
+} from '../validations/approval.validate';
 
 class ApprovalController {
 
@@ -19,15 +22,16 @@ class ApprovalController {
     }
 
     async approvalAction(req: Request, res: Response) {
-        const body = validate(req, approvalSchema, 'body');
-        const query = req.query;
+        const params = validate(req, approvalSchema, 'params');
+        const query = validate(req, approvalQuerySchema, 'query');
 
-        await approvalService.approveOrRejectInstructor(body, query);
+        const status = await approvalService
+            .approveOrRejectInstructor(params, query);
 
         return sendResponse(res, {
             statusCode: StatusCodes.OK,
             success: true,
-            message: 'Successfully get all new Instructor'
+            message: `Successfully ${status} new instructor`
         });
     }
 
