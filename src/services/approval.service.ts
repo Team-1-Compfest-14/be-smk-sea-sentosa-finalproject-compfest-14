@@ -1,6 +1,7 @@
 import { User, UserRole } from '../database/entities/User';
 import type { UserPayload } from '../typings/auth';
 import { Errors } from '../utils/error.util';
+import type { ActionType } from '../typings/action';
 import type {
     ApprovalQueryType,
     ApprovalType
@@ -19,7 +20,7 @@ class ApprovalService {
         });
 
         if (!instructorNotVerified) {
-            throw Errors.USER_NOT_FOUND;
+            return [];
         }
 
         return instructorNotVerified;
@@ -27,14 +28,14 @@ class ApprovalService {
 
     async approveOrRejectInstructor(
         { role }: UserPayload,
-        { id }: ApprovalType,
+        { userId }: ApprovalType,
         { action }: ApprovalQueryType) {
 
         if (role !== UserRole.ADMIN) {
             throw Errors.NO_PERMISSION;
         }
 
-        const instructor = await User.findOneBy({ id });
+        const instructor = await User.findOneBy({ id: userId });
         if (!instructor) {
             throw Errors.USER_NOT_FOUND;
         }
@@ -44,7 +45,7 @@ class ApprovalService {
         return status;
     }
 
-    async authorizationNewInstructor(instructor: User, action: string) {
+    async authorizationNewInstructor(instructor: User, action: ActionType) {
         if (action === 'approve') {
             instructor.isVerified = true;
             await instructor.save();
