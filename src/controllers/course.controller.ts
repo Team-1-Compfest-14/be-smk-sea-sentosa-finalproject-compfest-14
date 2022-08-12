@@ -30,7 +30,20 @@ class CourseController {
             statusCode: StatusCodes.CREATED,
             success: true,
             data: data,
-            message: 'Successfully gett all proposed course'
+            message: 'Successfully get all proposed course'
+        });
+    }
+
+    async getVerifiedCourse(req: Request, res: Response) {
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+
+        const data = await courseService.getCourse(userPayload!);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.CREATED,
+            success: true,
+            data: data,
+            message: 'Successfully get all verified course'
         });
     }
 

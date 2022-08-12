@@ -30,6 +30,15 @@ class CourseService {
         return course;
     }
 
+    async getCourse({ role }: UserPayload) {
+        if (role !== UserRole.STUDENT) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const course = await Course.findBy({ isVerified: true });
+        return course;
+    }
+
     async getNewCourse({ role }: UserPayload) {
         if (role !== UserRole.ADMIN) {
             throw Errors.NO_PERMISSION;
