@@ -59,5 +59,13 @@ export const Errors = {
     USER_ALREADY_VERIFIED: new ResponseError(
         'User already verified',
         StatusCodes.FORBIDDEN
+    ),
+
+    /**
+     * Cannot find the course
+     */
+    COURSE_NOT_FOUND: new ResponseError(
+        'Cannot find course',
+        StatusCodes.NOT_FOUND
     )
 };
