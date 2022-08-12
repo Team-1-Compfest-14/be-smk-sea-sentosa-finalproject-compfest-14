@@ -1,5 +1,6 @@
-import { User } from '../database/entities/User';
+import { User, UserRole } from '../database/entities/User';
 import { Errors } from '../utils/error.util';
+import type { UserPayload } from '../typings/auth';
 
 class UserService {
 
@@ -10,6 +11,23 @@ class UserService {
         }
 
         return user;
+    }
+
+    async getAllNewInstructor({ role }: UserPayload) {
+        if (role !== UserRole.ADMIN) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const instructorNotVerified = User.findBy({
+            isVerified: false,
+            role: UserRole.INSTRUCTOR
+        });
+
+        if (!instructorNotVerified) {
+            return [];
+        }
+
+        return instructorNotVerified;
     }
 
 }
