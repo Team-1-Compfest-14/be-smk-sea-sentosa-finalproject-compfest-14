@@ -11,19 +11,6 @@ import {
 
 class ApprovalController {
 
-    async getAllNewInstructor(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
-        const listOfInstructor = await approvalService
-            .getAllNewInstructor(userPayload!);
-
-        return sendResponse(res, {
-            statusCode: StatusCodes.OK,
-            success: true,
-            data: listOfInstructor,
-            message: 'Successfully get all new Instructor'
-        });
-    }
-
     async approvalAction(req: Request, res: Response) {
         const params = validate(req, approvalSchema, 'params');
         const query = validate(req, approvalQuerySchema, 'query');
