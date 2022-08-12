@@ -25,7 +25,7 @@ router.post('/courses', authenticate('ACCESS'), courseController.add);
 // Approval
 router.get('/approval/register', authenticate('ACCESS'),
     approvalController.getAllNewInstructor);
-router.post('/approval/:id', authenticate('ACCESS'),
+router.post('/approval/:userId', authenticate('ACCESS'),
     approvalController.approvalAction);
 
 export default router;
