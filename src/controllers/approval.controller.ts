@@ -12,7 +12,9 @@ import {
 class ApprovalController {
 
     async getAllNewInstructor(req: Request, res: Response) {
-        const listOfInstructor = await approvalService.getAllNewInstructor();
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const listOfInstructor = await approvalService
+            .getAllNewInstructor(userPayload!);
 
         return sendResponse(res, {
             statusCode: StatusCodes.OK,
