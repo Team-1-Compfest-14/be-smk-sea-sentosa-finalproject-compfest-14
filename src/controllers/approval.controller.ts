@@ -6,13 +6,14 @@ import { sendResponse } from '../utils/api.util';
 import { validate } from '../utils/validate.util';
 import {
     approvalQuerySchema,
-    approvalSchema
+    approvalInstructorSchema,
+    approvalCourseSchema,
 } from '../validations/approval.validate';
 
 class ApprovalController {
 
-    async approvalAction(req: Request, res: Response) {
-        const params = validate(req, approvalSchema, 'params');
+    async approvalActionForNewInstructor(req: Request, res: Response) {
+        const params = validate(req, approvalInstructorSchema, 'params');
         const query = validate(req, approvalQuerySchema, 'query');
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
 
@@ -23,6 +24,21 @@ class ApprovalController {
             statusCode: StatusCodes.OK,
             success: true,
             message: `Successfully ${status} new instructor`
+        });
+    }
+
+    async approvalActionForProposedCourse(req: Request, res: Response) {
+        const params = validate(req, approvalCourseSchema, 'params');
+        const query = validate(req, approvalQuerySchema, 'query');
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+
+        const status = await approvalService
+            .approveOrRejectProposedCourse(userPayload!, params, query);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: `Successfully ${status} new course`
         });
     }
 
