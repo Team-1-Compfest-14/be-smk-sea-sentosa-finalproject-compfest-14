@@ -1,4 +1,5 @@
 import Router from 'express';
+import { approvalController } from '../controllers/approval.controller';
 import { authController } from '../controllers/auth.controller';
 import { courseController } from '../controllers/course.controller';
 import {
@@ -23,5 +24,11 @@ router.post('/courses/:courseId/enroll', authenticate('ACCESS'),
 router.post('/courses', authenticate('ACCESS'), courseController.add);
 router.post('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
     moduleController.addLecture);
+
+// Approval
+router.get('/approval/register', authenticate('ACCESS'),
+    approvalController.getAllNewInstructor);
+router.post('/approval/:userId', authenticate('ACCESS'),
+    approvalController.approvalAction);
 
 export default router;

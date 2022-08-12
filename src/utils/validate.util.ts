@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import type { ObjectSchema } from 'joi';
 import { ResponseError } from './error.util';
 
-type ValidationType = 'body' | 'params';
+type ValidationType = 'body' | 'params' | 'query';
 
 export function validate<T>(
     req: Request,

@@ -52,4 +52,12 @@ export const Errors = {
     USER_NOT_FOUND: new ResponseError(
         'Cannot find user',
         StatusCodes.NOT_FOUND),
+
+    /**
+     * User already verified
+     */
+    USER_ALREADY_VERIFIED: new ResponseError(
+        'User already verified',
+        StatusCodes.FORBIDDEN
+    )
 };

@@ -77,7 +77,10 @@ class AuthService {
     }
 
     async generateToken(user: User, tokenType: TokenType) {
-        const payload = { userId: user.id };
+        const payload = {
+            userId: user.id,
+            role: user.role
+        };
         const options: jwt.SignOptions = {};
 
         let tokenSecret;
@@ -137,7 +140,10 @@ class AuthService {
 
         const payload = jwt.verify(token, secret) as JwtPayload;
 
-        return { userId: payload.userId } as UserPayload;
+        return {
+            userId: payload.userId,
+            role: payload.role
+        } as UserPayload;
     }
 
 }
