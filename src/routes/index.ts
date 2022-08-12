@@ -4,6 +4,7 @@ import { courseController } from '../controllers/course.controller';
 import {
     courseEnrollmentController
 } from '../controllers/courseEnrollment.controller';
+import { moduleController } from '../controllers/module.controller';
 import authenticate from '../middlewares/authenticate.middleware';
 
 const router = Router();
@@ -20,5 +21,7 @@ router.post('/courses/:courseId/enroll', authenticate('ACCESS'),
 
 // Course
 router.post('/courses', authenticate('ACCESS'), courseController.add);
+router.post('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
+    moduleController.addLecture);
 
 export default router;
