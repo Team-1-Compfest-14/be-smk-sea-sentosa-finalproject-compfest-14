@@ -1,7 +1,7 @@
 import type { ModuleInterface } from '../validations/module.validate';
 import { courseService } from '../services/course.service';
 import { Errors } from '../utils/error.util';
-import { Module } from '../database/entities/Module';
+import { Module, ModuleType } from '../database/entities/Module';
 
 class ModuleService {
 
@@ -11,6 +11,7 @@ class ModuleService {
         rawModule: ModuleInterface) {
 
         rawModule.courseId = courseId;
+        rawModule.type = ModuleType.LECTURE;
         const course = await courseService.get(courseId);
         if (course.instructorId !== instructorId) {
             throw Errors.NO_PERMISSION;

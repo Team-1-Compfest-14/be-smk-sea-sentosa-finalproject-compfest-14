@@ -20,7 +20,7 @@ class ModuleController {
         return sendResponse(res, {
             statusCode: StatusCodes.CREATED,
             success: true,
-            message: 'Successfully created a module.'
+            message: 'Successfully created a lecture.'
         });
     }
 

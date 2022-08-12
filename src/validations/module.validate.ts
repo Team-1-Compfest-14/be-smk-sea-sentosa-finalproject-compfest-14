@@ -1,5 +1,5 @@
 import joi from 'joi';
-import { ModuleType } from '../database/entities/Module';
+import type { ModuleType } from '../database/entities/Module';
 
 export interface ModuleInterface {
     courseId: number;
@@ -21,9 +21,4 @@ export const addModuleSchema = joi.object<ModuleInterface>({
     name: joi.string()
         .required()
         .description('The name of the module.'),
-
-    type: joi.string()
-        .required()
-        .description('The type of the module.')
-        .valid(Object.values(ModuleType))
 });
