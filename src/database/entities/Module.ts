@@ -12,7 +12,7 @@ import { Lecture } from './Lecture';
 import { Quiz } from './Quiz';
 import { ModuleCompletion } from './ModuleCompletion';
 
-enum ModuleType {
+export enum ModuleType {
     LECTURE = 'lecture',
     QUIZ = 'quiz'
 }
