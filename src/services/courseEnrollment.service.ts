@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import { CourseEnrollment } from '../database/entities/CourseEnrollment';
 import type {
-    CourseEnrollmentInterface
+    AddCourseEnrollmentType
 } from '../validations/courseEnrollment.validate';
 import type { UserPayload } from '../typings/auth';
 import { ResponseError } from '../utils/error.util';
@@ -11,7 +11,7 @@ class CourseEnrollmentService {
 
     async enrollNewCourse(
         userPayload: UserPayload,
-        { courseId }: CourseEnrollmentInterface) {
+        { courseId }: AddCourseEnrollmentType) {
         const userId = userPayload.userId;
         const userCourseEnrolled = await CourseEnrollment
             .find({
