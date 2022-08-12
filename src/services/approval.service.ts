@@ -8,7 +8,11 @@ import type {
 
 class ApprovalService {
 
-    async getAllNewInstructor() {
+    async getAllNewInstructor({ role }: UserPayload) {
+        if (role !== UserRole.ADMIN) {
+            throw Errors.NO_PERMISSION;
+        }
+
         const instructorNotVerified = User.findBy({
             isVerified: false,
             role: UserRole.INSTRUCTOR
