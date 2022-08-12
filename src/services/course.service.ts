@@ -3,13 +3,16 @@ import { Course } from '../database/entities/Course';
 import { UserRole } from '../database/entities/User';
 import type { UserPayload } from '../typings/auth';
 import { ResponseError, Errors } from '../utils/error.util';
-import type { AddCourseType } from '../validations/course.validate';
+import type {
+    CourseType,
+    ParamsCourseType
+} from '../validations/course.validate';
 
 class CourseService {
 
     async add(
         { userId: instructorId, role }: UserPayload,
-        rawCourse: AddCourseType) {
+        rawCourse: CourseType) {
         if (role !== UserRole.INSTRUCTOR) {
             throw Errors.NO_PERMISSION;
         }
@@ -30,7 +33,18 @@ class CourseService {
         return course;
     }
 
-    async getCourse({ role }: UserPayload) {
+    async getSpecifyCourse(
+        { role }: UserPayload,
+        { courseId }: ParamsCourseType) {
+
+        if (role !== UserRole.STUDENT) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        return this.get(courseId);
+    }
+
+    async getCourses({ role }: UserPayload) {
         if (role !== UserRole.STUDENT) {
             throw Errors.NO_PERMISSION;
         }
@@ -39,7 +53,7 @@ class CourseService {
         return course;
     }
 
-    async getNewCourse({ role }: UserPayload) {
+    async getNewCourses({ role }: UserPayload) {
         if (role !== UserRole.ADMIN) {
             throw Errors.NO_PERMISSION;
         }
