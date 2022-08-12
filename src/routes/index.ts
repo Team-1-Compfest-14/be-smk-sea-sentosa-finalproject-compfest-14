@@ -22,6 +22,8 @@ router.post('/courses/:courseId/enroll', authenticate('ACCESS'),
     courseEnrollmentController.enrollNewCourse);
 
 // Course
+router.get('/courses', authenticate('ACCESS'),
+    courseController.getVerifiedCourse);
 router.post('/courses', authenticate('ACCESS'), courseController.add);
 router.post('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
     moduleController.addLecture);
