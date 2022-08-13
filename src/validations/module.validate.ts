@@ -14,6 +14,7 @@ export interface AddLectureType extends AddModuleType {
 }
 
 export interface DeleteLectureParams {
+    courseId: number;
     lectureId: number;
 }
 
@@ -41,6 +42,9 @@ export const addLectureSchema = joi.object<AddLectureType>({
 });
 
 export const deleteLectureSchema = joi.object<DeleteLectureParams>({
+    courseId: joi.number()
+        .required(),
+
     lectureId: joi.number()
         .required()
 });
