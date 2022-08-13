@@ -5,7 +5,8 @@
     "license": "MIT",
     "scripts": {
         "dev": "ts-node ./src/server.ts",
-        "test": "jest --forceExit",
+        "test": "jest --runInBand --forceExit",
+        "test:coverage": "jest --coverage --collectCoverageFrom='./src/__tests__/**' --runInBand --forceExit",
         "jwt:generate": "ts-node ./scripts/jwt-generate.ts",
         "migration:create": "ts-node ./scripts/migration.ts CREATE",
         "migration:show": "ts-node ./scripts/migration.ts SHOW",
