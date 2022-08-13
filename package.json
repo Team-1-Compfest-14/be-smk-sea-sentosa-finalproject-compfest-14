@@ -5,8 +5,8 @@
     "license": "MIT",
     "scripts": {
         "dev": "ts-node ./src/server.ts",
-        "test": "jest --runInBand --forceExit",
-        "test:coverage": "jest --coverage --collectCoverageFrom='./src/__tests__/**' --runInBand --forceExit",
+        "test": "cross-env NODE_ENV=test jest --runInBand --forceExit",
+        "test:coverage": "cross-env NODE_ENV=test jest --coverage --collectCoverageFrom='./src/__tests__/**' --runInBand --forceExit",
         "jwt:generate": "ts-node ./scripts/jwt-generate.ts",
         "migration:create": "ts-node ./scripts/migration.ts CREATE",
         "migration:show": "ts-node ./scripts/migration.ts SHOW",
@@ -18,6 +18,7 @@
         "bcrypt": "^5.0.1",
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",
+        "cross-env": "^7.0.3",
         "dotenv": "^16.0.1",
         "express": "^4.18.1",
         "express-async-errors": "^3.1.1",

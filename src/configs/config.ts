@@ -28,7 +28,8 @@ const config = {
             username: env.DB_USERNAME_TEST!,
             password: env.DB_PASSWORD_TEST!
         }
-    }
+    },
+    isTest: (env.NODE_ENV === 'test')
 };
 
 export default config;
