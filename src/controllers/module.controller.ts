@@ -4,6 +4,7 @@ import { authService } from '../services/auth.service';
 import { moduleService } from '../services/module.service';
 import { sendResponse } from '../utils/api.util';
 import { validate } from '../utils/validate.util';
+import { courseIdSchema } from '../validations/course.validate';
 import {
     addLectureSchema, courseIdModuleSchema, addQuizSchema, deleteLectureSchema
 } from '../validations/module.validate';
@@ -67,7 +68,7 @@ class ModuleController {
             message: 'Successfully deleted a lecture'
         });
     }
-
+    
     async getCoursesInstructor(req: Request, res: Response) {
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
 
@@ -94,6 +95,20 @@ class ModuleController {
             success: true,
             message: 'Successfully get all course for instructor'
         });
+    }
+    
+    async getEnrolledCourseQuizzes(req: Request, res: Response) {
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const params = validate(req, courseIdSchema, 'params');
+
+        const quizzes = await moduleService
+            .getEnrolledCourseQuizzes(userPayload!, params.courseId);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully found all enrolled course quizzes',
+            data: { quizzes }
     }
 
 }

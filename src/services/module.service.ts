@@ -184,6 +184,32 @@ class ModuleService {
 
         return courseDetail;
     }
+    
+    async getEnrolledCourseQuizzes(
+        { userId, role }: UserPayload, courseId: number) {
+
+        const userEnrolled = await CourseEnrollment
+            .findOneBy({ userId, courseId });
+
+        if (!userEnrolled || role !== UserRole.STUDENT) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const quizzes = await Module.find({
+            where: {
+                courseId,
+                type: ModuleType.LECTURE
+            },
+            order: {
+                order: 'ASC'
+            },
+            relations: {
+                quizzes: true
+            }
+        });
+
+        return quizzes;
+    }
 
 }
 

@@ -12,7 +12,8 @@
         "migration:show": "ts-node ./scripts/migration.ts SHOW",
         "migration:run": "ts-node ./scripts/migration.ts RUN",
         "migration:revert": "ts-node ./scripts/migration.ts REVERT",
-        "typeorm": "typeorm-ts-node-commonjs"
+        "typeorm": "typeorm-ts-node-commonjs",
+        "seed": "ts-node ./scripts/seeder.ts"
     },
     "dependencies": {
         "bcrypt": "^5.0.1",
