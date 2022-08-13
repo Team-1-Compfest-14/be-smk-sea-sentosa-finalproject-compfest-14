@@ -9,7 +9,7 @@ import {
 import { Course } from './Course';
 import { User } from './User';
 
-@Entity('courses')
+@Entity('course_enrollments')
 export class CourseEnrollment extends BaseEntity {
 
     @PrimaryGeneratedColumn()
