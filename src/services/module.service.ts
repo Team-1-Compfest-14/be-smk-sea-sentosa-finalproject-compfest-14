@@ -10,6 +10,7 @@ import type { UserPayload } from '../typings/auth';
 import { UserRole } from '../database/entities/User';
 import { CourseEnrollment } from '../database/entities/CourseEnrollment';
 import { Course } from '../database/entities/Course';
+import type { CourseIdType } from '../validations/course.validate';
 
 class ModuleService {
 
@@ -123,6 +124,32 @@ class ModuleService {
             throw Errors.MODULE_NOT_FOUND;
         }
         await module.remove();
+    }
+
+    async getEnrolledCourseQuizzes(
+        { userId, role }: UserPayload, courseId: number) {
+
+        const userEnrolled = await CourseEnrollment
+            .findOneBy({ userId, courseId });
+
+        if (!userEnrolled || role !== UserRole.STUDENT) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const quizzes = await Module.find({
+            where: {
+                courseId,
+                type: ModuleType.LECTURE
+            },
+            order: {
+                order: 'ASC'
+            },
+            relations: {
+                quizzes: true
+            }
+        });
+
+        return quizzes;
     }
 
 }

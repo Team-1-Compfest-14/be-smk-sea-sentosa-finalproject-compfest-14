@@ -72,6 +72,15 @@ class ModuleController {
     async getEnrolledCourseQuizzes(req: Request, res: Response) {
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
         const params = validate(req, courseIdSchema, 'params');
+
+        const quizzes = await moduleService
+            .getEnrolledCourseQuizzes(userPayload!, params.courseId);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully found all enrolled course quizzes'
+        });
     }
 
 }
