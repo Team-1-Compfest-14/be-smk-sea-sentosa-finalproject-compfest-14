@@ -6,6 +6,7 @@ import {
     courseEnrollmentController
 } from '../controllers/courseEnrollment.controller';
 import { moduleController } from '../controllers/module.controller';
+
 import { userController } from '../controllers/user.controller';
 import authenticate from '../middlewares/authenticate.middleware';
 

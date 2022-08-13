@@ -68,7 +68,7 @@ class ModuleController {
             message: 'Successfully deleted a lecture'
         });
     }
-    
+
     async getCoursesInstructor(req: Request, res: Response) {
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
 
@@ -96,7 +96,7 @@ class ModuleController {
             message: 'Successfully get all course for instructor'
         });
     }
-    
+
     async getEnrolledCourseQuizzes(req: Request, res: Response) {
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
         const params = validate(req, courseIdSchema, 'params');
@@ -109,6 +109,7 @@ class ModuleController {
             success: true,
             message: 'Successfully found all enrolled course quizzes',
             data: { quizzes }
+        });
     }
 
 }

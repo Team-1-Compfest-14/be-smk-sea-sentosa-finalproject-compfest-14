@@ -12,7 +12,7 @@ import { CourseEnrollment } from '../database/entities/CourseEnrollment';
 import { Course } from '../database/entities/Course';
 import type {
     CourseWithTotalType,
-    ParamsCourseType
+    CourseIdType
 } from '../validations/course.validate';
 
 class ModuleService {
@@ -157,7 +157,7 @@ class ModuleService {
 
     async getCoursesInstructorDetail(
         { userId, role }: UserPayload,
-        { courseId }: ParamsCourseType) {
+        { courseId }: CourseIdType) {
         if (role !== UserRole.INSTRUCTOR) {
             throw Errors.NO_PERMISSION;
         }
@@ -184,7 +184,7 @@ class ModuleService {
 
         return courseDetail;
     }
-    
+
     async getEnrolledCourseQuizzes(
         { userId, role }: UserPayload, courseId: number) {
 
