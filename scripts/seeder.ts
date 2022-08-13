@@ -4,6 +4,7 @@ import { CourseEnrollment } from '../src/database/entities/CourseEnrollment';
 import { User, UserRole } from '../src/database/entities/User';
 import { authService } from '../src/services/auth.service';
 import { AppDataSource } from '../src/database/data-source';
+import { Lecture } from '../src/database/entities/Lecture';
 
 async function seedData() {
     const { hashPassword } = authService;
@@ -131,6 +132,22 @@ async function seedData() {
         })
     ];
     await Module.save(modules);
+
+    const lectures: Lecture[] = [
+        Lecture.create({
+            moduleId: 1,
+            lectureLink: 'https://www.youtube.com/watch?v=mywS9-Ov1_I'
+        }),
+        Lecture.create({
+            moduleId: 2,
+            lectureLink: 'https://www.youtube.com/watch?v=mywS9-Ov1_I'
+        }),
+        Lecture.create({
+            moduleId: 6,
+            lectureLink: 'https://www.youtube.com/watch?v=mywS9-Ov1_I'
+        })
+    ];
+    await Lecture.save(lectures);
 }
 
 AppDataSource.initialize()
