@@ -27,6 +27,8 @@ router.get('/courses', authenticate('ACCESS'),
 router.get('/courses/:courseId', authenticate('ACCESS'),
     courseController.getCourseDetail);
 router.post('/courses', authenticate('ACCESS'), courseController.add);
+
+// Lecture
 router.get('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
     moduleController.getLectures);
 router.post('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
@@ -36,6 +38,7 @@ router.post('/courses/:courseId/modules/quizzes', authenticate('ACCESS'),
 router.delete('/courses/:courseId/modules/lectures/:lectureId',
     authenticate('ACCESS'),
     moduleController.deleteLecture);
+
 
 // Approval
 router.get('/approval/register', authenticate('ACCESS'),
