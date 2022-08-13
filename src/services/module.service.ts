@@ -10,6 +10,7 @@ import type { UserPayload } from '../typings/auth';
 import { UserRole } from '../database/entities/User';
 import { CourseEnrollment } from '../database/entities/CourseEnrollment';
 import { Course } from '../database/entities/Course';
+import type { CourseWithTotalType } from '../validations/course.validate';
 
 class ModuleService {
 
@@ -123,6 +124,32 @@ class ModuleService {
             throw Errors.MODULE_NOT_FOUND;
         }
         await module.remove();
+    }
+
+    async getCoursesInstructor({ userId, role }: UserPayload) {
+        if (role !== UserRole.INSTRUCTOR) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const courses = await Course.findBy({ instructorId: userId });
+        if (!courses) {
+            throw Errors.COURSE_NOT_FOUND;
+        }
+
+        const coursesWithTotalCount: CourseWithTotalType[] = [];
+
+        for (const course of courses) {
+            const { id } = course;
+
+            const courseEnroll = await CourseEnrollment
+                .findBy({ courseId: id });
+
+            const tempCourse = course as unknown as CourseWithTotalType;
+            tempCourse.total = courseEnroll.length;
+            coursesWithTotalCount.push(tempCourse);
+        }
+
+        return coursesWithTotalCount;
     }
 
 }
