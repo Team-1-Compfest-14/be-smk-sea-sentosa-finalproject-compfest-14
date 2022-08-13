@@ -1,5 +1,5 @@
 import type {
-    AddLectureType, AddModuleType
+    AddLectureType, AddModuleType, DeleteLectureParams
 } from '../validations/module.validate';
 import { courseService } from '../services/course.service';
 import { Errors } from '../utils/error.util';
@@ -91,6 +91,29 @@ class ModuleService {
         });
 
         return module;
+    }
+
+    async deleteLecture(
+        { role }: UserPayload,
+        { lectureId }: DeleteLectureParams) {
+
+        if (role !== UserRole.INSTRUCTOR) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const lecture = await Lecture.findOneBy({ id: lectureId });
+        if (!lecture) {
+            throw Errors.LECTURE_NOT_FOUND;
+        }
+
+        const { moduleId } = lecture;
+        await lecture.remove();
+
+        const module = await Module.findOneBy({ id: moduleId });
+        if (!module) {
+            throw Errors.MODULE_NOT_FOUND;
+        }
+        await module.remove();
     }
 
 }
