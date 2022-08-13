@@ -13,6 +13,11 @@ export interface AddLectureType extends AddModuleType {
     lectureLink: string;
 }
 
+export interface DeleteLectureParams {
+    courseId: number;
+    lectureId: number;
+}
+
 // Module
 export const courseIdModuleSchema = joi.object({
     courseId: joi.number().required()
@@ -34,6 +39,14 @@ export const addLectureSchema = joi.object<AddLectureType>({
         .required()
         .max(64)
         .description('The link to the lecture.')
+});
+
+export const deleteLectureSchema = joi.object<DeleteLectureParams>({
+    courseId: joi.number()
+        .required(),
+
+    lectureId: joi.number()
+        .required()
 });
 
 // Quiz
