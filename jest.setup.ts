@@ -1,9 +1,9 @@
-import { AppDataSourceTest } from './src/database/data-source';
+import { AppDataSource } from './src/database/data-source';
 
 beforeAll(async () => {
-    await AppDataSourceTest.initialize();
+    await AppDataSource.initialize();
 });
 
 afterAll(async () => {
-    await AppDataSourceTest.destroy();
+    await AppDataSource.destroy();
 });
