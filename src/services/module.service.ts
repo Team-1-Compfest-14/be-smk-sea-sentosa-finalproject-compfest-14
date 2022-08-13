@@ -9,6 +9,7 @@ import { Quiz } from '../database/entities/Quiz';
 import type { UserPayload } from '../typings/auth';
 import { UserRole } from '../database/entities/User';
 import { CourseEnrollment } from '../database/entities/CourseEnrollment';
+import { Course } from '../database/entities/Course';
 
 class ModuleService {
 
@@ -94,10 +95,18 @@ class ModuleService {
     }
 
     async deleteLecture(
-        { role }: UserPayload,
-        { lectureId }: DeleteLectureParams) {
+        { userId, role }: UserPayload,
+        { courseId, lectureId }: DeleteLectureParams) {
 
         if (role !== UserRole.INSTRUCTOR) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const isMatchCourseWithUser = await Course.findOneBy({
+            id: courseId, instructorId: userId
+        });
+
+        if (!isMatchCourseWithUser) {
             throw Errors.NO_PERMISSION;
         }
 
