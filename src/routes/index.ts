@@ -28,7 +28,7 @@ router.post('/courses', authenticate('ACCESS'), courseController.add);
 router.get('/courses/:courseId', authenticate('ACCESS'),
     courseController.getCourseDetail);
 router.get('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
-    moduleController.getLectures);
+    moduleController.getEnrolledLecturesForStudent);
 router.post('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
     moduleController.addLecture);
 router.post('/courses/:courseId/modules/quizzes', authenticate('ACCESS'),
