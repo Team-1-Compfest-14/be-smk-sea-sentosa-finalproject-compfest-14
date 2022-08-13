@@ -16,3 +16,19 @@ export const AppDataSource = new DataSource({
     subscribers: [],
     migrations: ['./src/database/migrations/*.ts'],
 });
+
+export const AppDataSourceTest = new DataSource({
+    type: 'postgres',
+    host: config.test.db.host,
+    port: config.test.db.port,
+    username: config.test.db.username,
+    password: config.test.db.password,
+    database: config.test.db.database,
+    dropSchema: true,
+    synchronize: false,
+    migrationsRun: true,
+    logging: false,
+    entities: ['./src/database/entities/*.ts'],
+    subscribers: [],
+    migrations: ['./src/database/migrations/*.ts'],
+});
