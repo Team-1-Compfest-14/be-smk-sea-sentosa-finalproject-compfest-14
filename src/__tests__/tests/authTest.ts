@@ -17,7 +17,7 @@ export const RegisterTest = () => {
             expect(response.statusCode).toBe(StatusCodes.CREATED);
         });
 
-        it('should return BAD REQUEST IF email already registed.', async () => {
+        it('should return BAD REQUEST IF email already register.', async () => {
             const response = await request(app)
                 .post('/auth/register')
                 .send({
