@@ -10,7 +10,6 @@ import type { UserPayload } from '../typings/auth';
 import { UserRole } from '../database/entities/User';
 import { CourseEnrollment } from '../database/entities/CourseEnrollment';
 import { Course } from '../database/entities/Course';
-import type { CourseIdType } from '../validations/course.validate';
 
 class ModuleService {
 

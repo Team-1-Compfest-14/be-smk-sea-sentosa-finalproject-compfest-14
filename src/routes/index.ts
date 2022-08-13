@@ -38,6 +38,9 @@ router.delete('/courses/:courseId/modules/lectures/:lectureId',
     authenticate('ACCESS'),
     moduleController.deleteLecture);
 
+// Quizzes
+router.get('/courses/:courseId/quizzes', authenticate('ACCESS'),
+    moduleController.getEnrolledCourseQuizzes);
 
 // Approval
 router.get('/approval/register', authenticate('ACCESS'),

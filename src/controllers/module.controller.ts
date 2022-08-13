@@ -79,7 +79,8 @@ class ModuleController {
         return sendResponse(res, {
             statusCode: StatusCodes.OK,
             success: true,
-            message: 'Successfully found all enrolled course quizzes'
+            message: 'Successfully found all enrolled course quizzes',
+            data: { quizzes }
         });
     }
 
