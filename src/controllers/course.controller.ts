@@ -24,12 +24,12 @@ class CourseController {
     async getProposedCourse(req: Request, res: Response) {
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
 
-        const data = await courseService.getNewCourses(userPayload!);
+        const proposedCourse = await courseService.getNewCourses(userPayload!);
 
         return sendResponse(res, {
             statusCode: StatusCodes.CREATED,
             success: true,
-            data: data,
+            data: { proposedCourse },
             message: 'Successfully get all proposed course'
         });
     }
@@ -38,12 +38,12 @@ class CourseController {
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
         const body = validate(req, courseParams, 'params');
 
-        const data = await courseService.getSpecifyCourse(userPayload!, body);
+        const course = await courseService.getSpecifyCourse(userPayload!, body);
 
         return sendResponse(res, {
             statusCode: StatusCodes.CREATED,
             success: true,
-            data: data,
+            data: { course },
             message: 'Successfully get verified course details'
         });
     }
@@ -51,12 +51,12 @@ class CourseController {
     async getVerifiedCourses(req: Request, res: Response) {
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
 
-        const data = await courseService.getCourses(userPayload!);
+        const courses = await courseService.getCourses(userPayload!);
 
         return sendResponse(res, {
             statusCode: StatusCodes.CREATED,
             success: true,
-            data: data,
+            data: { courses },
             message: 'Successfully get all verified course'
         });
     }
