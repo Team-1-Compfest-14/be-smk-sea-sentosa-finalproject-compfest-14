@@ -13,10 +13,10 @@ class ModuleController {
     async addLecture(req: Request, res: Response) {
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
         const body = validate(req, addLectureSchema, 'body');
-        const param = validate(req, courseIdModuleSchema, 'params');
+        const params = validate(req, courseIdModuleSchema, 'params');
 
         await moduleService.addLecture(userPayload!.userId,
-            param.courseId, body);
+            params.courseId, body);
 
         return sendResponse(res, {
             statusCode: StatusCodes.CREATED,
@@ -28,13 +28,28 @@ class ModuleController {
     async addQuiz(req: Request, res: Response) {
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
         const body = validate(req, addQuizSchema, 'body');
-        const param = validate(req, courseIdModuleSchema, 'params');
+        const params = validate(req, courseIdModuleSchema, 'params');
 
         await moduleService.addQuiz(userPayload!.userId,
-            param.courseId, body);
+            params.courseId, body);
 
         return sendResponse(res, {
             statusCode: StatusCodes.CREATED,
+            success: true,
+            message: 'Successfully created a quiz.'
+        });
+    }
+
+    async getLectures(req: Request, res: Response) {
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const params = validate(req, courseIdModuleSchema, 'params');
+
+        const data = await moduleService.getLectures(userPayload!,
+            params.courseId);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.CREATED,
+            data: data,
             success: true,
             message: 'Successfully created a quiz.'
         });

@@ -43,7 +43,7 @@ export class Module extends BaseEntity {
     quizzes!: Quiz[];
 
     @OneToMany(() => Lecture, (lecture) => lecture.module)
-    lectures!: Quiz[];
+    lectures!: Lecture[];
 
     @OneToMany(() => ModuleCompletion,
         (moduleCompletion) => moduleCompletion.module)
