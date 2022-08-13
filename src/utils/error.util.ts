@@ -67,5 +67,21 @@ export const Errors = {
     COURSE_NOT_FOUND: new ResponseError(
         'Cannot find course',
         StatusCodes.NOT_FOUND
+    ),
+
+    /**
+     * Cannot find the lecture
+     */
+    LECTURE_NOT_FOUND: new ResponseError(
+        'Cannot find lecture',
+        StatusCodes.NOT_FOUND
+    ),
+
+    /**
+     * Cannot find the module
+     */
+    MODULE_NOT_FOUND: new ResponseError(
+        'Cannot find module',
+        StatusCodes.NOT_FOUND
     )
 };
