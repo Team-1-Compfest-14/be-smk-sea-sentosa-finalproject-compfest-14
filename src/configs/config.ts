@@ -18,7 +18,17 @@ const config = {
         refreshExpire: env.JWT_REFRESH_EXPIRE!
     },
     hashRounds: 10,
-    port: parseInt(env.PORT!)
+    port: parseInt(env.PORT!),
+
+    test: {
+        db: {
+            host: env.DB_HOST_TEST!,
+            port: parseInt(env.DB_PORT_TEST!),
+            database: env.DB_DATABASE_TEST!,
+            username: env.DB_USERNAME_TEST!,
+            password: env.DB_PASSWORD_TEST!
+        }
+    }
 };
 
 export default config;
