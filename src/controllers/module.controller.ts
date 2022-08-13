@@ -81,6 +81,21 @@ class ModuleController {
         });
     }
 
+    async getCoursesInstructorDetail(req: Request, res: Response) {
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const params = validate(req, courseIdModuleSchema, 'params');
+
+        const course = await moduleService
+            .getCoursesInstructorDetail(userPayload!, params);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.CREATED,
+            data: { course },
+            success: true,
+            message: 'Successfully get all course for instructor'
+        });
+    }
+
 }
 
 export const moduleController = new ModuleController();
