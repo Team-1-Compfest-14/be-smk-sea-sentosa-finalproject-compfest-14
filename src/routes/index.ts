@@ -38,6 +38,8 @@ router.delete('/courses/:courseId/modules/lectures/:lectureId',
     moduleController.deleteLecture);
 router.get('/courses/instructor/own', authenticate('ACCESS'),
     moduleController.getCoursesInstructor);
+router.get('/courses/instructor/own/:courseId', authenticate('ACCESS'),
+    moduleController.getCoursesInstructorDetail);
 
 // Approval
 router.get('/approval/register', authenticate('ACCESS'),
