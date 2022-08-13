@@ -14,7 +14,7 @@ class UserController {
         return sendResponse(res, {
             statusCode: StatusCodes.OK,
             success: true,
-            data: listOfInstructor,
+            data: { listOfInstructor },
             message: 'Successfully get all new Instructor'
         });
     }
