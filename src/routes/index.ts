@@ -21,16 +21,15 @@ router.delete('/auth/logout', authenticate('REFRESH'), authController.logout);
 router.post('/courses/:courseId/enroll', authenticate('ACCESS'),
     courseEnrollmentController.enrollNewCourse);
 
-// Course
+// Course & Modules
 router.get('/courses', authenticate('ACCESS'),
     courseController.getVerifiedCourses);
+router.post('/courses', authenticate('ACCESS'), courseController.add);
 router.get('/courses/:courseId', authenticate('ACCESS'),
     courseController.getCourseDetail);
 router.post('/courses', authenticate('ACCESS'), courseController.add);
-
-// Lecture
 router.get('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
-    moduleController.getLectures);
+    moduleController.getEnrolledLecturesForStudent);
 router.post('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
     moduleController.addLecture);
 router.post('/courses/:courseId/modules/quizzes', authenticate('ACCESS'),

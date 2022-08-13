@@ -65,7 +65,7 @@ class ModuleService {
         await Quiz.save(quizData);
     }
 
-    async getLectures(
+    async getEnrolledLecturesForStudent(
         { userId, role }: UserPayload,
         courseId: AddLectureType['courseId']) {
 
@@ -78,7 +78,7 @@ class ModuleService {
             throw Errors.NO_PERMISSION;
         }
 
-        const module = await Module.find({
+        const modules = await Module.find({
             where: {
                 courseId,
                 type: ModuleType.LECTURE
@@ -91,7 +91,7 @@ class ModuleService {
             }
         });
 
-        return module;
+        return modules;
     }
 
     async deleteLecture(
