@@ -4,7 +4,7 @@ import { authService } from '../services/auth.service';
 import { courseService } from '../services/course.service';
 import { sendResponse } from '../utils/api.util';
 import { validate } from '../utils/validate.util';
-import { courseParams, courseSchema } from '../validations/course.validate';
+import { courseIdSchema, courseSchema } from '../validations/course.validate';
 
 class CourseController {
 
@@ -36,7 +36,7 @@ class CourseController {
 
     async getCourseDetail(req: Request, res: Response) {
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
-        const body = validate(req, courseParams, 'params');
+        const body = validate(req, courseIdSchema, 'params');
 
         const course = await courseService.getSpecifyCourse(userPayload!, body);
 

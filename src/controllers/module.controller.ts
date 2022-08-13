@@ -4,6 +4,7 @@ import { authService } from '../services/auth.service';
 import { moduleService } from '../services/module.service';
 import { sendResponse } from '../utils/api.util';
 import { validate } from '../utils/validate.util';
+import { courseIdSchema } from '../validations/course.validate';
 import {
     addLectureSchema, courseIdModuleSchema, addQuizSchema, deleteLectureSchema
 } from '../validations/module.validate';
@@ -66,6 +67,11 @@ class ModuleController {
             success: true,
             message: 'Successfully deleted a lecture'
         });
+    }
+
+    async getEnrolledCourseQuizzes(req: Request, res: Response) {
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const params = validate(req, courseIdSchema, 'params');
     }
 
 }
