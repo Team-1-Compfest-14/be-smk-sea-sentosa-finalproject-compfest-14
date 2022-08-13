@@ -5,7 +5,7 @@ import { moduleService } from '../services/module.service';
 import { sendResponse } from '../utils/api.util';
 import { validate } from '../utils/validate.util';
 import {
-    addLectureSchema, courseIdModuleSchema, addQuizSchema
+    addLectureSchema, courseIdModuleSchema, addQuizSchema, deleteLectureSchema
 } from '../validations/module.validate';
 
 class ModuleController {
@@ -51,7 +51,20 @@ class ModuleController {
             statusCode: StatusCodes.CREATED,
             data: data,
             success: true,
-            message: 'Successfully created a quiz.'
+            message: 'Successfully get all lecture from course'
+        });
+    }
+
+    async deleteLecture(req: Request, res: Response) {
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const params = validate(req, deleteLectureSchema, 'params');
+
+        await moduleService.deleteLecture(userPayload!, params);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully deleted a lecture'
         });
     }
 
