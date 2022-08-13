@@ -10,7 +10,10 @@ import type { UserPayload } from '../typings/auth';
 import { UserRole } from '../database/entities/User';
 import { CourseEnrollment } from '../database/entities/CourseEnrollment';
 import { Course } from '../database/entities/Course';
-import type { CourseWithTotalType } from '../validations/course.validate';
+import type {
+    CourseWithTotalType,
+    ParamsCourseType
+} from '../validations/course.validate';
 
 class ModuleService {
 
@@ -150,6 +153,36 @@ class ModuleService {
         }
 
         return coursesWithTotalCount;
+    }
+
+    async getCoursesInstructorDetail(
+        { userId, role }: UserPayload,
+        { courseId }: ParamsCourseType) {
+        if (role !== UserRole.INSTRUCTOR) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        // this course also check instructorId === userId
+        const course = await Course
+            .findOneBy({ id: courseId, instructorId: userId });
+        if (!course) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const { id } = course;
+        const courseEnroll = await CourseEnrollment
+            .findBy({ courseId: id });
+
+        const courseDetail: CourseWithTotalType = {
+            id: course.id,
+            instructorId: course.instructorId,
+            name: course.name,
+            description: course.description,
+            isVerified: course.isVerified,
+            total: courseEnroll.length,
+        };
+
+        return courseDetail;
     }
 
 }
