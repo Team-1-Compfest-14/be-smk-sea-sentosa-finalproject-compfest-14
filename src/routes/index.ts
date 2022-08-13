@@ -33,7 +33,8 @@ router.post('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
     moduleController.addLecture);
 router.post('/courses/:courseId/modules/quizzes', authenticate('ACCESS'),
     moduleController.addQuiz);
-router.delete('/courses/modules/lectures/:lectureId', authenticate('ACCESS'),
+router.delete('/courses/:courseId/modules/lectures/:lectureId',
+    authenticate('ACCESS'),
     moduleController.deleteLecture);
 
 // Approval
