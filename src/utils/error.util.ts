@@ -83,5 +83,13 @@ export const Errors = {
     MODULE_NOT_FOUND: new ResponseError(
         'Cannot find module',
         StatusCodes.NOT_FOUND
+    ),
+
+    /**
+     * Cannot find the course enrollment
+     */
+    COURSE_ENROLLMENT_NOT_FOUND: new ResponseError(
+        'Cannot find course enrollment',
+        StatusCodes.NOT_FOUND
     )
 };

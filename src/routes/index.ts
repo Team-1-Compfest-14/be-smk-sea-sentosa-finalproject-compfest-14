@@ -37,6 +37,10 @@ router.post('/courses/:courseId/modules/quizzes', authenticate('ACCESS'),
 router.delete('/courses/:courseId/modules/lectures/:lectureId',
     authenticate('ACCESS'),
     moduleController.deleteLecture);
+router.get('/courses/instructor/own', authenticate('ACCESS'),
+    moduleController.getCoursesInstructor);
+router.get('/courses/instructor/own/:courseId', authenticate('ACCESS'),
+    moduleController.getCoursesInstructorDetail);
 
 // Quizzes
 router.get('/courses/:courseId/quizzes', authenticate('ACCESS'),

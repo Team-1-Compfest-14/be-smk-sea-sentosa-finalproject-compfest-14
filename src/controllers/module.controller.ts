@@ -68,7 +68,35 @@ class ModuleController {
             message: 'Successfully deleted a lecture'
         });
     }
+    
+    async getCoursesInstructor(req: Request, res: Response) {
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
 
+        const courses = await moduleService.getCoursesInstructor(userPayload!);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.CREATED,
+            data: { courses },
+            success: true,
+            message: 'Successfully get all course for instructor'
+        });
+    }
+
+    async getCoursesInstructorDetail(req: Request, res: Response) {
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const params = validate(req, courseIdModuleSchema, 'params');
+
+        const course = await moduleService
+            .getCoursesInstructorDetail(userPayload!, params);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.CREATED,
+            data: { course },
+            success: true,
+            message: 'Successfully get all course for instructor'
+        });
+    }
+    
     async getEnrolledCourseQuizzes(req: Request, res: Response) {
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
         const params = validate(req, courseIdSchema, 'params');
@@ -81,7 +109,6 @@ class ModuleController {
             success: true,
             message: 'Successfully found all enrolled course quizzes',
             data: { quizzes }
-        });
     }
 
 }

@@ -9,6 +9,15 @@ export interface CourseIdType {
     courseId: number;
 }
 
+export interface CourseWithTotalType {
+    id: number;
+    instructorId: number;
+    name: string;
+    description: string;
+    isVerified: boolean;
+    total: number;
+}
+
 export const courseSchema = joi.object<CourseType>({
     name: joi.string()
         .max(64)
