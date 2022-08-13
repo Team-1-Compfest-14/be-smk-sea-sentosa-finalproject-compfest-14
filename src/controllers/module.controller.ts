@@ -44,12 +44,12 @@ class ModuleController {
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
         const params = validate(req, courseIdModuleSchema, 'params');
 
-        const data = await moduleService.getLectures(userPayload!,
+        const modules = await moduleService.getLectures(userPayload!,
             params.courseId);
 
         return sendResponse(res, {
             statusCode: StatusCodes.CREATED,
-            data: data,
+            data: { modules },
             success: true,
             message: 'Successfully get all lecture from course'
         });
