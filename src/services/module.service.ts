@@ -1,8 +1,11 @@
-import type { AddLectureType } from '../validations/module.validate';
+import type {
+    AddLectureType, AddModuleType
+} from '../validations/module.validate';
 import { courseService } from '../services/course.service';
 import { Errors } from '../utils/error.util';
 import { Module, ModuleType } from '../database/entities/Module';
 import { Lecture } from '../database/entities/Lecture';
+import { Quiz } from '../database/entities/Quiz';
 
 class ModuleService {
 
@@ -31,6 +34,31 @@ class ModuleService {
         });
 
         await Lecture.save(lectureData);
+    }
+
+    async addQuiz(
+        instructorId: number,
+        courseId: AddModuleType['courseId'],
+        rawModule: AddModuleType) {
+
+        rawModule.courseId = courseId;
+        rawModule.type = ModuleType.QUIZ;
+
+        const course = await courseService.get(courseId);
+        if (course.instructorId !== instructorId) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const moduleData = Module.create({ ...rawModule });
+        const module = await Module.save(moduleData);
+
+        const moduleId = module.id;
+
+        const quizData = Quiz.create({
+            moduleId
+        });
+
+        await Quiz.save(quizData);
     }
 
 }

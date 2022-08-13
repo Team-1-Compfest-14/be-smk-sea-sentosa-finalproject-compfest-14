@@ -6,10 +6,10 @@ export interface AddModuleType {
     order: number;
     name: string;
     type: ModuleType;
+    moduleId: number;
 }
 
 export interface AddLectureType extends AddModuleType {
-    moduleId: number;
     lectureLink: string;
 }
 
@@ -30,12 +30,20 @@ export const addLectureSchema = joi.object<AddLectureType>({
         .max(64)
         .description('The name of the module.'),
 
-    moduleId: joi.number()
-        .required()
-        .description('The id of the module the lecture belongs to.'),
-
     lectureLink: joi.string()
         .required()
         .max(64)
         .description('The link to the lecture.')
+});
+
+// Quiz
+export const addQuizSchema = joi.object<AddModuleType>({
+    order: joi.number()
+        .required()
+        .description('The order of the module in the course.'),
+
+    name: joi.string()
+        .required()
+        .max(64)
+        .description('The name of the module.')
 });

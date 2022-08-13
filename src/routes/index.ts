@@ -29,6 +29,8 @@ router.get('/courses/:courseId', authenticate('ACCESS'),
 router.post('/courses', authenticate('ACCESS'), courseController.add);
 router.post('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
     moduleController.addLecture);
+router.post('/courses/:courseId/modules/quizzes', authenticate('ACCESS'),
+    moduleController.addQuiz);
 
 // Approval
 router.get('/approval/register', authenticate('ACCESS'),
