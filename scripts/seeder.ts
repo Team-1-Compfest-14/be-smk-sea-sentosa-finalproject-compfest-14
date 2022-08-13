@@ -5,6 +5,7 @@ import { User, UserRole } from '../src/database/entities/User';
 import { authService } from '../src/services/auth.service';
 import { AppDataSource } from '../src/database/data-source';
 import { Lecture } from '../src/database/entities/Lecture';
+import { Quiz } from '../src/database/entities/Quiz';
 
 async function seedData() {
     const { hashPassword } = authService;
@@ -148,6 +149,19 @@ async function seedData() {
         })
     ];
     await Lecture.save(lectures);
+
+    const quizzes: Quiz[] = [
+        Quiz.create({
+            moduleId: 3
+        }),
+        Quiz.create({
+            moduleId: 4
+        }),
+        Quiz.create({
+            moduleId: 5
+        })
+    ];
+    await Lecture.save(quizzes);
 }
 
 AppDataSource.initialize()
