@@ -65,7 +65,7 @@ class ModuleService {
         await Quiz.save(quizData);
     }
 
-    async getLectures(
+    async getEnrolledLecturesForStudent(
         { userId, role }: UserPayload,
         courseId: AddLectureType['courseId']) {
 
