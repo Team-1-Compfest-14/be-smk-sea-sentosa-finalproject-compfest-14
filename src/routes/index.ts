@@ -24,14 +24,16 @@ router.post('/courses/:courseId/enroll', authenticate('ACCESS'),
     courseEnrollmentController.enrollNewCourse);
 
 // Course & Modules
+// Role Student
 router.get('/courses', authenticate('ACCESS'),
     courseController.getVerifiedCourses);
-router.post('/courses', authenticate('ACCESS'), courseController.add);
 router.get('/courses/:courseId', authenticate('ACCESS'),
     courseController.getCourseDetail);
-router.post('/courses', authenticate('ACCESS'), courseController.add);
 router.get('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
     moduleController.getEnrolledLecturesForStudent);
+
+// Role Instructor
+router.post('/courses', authenticate('ACCESS'), courseController.addNewCourse);
 router.post('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
     moduleController.addLecture);
 router.post('/courses/:courseId/modules/quizzes', authenticate('ACCESS'),
