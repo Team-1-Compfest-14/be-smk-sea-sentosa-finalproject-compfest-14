@@ -1,6 +1,7 @@
 import { RegisterTest, LoginTest } from './tests/authTest';
 import { ApprovalTest } from './tests/approvalTest';
-import { QuizInstructorTest } from './tests/quizTest';
+import { QuestionInstructorTest } from './tests/quizTest';
+import { CourseInstructorTest } from './tests/courseTest';
 
 describe('Testing Auth Functions', () => {
     RegisterTest();
@@ -8,9 +9,17 @@ describe('Testing Auth Functions', () => {
 });
 
 describe('Testing Admin Functions', () => {
-    ApprovalTest();
+    describe('Testing Approval Functions', () => {
+        ApprovalTest();
+    });
 });
 
 describe('Testing Instructor Functions', () => {
-    QuizInstructorTest();
+    describe('Testing Course Functions', () => {
+        CourseInstructorTest();
+    });
+
+    describe('Testing Question Functions', () => {
+        QuestionInstructorTest();
+    });
 });

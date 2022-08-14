@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { userInstructorVerifiedDataTest } from './userData';
 import app from '../../app';
 
-export const QuizInstructorTest = () => {
+export const QuestionInstructorTest = () => {
     let token: string;
     const exampleQuestion = {
         question: 'What is the capital of Indonesia?',
@@ -38,8 +38,102 @@ export const QuizInstructorTest = () => {
         token = `Bearer ${response.body.data.accessToken}`;
     });
 
+    describe('POST /courses/:courseId/modules/quizzes', () => {
+        it('should return CREATED IF form is valid ' +
+        'and logged in as instructor', async () => {
+            const response = await request(app)
+                .post('/courses/1/modules/quizzes')
+                .set('Authorization', token)
+                .send({
+                    name: 'Test Quiz',
+                    order: 10,
+                });
+
+            expect(response.status).toBe(StatusCodes.CREATED);
+            expect(response.body).toMatchObject({
+                status: 'success',
+                message: expect.anything()
+            });
+        });
+
+        it('should return BAD_REQUEST IF form is invalid ' +
+        'and logged in as instructor', async () => {
+            const response = await request(app)
+                .post('/courses/1/modules/quizzes')
+                .set('Authorization', token)
+                .send({
+                    name: '',
+                    order: 10,
+                });
+
+            expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+            expect(response.body).toMatchObject({
+                status: 'fail',
+                message: expect.anything(),
+            });
+        });
+
+        it('should return UNAUTHORIZED IF not logged in as instructor',
+            async () => {
+                const response = await request(app)
+                    .post('/courses/1/modules/quizzes')
+                    .set('Authorization', 'Bearer invalid_token');
+
+                expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
+                expect(response.body).toMatchObject({
+                    status: 'fail',
+                    message: expect.anything(),
+                });
+            });
+
+        it('should return UNAUTHORIZED IF not logged in',
+            async () => {
+                const response = await request(app)
+                    .post('/courses/1/modules/quizzes');
+
+                expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
+                expect(response.body).toMatchObject({
+                    status: 'fail',
+                    message: expect.anything(),
+                });
+            });
+
+        it('should return BAD REQUEST IF courseId is not number',
+            async () => {
+                const response = await request(app)
+                    .post('/courses/invalid_id/modules/quizzes')
+                    .set('Authorization', token)
+                    .send({
+                        name: 'Test Quiz',
+                        order: 10,
+                    });
+                expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+                expect(response.body).toMatchObject({
+                    status: 'fail',
+                    message: expect.anything(),
+                });
+            });
+
+        it('should return NOT_FOUND IF courseId is invalid',
+            async () => {
+                const response = await request(app)
+                    .post('/courses/100/modules/quizzes')
+                    .set('Authorization', token)
+                    .send({
+                        name: 'Test Quiz',
+                        order: 10,
+                    });
+                expect(response.status).toBe(StatusCodes.NOT_FOUND);
+                expect(response.body).toMatchObject({
+                    status: 'fail',
+                    message: expect.anything(),
+                });
+            });
+    });
+
     describe('POST /courses/:courseId/quizzes/:quizId/questions', () => {
-        it('should return CREATED IF logged in as instructor', async () => {
+        it('should return CREATED IF form is valid ' +
+            'and logged in as instructor', async () => {
             const response = await request(app)
                 .post('/courses/1/quizzes/1/questions')
                 .set('Authorization', token)
@@ -52,18 +146,18 @@ export const QuizInstructorTest = () => {
             });
         });
 
-        it('should return UNAUTHORIZED IF not logged in as instructor',
-            async () => {
-                const response = await request(app)
-                    .post('/courses/1/quizzes/1/questions')
-                    .send(exampleQuestion);
+        it('should return UNAUTHORIZED IF form is valid ' +
+            'and logged in as instructor', async () => {
+            const response = await request(app)
+                .post('/courses/1/quizzes/1/questions')
+                .send(exampleQuestion);
 
-                expect(response.statusCode).toBe(StatusCodes.UNAUTHORIZED);
-                expect(response.body).toMatchObject({
-                    status: 'fail',
-                    message: expect.anything()
-                });
+            expect(response.statusCode).toBe(StatusCodes.UNAUTHORIZED);
+            expect(response.body).toMatchObject({
+                status: 'fail',
+                message: expect.anything()
             });
+        });
 
         it('should return BAD REQUEST IF courseId is not a number',
             async () => {
@@ -187,31 +281,31 @@ export const QuizInstructorTest = () => {
                 message: expect.anything()
             });
         });
-    });
 
-    it('should return BAD REQUEST IF quizId not found', async () => {
-        const response = await request(app)
-            .post('/courses/1/quizzes/100/questions')
-            .set('Authorization', token)
-            .send(exampleQuestion);
+        it('should return BAD REQUEST IF quizId not found', async () => {
+            const response = await request(app)
+                .post('/courses/1/quizzes/100/questions')
+                .set('Authorization', token)
+                .send(exampleQuestion);
 
-        expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
-        expect(response.body).toMatchObject({
-            status: 'fail',
-            message: expect.anything()
+            expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
+            expect(response.body).toMatchObject({
+                status: 'fail',
+                message: expect.anything()
+            });
         });
-    });
 
-    it('should return NOT FOUND IF courseId not found', async () => {
-        const response = await request(app)
-            .post('/courses/100/quizzes/1/questions')
-            .set('Authorization', token)
-            .send(exampleQuestion);
+        it('should return NOT FOUND IF courseId not found', async () => {
+            const response = await request(app)
+                .post('/courses/100/quizzes/1/questions')
+                .set('Authorization', token)
+                .send(exampleQuestion);
 
-        expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
-        expect(response.body).toMatchObject({
-            status: 'fail',
-            message: expect.anything()
+            expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
+            expect(response.body).toMatchObject({
+                status: 'fail',
+                message: expect.anything()
+            });
         });
     });
 };
