@@ -29,7 +29,7 @@ class QuizService {
             question: rawQuestion.question,
         };
 
-        const answersData: questionOptionType[] =
+        const questionOptions: questionOptionType[] =
             rawQuestion.questionOptions;
 
         const questionSave = Question.create({ ...questionData });
@@ -37,14 +37,14 @@ class QuizService {
 
         const questionId = question.id;
 
-        answersData.map(async (answer: questionOptionType) => {
-            const answerData = {
+        questionOptions.map(async (answer: questionOptionType) => {
+            const options = {
                 questionId,
                 option: answer.option,
                 isCorrectAnswer: answer.isCorrectAnswer,
             };
 
-            const answerSave = QuestionOption.create({ ...answerData });
+            const answerSave = QuestionOption.create({ ...options });
             await QuestionOption.save(answerSave);
         });
     }
