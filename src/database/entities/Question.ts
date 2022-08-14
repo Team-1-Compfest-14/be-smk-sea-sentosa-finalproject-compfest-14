@@ -20,7 +20,7 @@ export class Question extends BaseEntity {
     @Column({ name: 'quiz_id' })
     quizId!: number;
 
-    @Column({ length: 128 })
+    @Column({ length: 128, select: false })
     question!: string;
 
     @ManyToOne(() => Quiz, (quiz) => quiz.questions)

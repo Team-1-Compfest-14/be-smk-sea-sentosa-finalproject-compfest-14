@@ -57,6 +57,10 @@ router.post('/courses/:courseId/quizzes/:quizId/questions',
 router.put('/courses/:courseId/modules/:moduleId/lectures',
     authenticate('ACCESS'), lectureController.editLectureData);
 
+// Role Instructor and Student
+router.get('/courses/:courseId/quizzes/:quizId',
+    authenticate('ACCESS'), quizController.ViewAllQuestionsAndOptions);
+
 // Approval
 router.get('/approval/register', authenticate('ACCESS'),
     userController.getAllNewInstructor);
