@@ -93,16 +93,12 @@ class QuizService {
         { userId, role }: UserPayload,
         rawAnswer: AddUserAnswerType,) {
 
-        const course = await courseService.get(courseId);
-
-        if (role === UserRole.STUDENT) {
-            await courseEnrollmentService
-                .getCourseEnrollment(courseId, userId);
-        } else {
-            if (course.instructorId !== userId) {
-                throw Errors.NO_PERMISSION;
-            }
+        if (role !== UserRole.STUDENT) {
+            throw Errors.NO_PERMISSION;
         }
+
+        await courseEnrollmentService
+            .getCourseEnrollment(courseId, userId);
 
         const quiz = await moduleService.getQuiz(quizId);
 
