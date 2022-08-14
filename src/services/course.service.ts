@@ -10,7 +10,7 @@ import type {
 
 class CourseService {
 
-    async add(
+    async addNewCourse(
         { userId: instructorId, role }: UserPayload,
         rawCourse: CourseType) {
         if (role !== UserRole.INSTRUCTOR) {

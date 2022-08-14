@@ -8,11 +8,11 @@ import { courseIdSchema, courseSchema } from '../validations/course.validate';
 
 class CourseController {
 
-    async add(req: Request, res: Response) {
+    async addNewCourse(req: Request, res: Response) {
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
         const body = validate(req, courseSchema, 'body');
 
-        await courseService.add(userPayload!, body);
+        await courseService.addNewCourse(userPayload!, body);
 
         return sendResponse(res, {
             statusCode: StatusCodes.CREATED,
