@@ -161,7 +161,7 @@ async function seedData() {
             moduleId: 5
         })
     ];
-    await Lecture.save(quizzes);
+    await Quiz.save(quizzes);
 }
 
 AppDataSource.initialize()
