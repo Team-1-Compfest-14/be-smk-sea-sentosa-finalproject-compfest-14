@@ -3,7 +3,6 @@ import { CourseEnrollment } from '../database/entities/CourseEnrollment';
 import type {
     AddCourseEnrollmentType
 } from '../validations/courseEnrollment.validate';
-import type { UserPayload } from '../typings/auth';
 import { ResponseError } from '../utils/error.util';
 import { Course } from '../database/entities/Course';
 
@@ -11,7 +10,7 @@ class CourseEnrollmentService {
 
     async enrollNewCourse(
         { courseId }: AddCourseEnrollmentType,
-        userId: UserPayload['userId']) {
+        userId: number) {
         const userCourseEnrolled = await CourseEnrollment
             .find({
                 where: {
@@ -40,7 +39,7 @@ class CourseEnrollmentService {
 
     async getCourseEnrollment(
         courseId: number,
-        userId: UserPayload['userId']) {
+        userId: number) {
         const courseEnrollment = await CourseEnrollment
             .findOne({
                 where: {

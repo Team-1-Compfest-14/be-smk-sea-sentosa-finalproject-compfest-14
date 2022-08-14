@@ -16,7 +16,7 @@ class QuizService {
     async addNewQuestion(
         courseId: number,
         quizId: number,
-        userId: UserPayload['userId'],
+        userId: number,
         rawQuestion: QuizType) {
 
         if (rawQuestion.questionOptions.length < 2) {
