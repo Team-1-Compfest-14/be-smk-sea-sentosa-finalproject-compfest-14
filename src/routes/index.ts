@@ -6,6 +6,7 @@ import {
     courseEnrollmentController
 } from '../controllers/courseEnrollment.controller';
 import { moduleController } from '../controllers/module.controller';
+import { quizController } from '../controllers/quiz.controller';
 
 import { userController } from '../controllers/user.controller';
 import authenticate from '../middlewares/authenticate.middleware';
@@ -46,6 +47,8 @@ router.get('/courses/instructor/own/:courseId', authenticate('ACCESS'),
 // Quizzes
 router.get('/courses/:courseId/quizzes', authenticate('ACCESS'),
     moduleController.getEnrolledCourseQuizzes);
+router.post('/courses/:courseId/quizzes/:quizId/questions',
+    authenticate('ACCESS'), quizController.addNewQuestion);
 
 // Approval
 router.get('/approval/register', authenticate('ACCESS'),

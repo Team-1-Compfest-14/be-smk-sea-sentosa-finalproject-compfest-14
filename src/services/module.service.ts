@@ -2,7 +2,7 @@ import type {
     AddLectureType, AddModuleType, DeleteLectureParams
 } from '../validations/module.validate';
 import { courseService } from '../services/course.service';
-import { Errors } from '../utils/error.util';
+import { Errors, ResponseError } from '../utils/error.util';
 import { Module, ModuleType } from '../database/entities/Module';
 import { Lecture } from '../database/entities/Lecture';
 import { Quiz } from '../database/entities/Quiz';
@@ -14,6 +14,7 @@ import type {
     CourseWithTotalType,
     CourseIdType
 } from '../validations/course.validate';
+import { StatusCodes } from 'http-status-codes';
 
 class ModuleService {
 
@@ -67,6 +68,17 @@ class ModuleService {
         });
 
         await Quiz.save(quizData);
+    }
+
+    async getQuiz(quizId: number) {
+        const quiz = await Quiz.findOneBy({ id: quizId });
+        if (!quiz) {
+            throw new ResponseError(
+                'Quiz not found.',
+                StatusCodes.NOT_FOUND);
+        }
+
+        return quiz;
     }
 
     async getEnrolledLecturesForStudent(
