@@ -4,7 +4,7 @@ import { QuestionOption } from '../database/entities/QuestionOption';
 import type { UserPayload } from '../typings/auth';
 import { Errors, ResponseError } from '../utils/error.util';
 import type {
-    questionOptionType, quizType
+    QuestionOptionType, QuizType
 } from '../validations/quiz.validate';
 import { courseService } from './course.service';
 import { moduleService } from './module.service';
@@ -15,7 +15,7 @@ class QuizService {
         courseId: number,
         quizId: number,
         userId: UserPayload['userId'],
-        rawQuestion: quizType) {
+        rawQuestion: QuizType) {
 
         if (rawQuestion.questionOptions.length < 2) {
             throw new ResponseError(
@@ -37,7 +37,7 @@ class QuizService {
             question: rawQuestion.question,
         };
 
-        const questionOptions: questionOptionType[] =
+        const questionOptions: QuestionOptionType[] =
             rawQuestion.questionOptions;
 
         const questionSave = Question.create({ ...questionData });
@@ -45,7 +45,7 @@ class QuizService {
 
         const questionId = question.id;
 
-        questionOptions.map(async (answer: questionOptionType) => {
+        questionOptions.map(async (answer: QuestionOptionType) => {
             const options = {
                 questionId,
                 option: answer.option,

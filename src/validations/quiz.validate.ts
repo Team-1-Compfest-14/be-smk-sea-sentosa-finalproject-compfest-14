@@ -1,46 +1,46 @@
 import joi from 'joi';
 
-export interface quizParamType {
+export interface QuizParamType {
     courseId: number;
     quizId: number;
 }
 
-export interface quizAnswerParamType {
+export interface QuizAnswerParamType {
     questionId: number;
 }
 
-export interface quizType extends quizParamType {
+export interface QuizType extends QuizParamType {
     question: string;
-    questionOptions: questionOptionType[];
+    questionOptions: QuestionOptionType[];
 }
 
-export interface addUserAnswerType extends quizAnswerParamType {
+export interface AddUserAnswerType extends QuizAnswerParamType {
     userId: number;
-    quizOptionId: number;
+    questionOptionId: number;
 }
 
-export interface questionOptionType {
+export interface QuestionOptionType {
     option: string;
     isCorrectAnswer: boolean;
 }
 
-export const quizParamsSchema = joi.object<quizParamType>({
+export const quizParamsSchema = joi.object<QuizParamType>({
     courseId: joi.number()
         .required(),
     quizId: joi.number()
         .required()
 });
 
-export const quizAnswerParamsSchema = joi.object<quizAnswerParamType>({
+export const quizAnswerParamsSchema = joi.object<QuizAnswerParamType>({
     questionId: joi.number()
         .required()
 });
 
-export const addQuestionSchema = joi.object<quizType>({
+export const addQuestionSchema = joi.object<QuizType>({
     question: joi.string()
         .required(),
     questionOptions: joi.array()
-        .items(joi.object<questionOptionType>({
+        .items(joi.object<QuestionOptionType>({
             option: joi.string()
                 .required(),
             isCorrectAnswer: joi.boolean()
@@ -48,14 +48,14 @@ export const addQuestionSchema = joi.object<quizType>({
         }))
 });
 
-export const addUserAnswerSchema = joi.object<addUserAnswerType>({
+export const addUserAnswerSchema = joi.object<AddUserAnswerType>({
     userId: joi.number()
         .required(),
-    quizOptionId: joi.number()
+    questionOptionId: joi.number()
         .required()
 });
 
-export const addQuestionOptionSchema = joi.object<questionOptionType>({
+export const addQuestionOptionSchema = joi.object<QuestionOptionType>({
     option: joi.string()
         .required(),
     isCorrectAnswer: joi.boolean()
