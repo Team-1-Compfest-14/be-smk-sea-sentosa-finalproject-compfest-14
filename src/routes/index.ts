@@ -6,6 +6,7 @@ import {
     courseEnrollmentController
 } from '../controllers/courseEnrollment.controller';
 import { moduleController } from '../controllers/module.controller';
+
 import { userController } from '../controllers/user.controller';
 import authenticate from '../middlewares/authenticate.middleware';
 
@@ -21,14 +22,15 @@ router.delete('/auth/logout', authenticate('REFRESH'), authController.logout);
 router.post('/courses/:courseId/enroll', authenticate('ACCESS'),
     courseEnrollmentController.enrollNewCourse);
 
-// Course
+// Course & Modules
 router.get('/courses', authenticate('ACCESS'),
     courseController.getVerifiedCourses);
+router.post('/courses', authenticate('ACCESS'), courseController.add);
 router.get('/courses/:courseId', authenticate('ACCESS'),
     courseController.getCourseDetail);
 router.post('/courses', authenticate('ACCESS'), courseController.add);
 router.get('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
-    moduleController.getLectures);
+    moduleController.getEnrolledLecturesForStudent);
 router.post('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
     moduleController.addLecture);
 router.post('/courses/:courseId/modules/quizzes', authenticate('ACCESS'),
@@ -36,6 +38,14 @@ router.post('/courses/:courseId/modules/quizzes', authenticate('ACCESS'),
 router.delete('/courses/:courseId/modules/lectures/:lectureId',
     authenticate('ACCESS'),
     moduleController.deleteLecture);
+router.get('/courses/instructor/own', authenticate('ACCESS'),
+    moduleController.getCoursesInstructor);
+router.get('/courses/instructor/own/:courseId', authenticate('ACCESS'),
+    moduleController.getCoursesInstructorDetail);
+
+// Quizzes
+router.get('/courses/:courseId/quizzes', authenticate('ACCESS'),
+    moduleController.getEnrolledCourseQuizzes);
 
 // Approval
 router.get('/approval/register', authenticate('ACCESS'),

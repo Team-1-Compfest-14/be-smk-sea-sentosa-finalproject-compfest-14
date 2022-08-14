@@ -5,8 +5,17 @@ export interface CourseType {
     description: string;
 }
 
-export interface ParamsCourseType {
+export interface CourseIdType {
     courseId: number;
+}
+
+export interface CourseWithTotalType {
+    id: number;
+    instructorId: number;
+    name: string;
+    description: string;
+    isVerified: boolean;
+    total: number;
 }
 
 export const courseSchema = joi.object<CourseType>({
@@ -19,7 +28,7 @@ export const courseSchema = joi.object<CourseType>({
         .required()
 });
 
-export const courseParams = joi.object<ParamsCourseType>({
+export const courseIdSchema = joi.object<CourseIdType>({
     courseId: joi.number()
         .required()
 });

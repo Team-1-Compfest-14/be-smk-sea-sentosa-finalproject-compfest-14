@@ -4,6 +4,7 @@ import { authService } from '../services/auth.service';
 import { moduleService } from '../services/module.service';
 import { sendResponse } from '../utils/api.util';
 import { validate } from '../utils/validate.util';
+import { courseIdSchema } from '../validations/course.validate';
 import {
     addLectureSchema, courseIdModuleSchema, addQuizSchema, deleteLectureSchema
 } from '../validations/module.validate';
@@ -40,16 +41,16 @@ class ModuleController {
         });
     }
 
-    async getLectures(req: Request, res: Response) {
+    async getEnrolledLecturesForStudent(req: Request, res: Response) {
         const userPayload = await authService.getTokenPayload(req, 'ACCESS');
         const params = validate(req, courseIdModuleSchema, 'params');
 
-        const data = await moduleService.getLectures(userPayload!,
-            params.courseId);
+        const modules = await moduleService
+            .getEnrolledLecturesForStudent(userPayload!, params.courseId);
 
         return sendResponse(res, {
             statusCode: StatusCodes.CREATED,
-            data: data,
+            data: { modules },
             success: true,
             message: 'Successfully get all lecture from course'
         });
@@ -65,6 +66,49 @@ class ModuleController {
             statusCode: StatusCodes.OK,
             success: true,
             message: 'Successfully deleted a lecture'
+        });
+    }
+
+    async getCoursesInstructor(req: Request, res: Response) {
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+
+        const courses = await moduleService.getCoursesInstructor(userPayload!);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.CREATED,
+            data: { courses },
+            success: true,
+            message: 'Successfully get all course for instructor'
+        });
+    }
+
+    async getCoursesInstructorDetail(req: Request, res: Response) {
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const params = validate(req, courseIdModuleSchema, 'params');
+
+        const course = await moduleService
+            .getCoursesInstructorDetail(userPayload!, params);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.CREATED,
+            data: { course },
+            success: true,
+            message: 'Successfully get all course for instructor'
+        });
+    }
+
+    async getEnrolledCourseQuizzes(req: Request, res: Response) {
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const params = validate(req, courseIdSchema, 'params');
+
+        const quizzes = await moduleService
+            .getEnrolledCourseQuizzes(userPayload!, params.courseId);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully found all enrolled course quizzes',
+            data: { quizzes }
         });
     }
 

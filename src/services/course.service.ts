@@ -5,7 +5,7 @@ import type { UserPayload } from '../typings/auth';
 import { ResponseError, Errors } from '../utils/error.util';
 import type {
     CourseType,
-    ParamsCourseType
+    CourseIdType
 } from '../validations/course.validate';
 
 class CourseService {
@@ -35,7 +35,7 @@ class CourseService {
 
     async getSpecifyCourse(
         { role }: UserPayload,
-        { courseId }: ParamsCourseType) {
+        { courseId }: CourseIdType) {
 
         if (role !== UserRole.STUDENT) {
             throw Errors.NO_PERMISSION;
