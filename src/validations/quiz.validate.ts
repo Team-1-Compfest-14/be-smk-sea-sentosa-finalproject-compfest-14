@@ -5,7 +5,7 @@ export interface QuizParamType {
     quizId: number;
 }
 
-export interface QuizAnswerParamType {
+export interface QuizAnswerParamType extends QuizParamType {
     questionId: number;
 }
 
@@ -14,14 +14,18 @@ export interface QuizType extends QuizParamType {
     questionOptions: QuestionOptionType[];
 }
 
-export interface AddUserAnswerType extends QuizAnswerParamType {
-    userId: number;
-    questionOptionId: number;
+export interface AddUserAnswerType {
+    answers: userAnswerType[];
 }
 
 export interface QuestionOptionType {
     option: string;
     isCorrectAnswer: boolean;
+}
+
+export interface userAnswerType {
+    questionId: number;
+    questionOptionId: number;
 }
 
 export const quizParamsSchema = joi.object<QuizParamType>({
@@ -32,7 +36,9 @@ export const quizParamsSchema = joi.object<QuizParamType>({
 });
 
 export const quizAnswerParamsSchema = joi.object<QuizAnswerParamType>({
-    questionId: joi.number()
+    courseId: joi.number()
+        .required(),
+    quizId: joi.number()
         .required()
 });
 
@@ -49,10 +55,13 @@ export const addQuestionSchema = joi.object<QuizType>({
 });
 
 export const addUserAnswerSchema = joi.object<AddUserAnswerType>({
-    userId: joi.number()
-        .required(),
-    questionOptionId: joi.number()
-        .required()
+    answers: joi.array()
+        .items(joi.object<userAnswerType>({
+            questionId: joi.number()
+                .required(),
+            questionOptionId: joi.number()
+                .required()
+        }))
 });
 
 export const addQuestionOptionSchema = joi.object<QuestionOptionType>({

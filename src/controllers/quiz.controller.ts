@@ -6,7 +6,9 @@ import { sendResponse } from '../utils/api.util';
 import { validate } from '../utils/validate.util';
 import {
     quizParamsSchema,
-    addQuestionSchema
+    addQuestionSchema,
+    addUserAnswerSchema,
+    quizAnswerParamsSchema,
 } from '../validations/quiz.validate';
 
 class QuizController {
@@ -42,6 +44,24 @@ class QuizController {
             success: true,
             data: { questions },
             message: 'Successfully retrieved all questions and options.',
+        });
+    }
+
+    async answerQuestion(req: Request, res: Response) {
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const params = validate(req, quizAnswerParamsSchema, 'params');
+        const body = validate(req, addUserAnswerSchema, 'body');
+
+        await quizService.addUserAnswer(
+            params.courseId,
+            params.quizId,
+            userPayload!,
+            body);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.CREATED,
+            success: true,
+            message: 'Successfully answered a question.'
         });
     }
 

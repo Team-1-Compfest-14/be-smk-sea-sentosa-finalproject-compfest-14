@@ -15,6 +15,7 @@ import type {
     CourseIdType
 } from '../validations/course.validate';
 import { StatusCodes } from 'http-status-codes';
+import { ModuleCompletion } from '../database/entities/ModuleCompletion';
 
 class ModuleService {
 
@@ -71,7 +72,14 @@ class ModuleService {
     }
 
     async getQuiz(quizId: number) {
-        const quiz = await Quiz.findOneBy({ id: quizId });
+        const quiz = await Quiz.findOne(
+            {
+                where: {
+                    id: quizId
+                },
+                relations: ['questions']
+            }
+        );
         if (!quiz) {
             throw new ResponseError(
                 'Quiz not found.',
@@ -221,6 +229,31 @@ class ModuleService {
         });
 
         return quizzes;
+    }
+
+    async isModuleCompleted(
+        userId: number,
+        moduleId: number) {
+
+        const isCompleted = await ModuleCompletion.findOneBy({
+            userId,
+            moduleId
+        });
+
+        return !!isCompleted;
+    }
+
+    async addModuleCompleted(
+        userId: number,
+        moduleId: number) {
+
+        const moduleCompletion = ModuleCompletion.create({
+            userId,
+            moduleId,
+            completionTime: (new Date()).toISOString()
+        });
+
+        await ModuleCompletion.save(moduleCompletion);
     }
 
 }

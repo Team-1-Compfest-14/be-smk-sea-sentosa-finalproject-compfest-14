@@ -2,9 +2,11 @@ import { StatusCodes } from 'http-status-codes';
 import { Question } from '../database/entities/Question';
 import { QuestionOption } from '../database/entities/QuestionOption';
 import { UserRole } from '../database/entities/User';
+import { UsersAnswer } from '../database/entities/UsersAnswer';
 import type { UserPayload } from '../typings/auth';
 import { Errors, ResponseError } from '../utils/error.util';
 import type {
+    AddUserAnswerType,
     QuestionOptionType, QuizType
 } from '../validations/quiz.validate';
 import { courseService } from './course.service';
@@ -69,10 +71,10 @@ class QuizService {
         if (role === UserRole.STUDENT) {
             await courseEnrollmentService
                 .getCourseEnrollment(courseId, userId);
-        }
-
-        if (course.instructorId !== userId) {
-            throw Errors.NO_PERMISSION;
+        } else {
+            if (course.instructorId !== userId) {
+                throw Errors.NO_PERMISSION;
+            }
         }
 
         await moduleService.getQuiz(quizId);
@@ -83,6 +85,78 @@ class QuizService {
         });
 
         return questions;
+    }
+
+    async addUserAnswer(
+        courseId: number,
+        quizId: number,
+        { userId, role }: UserPayload,
+        rawAnswer: AddUserAnswerType,) {
+
+        if (role !== UserRole.STUDENT) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        await courseEnrollmentService
+            .getCourseEnrollment(courseId, userId);
+
+        const quiz = await moduleService.getQuiz(quizId);
+
+        if (quiz) {
+            const quizQuestions = quiz.questions.length;
+            if (rawAnswer.answers.length !== quizQuestions) {
+                throw new ResponseError(
+                    'Number of answers must be equal to number of questions.',
+                    StatusCodes.BAD_REQUEST,
+                );
+            }
+
+            const isCompleted = await moduleService
+                .isModuleCompleted(userId, quiz.moduleId);
+
+            if (isCompleted) {
+                throw new ResponseError(
+                    'Module already completed.',
+                    StatusCodes.BAD_REQUEST,
+                );
+            }
+
+            rawAnswer.answers.map(async (answer) => {
+                const userAnswer = {
+                    questionId: answer.questionId,
+                    userId: userId,
+                    questionOptionId: answer.questionOptionId,
+                };
+
+                const answerSave = UsersAnswer.create({ ...userAnswer });
+                await UsersAnswer.save(answerSave);
+            });
+
+            await moduleService.addModuleCompleted(
+                userId,
+                quiz.moduleId,
+            );
+        }
+
+    }
+
+    async getQuestionAndOptions(
+        questionId: number) {
+
+        const question = await Question.findOne({
+            where: { id: questionId },
+            relations: ['questionOptions'],
+        });
+
+        if (!question) {
+            throw new ResponseError(
+                'Question not found.',
+                StatusCodes.NOT_FOUND,
+            );
+        }
+
+        return question;
+
     }
 
 }
