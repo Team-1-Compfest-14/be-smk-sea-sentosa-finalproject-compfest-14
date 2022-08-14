@@ -59,7 +59,7 @@ class QuizController {
             body);
 
         return sendResponse(res, {
-            statusCode: StatusCodes.OK,
+            statusCode: StatusCodes.CREATED,
             success: true,
             message: 'Successfully answered a question.'
         });
