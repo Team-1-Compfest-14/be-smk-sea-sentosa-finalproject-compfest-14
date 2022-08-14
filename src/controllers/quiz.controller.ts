@@ -65,6 +65,23 @@ class QuizController {
         });
     }
 
+    async answerFeedback(req: Request, res: Response) {
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const params = validate(req, quizAnswerParamsSchema, 'params');
+
+        const feedback = await quizService.feedbackAnswers(
+            params.courseId,
+            params.quizId,
+            userPayload!);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            data: feedback,
+            message: 'Successfully retrieved feedback.',
+        });
+    }
+
 }
 
 export const quizController = new QuizController();
