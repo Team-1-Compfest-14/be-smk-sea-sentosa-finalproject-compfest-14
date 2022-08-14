@@ -55,6 +55,8 @@ router.post('/courses/:courseId/quizzes/:quizId/questions',
 // Role Instructor and Student
 router.get('/courses/:courseId/quizzes/:quizId',
     authenticate('ACCESS'), quizController.ViewAllQuestionsAndOptions);
+router.post('/courses/:courseId/quizzes/:quizId/answer',
+    authenticate('ACCESS'), quizController.answerQuestion);
 
 // Approval
 router.get('/approval/register', authenticate('ACCESS'),

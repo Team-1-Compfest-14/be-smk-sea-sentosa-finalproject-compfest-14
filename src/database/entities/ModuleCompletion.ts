@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import {
     BaseEntity,
     Column,
@@ -7,7 +6,6 @@ import {
     ManyToOne,
     PrimaryGeneratedColumn
 } from 'typeorm';
-import { DateColumn } from '.';
 import { Module } from './Module';
 import { User } from './User';
 
@@ -23,8 +21,8 @@ export class ModuleCompletion extends BaseEntity {
     @Column({ name: 'user_id' })
     userId!: number;
 
-    @DateColumn({ name: 'completion_time' })
-    completionTime!: DateTime;
+    @Column({ name: 'completion_time' })
+    completionTime!: Date;
 
     @ManyToOne(() => Module, (module) => module.moduleCompletions)
     @JoinColumn({ name: 'module_id' })
