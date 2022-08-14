@@ -10,9 +10,8 @@ import { Course } from '../database/entities/Course';
 class CourseEnrollmentService {
 
     async enrollNewCourse(
-        userPayload: UserPayload,
-        { courseId }: AddCourseEnrollmentType) {
-        const userId = userPayload.userId;
+        { courseId }: AddCourseEnrollmentType,
+        userId: UserPayload['userId']) {
         const userCourseEnrolled = await CourseEnrollment
             .find({
                 where: {
@@ -37,6 +36,26 @@ class CourseEnrollmentService {
         const enrollCourse = CourseEnrollment.create(
             { userId, courseId });
         await CourseEnrollment.save(enrollCourse);
+    }
+
+    async getCourseEnrollment(
+        courseId: number,
+        userId: UserPayload['userId']) {
+        const courseEnrollment = await CourseEnrollment
+            .findOne({
+                where: {
+                    userId,
+                    courseId
+                }
+            });
+
+        if (!courseEnrollment) {
+            throw new ResponseError(
+                'Course not enrolled.',
+                StatusCodes.BAD_REQUEST);
+        }
+
+        return courseEnrollment;
     }
 
 }
