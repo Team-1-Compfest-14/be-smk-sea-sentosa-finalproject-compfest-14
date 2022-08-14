@@ -188,4 +188,30 @@ export const QuizInstructorTest = () => {
             });
         });
     });
+
+    it('should return BAD REQUEST IF quizId not found', async () => {
+        const response = await request(app)
+            .post('/courses/1/quizzes/100/questions')
+            .set('Authorization', token)
+            .send(exampleQuestion);
+
+        expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
+        expect(response.body).toMatchObject({
+            status: 'fail',
+            message: expect.anything()
+        });
+    });
+
+    it('should return NOT FOUND IF courseId not found', async () => {
+        const response = await request(app)
+            .post('/courses/100/quizzes/1/questions')
+            .set('Authorization', token)
+            .send(exampleQuestion);
+
+        expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
+        expect(response.body).toMatchObject({
+            status: 'fail',
+            message: expect.anything()
+        });
+    });
 };
