@@ -1,12 +1,14 @@
 import { StatusCodes } from 'http-status-codes';
 import { Question } from '../database/entities/Question';
 import { QuestionOption } from '../database/entities/QuestionOption';
+import { UserRole } from '../database/entities/User';
 import type { UserPayload } from '../typings/auth';
 import { Errors, ResponseError } from '../utils/error.util';
 import type {
     QuestionOptionType, QuizType
 } from '../validations/quiz.validate';
 import { courseService } from './course.service';
+import { courseEnrollmentService } from './courseEnrollment.service';
 import { moduleService } from './module.service';
 
 class QuizService {
@@ -55,6 +57,32 @@ class QuizService {
             const answerSave = QuestionOption.create({ ...options });
             await QuestionOption.save(answerSave);
         });
+    }
+
+    async ViewAllQuestionsAndOptions(
+        courseId: number,
+        quizId: number,
+        { userId, role }: UserPayload) {
+
+        const course = await courseService.get(courseId);
+
+        if (role === UserRole.STUDENT) {
+            await courseEnrollmentService
+                .getCourseEnrollment(courseId, userId);
+        }
+
+        if (course.instructorId !== userId) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        await moduleService.getQuiz(quizId);
+
+        const questions = await Question.find({
+            where: { quizId: quizId },
+            relations: ['questionOptions'],
+        });
+
+        return questions;
     }
 
 }
