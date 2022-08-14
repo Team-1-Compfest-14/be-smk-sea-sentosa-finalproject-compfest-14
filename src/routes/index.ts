@@ -5,6 +5,7 @@ import { courseController } from '../controllers/course.controller';
 import {
     courseEnrollmentController
 } from '../controllers/courseEnrollment.controller';
+import { lectureController } from '../controllers/lecture.controller';
 import { moduleController } from '../controllers/module.controller';
 import { quizController } from '../controllers/quiz.controller';
 
@@ -51,6 +52,10 @@ router.get('/courses/:courseId/quizzes', authenticate('ACCESS'),
     moduleController.getEnrolledCourseQuizzes);
 router.post('/courses/:courseId/quizzes/:quizId/questions',
     authenticate('ACCESS'), quizController.addNewQuestion);
+
+// Lectures
+router.put('/courses/:courseId/modules/:moduleId/lectures',
+    authenticate('ACCESS'), lectureController.editLectureData);
 
 // Approval
 router.get('/approval/register', authenticate('ACCESS'),
