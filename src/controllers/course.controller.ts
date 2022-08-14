@@ -27,7 +27,7 @@ class CourseController {
         const proposedCourse = await courseService.getNewCourses(userPayload!);
 
         return sendResponse(res, {
-            statusCode: StatusCodes.CREATED,
+            statusCode: StatusCodes.OK,
             success: true,
             data: { proposedCourse },
             message: 'Successfully get all proposed course'
@@ -41,7 +41,7 @@ class CourseController {
         const course = await courseService.getSpecifyCourse(userPayload!, body);
 
         return sendResponse(res, {
-            statusCode: StatusCodes.CREATED,
+            statusCode: StatusCodes.OK,
             success: true,
             data: { course },
             message: 'Successfully get verified course details'
@@ -54,7 +54,7 @@ class CourseController {
         const courses = await courseService.getCourses(userPayload!);
 
         return sendResponse(res, {
-            statusCode: StatusCodes.CREATED,
+            statusCode: StatusCodes.OK,
             success: true,
             data: { courses },
             message: 'Successfully get all verified course'

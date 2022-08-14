@@ -9,7 +9,6 @@ export const AppDataSource = new DataSource({
     username: config.isTest ? config.test.db.username : config.db.username,
     password: config.isTest ? config.test.db.password : config.db.password,
     database: config.isTest ? config.test.db.database : config.db.database,
-    dropSchema: config.isTest,
     synchronize: false,
     migrationsRun: true,
     logging: true,
