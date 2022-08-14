@@ -15,7 +15,7 @@ class CourseEnrollmentController {
         const courseId = validate(req, courseEnrollmentSchema, 'params');
 
         await courseEnrollmentService.enrollNewCourse(
-            userPayload!, courseId);
+            courseId, userPayload!.userId);
 
         return sendResponse(res, {
             statusCode: StatusCodes.OK,

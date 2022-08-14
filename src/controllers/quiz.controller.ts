@@ -28,6 +28,23 @@ class QuizController {
         });
     }
 
+    async ViewAllQuestionsAndOptions(req: Request, res: Response) {
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const params = validate(req, quizParamsSchema, 'params');
+
+        const questions = await quizService.ViewAllQuestionsAndOptions(
+            params.courseId,
+            params.quizId,
+            userPayload!);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            data: { questions },
+            message: 'Successfully retrieved all questions and options.',
+        });
+    }
+
 }
 
 export const quizController = new QuizController();
