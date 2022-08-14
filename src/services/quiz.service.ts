@@ -1,7 +1,8 @@
+import { StatusCodes } from 'http-status-codes';
 import { Question } from '../database/entities/Question';
 import { QuestionOption } from '../database/entities/QuestionOption';
 import type { UserPayload } from '../typings/auth';
-import { Errors } from '../utils/error.util';
+import { Errors, ResponseError } from '../utils/error.util';
 import type {
     questionOptionType, quizType
 } from '../validations/quiz.validate';
@@ -15,6 +16,13 @@ class QuizService {
         quizId: number,
         userId: UserPayload['userId'],
         rawQuestion: quizType) {
+
+        if (rawQuestion.questionOptions.length < 2) {
+            throw new ResponseError(
+                'Question must have at least two option.',
+                StatusCodes.BAD_REQUEST,
+            );
+        }
 
         const course = await courseService.get(courseId);
 
