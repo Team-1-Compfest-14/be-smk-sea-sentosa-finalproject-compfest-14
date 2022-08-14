@@ -147,9 +147,23 @@ export const QuestionInstructorTest = () => {
         });
 
         it('should return UNAUTHORIZED IF form is valid ' +
-            'and logged in as instructor', async () => {
+            'and logged in', async () => {
             const response = await request(app)
                 .post('/courses/1/quizzes/1/questions')
+                .send(exampleQuestion);
+
+            expect(response.statusCode).toBe(StatusCodes.UNAUTHORIZED);
+            expect(response.body).toMatchObject({
+                status: 'fail',
+                message: expect.anything()
+            });
+        });
+
+        it('should return UNAUTHORIZED IF form is valid' +
+            'and not logged in as instructor', async () => {
+            const response = await request(app)
+                .post('/courses/1/quizzes/1/questions')
+                .set('Authorization', 'Bearer invalid_token')
                 .send(exampleQuestion);
 
             expect(response.statusCode).toBe(StatusCodes.UNAUTHORIZED);
