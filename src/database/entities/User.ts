@@ -34,14 +34,13 @@ export class User extends BaseEntity {
     @Column()
     role!: number;
 
-    @Column({ name: 'is_verified', default: () => 'false' })
+    @Column({ name: 'is_verified', default: false })
     isVerified!: boolean;
 
     @Column({ name: 'refresh_token', nullable: true })
-    refreshToken?: string;
+    refreshToken!: string | null;
 
-    @OneToMany(() => Course,
-        (course) => course.user)
+    @OneToMany(() => Course, (course) => course.user)
     courses!: Course[];
 
     @OneToMany(() => CourseEnrollment,
@@ -52,8 +51,7 @@ export class User extends BaseEntity {
         (moduleCompletion) => moduleCompletion.user)
     moduleCompletions!: ModuleCompletion[];
 
-    @OneToMany(() => UsersAnswer,
-        (usersAnswer) => usersAnswer.user)
+    @OneToMany(() => UsersAnswer, (usersAnswer) => usersAnswer.user)
     usersAnswers!: UsersAnswer[];
 
 }

@@ -9,7 +9,7 @@ import { courseIdSchema, courseSchema } from '../validations/course.validate';
 class CourseController {
 
     async addNewCourse(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
         const body = validate(req, courseSchema, 'body');
 
         await courseService.addNewCourse(userPayload!, body);
@@ -22,7 +22,7 @@ class CourseController {
     }
 
     async getProposedCourse(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
 
         const proposedCourse = await courseService.getNewCourses(userPayload!);
 
@@ -35,7 +35,7 @@ class CourseController {
     }
 
     async getCourseDetail(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
         const body = validate(req, courseIdSchema, 'params');
 
         const course = await courseService.getSpecifyCourse(userPayload!, body);
@@ -49,7 +49,7 @@ class CourseController {
     }
 
     async getVerifiedCourses(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
 
         const courses = await courseService.getCourses(userPayload!);
 
@@ -62,7 +62,7 @@ class CourseController {
     }
 
     async deleteCourse(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
         const params = validate(req, courseIdSchema, 'params');
 
         await courseService.deleteCourse(userPayload!, params.courseId);

@@ -1,8 +1,6 @@
 import joi from 'joi';
 
-export interface RegisterType {
-    email: string;
-    password: string;
+export interface RegisterType extends LoginType {
     name: string;
     role: number;
 }

@@ -15,7 +15,7 @@ class ApprovalController {
     async approvalActionForNewInstructor(req: Request, res: Response) {
         const params = validate(req, approvalInstructorSchema, 'params');
         const query = validate(req, approvalQuerySchema, 'query');
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
 
         const status = await approvalService
             .approveOrRejectInstructor(userPayload!, params, query);
@@ -30,7 +30,7 @@ class ApprovalController {
     async approvalActionForProposedCourse(req: Request, res: Response) {
         const params = validate(req, approvalCourseSchema, 'params');
         const query = validate(req, approvalQuerySchema, 'query');
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
 
         const status = await approvalService
             .approveOrRejectProposedCourse(userPayload!, params, query);

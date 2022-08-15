@@ -12,7 +12,7 @@ import {
 class LectureController {
 
     async editLectureData(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
         const body = await validate(req, editLectureSchema, 'body');
         const params = await validate(req, editLectureParamsSchema, 'params');
 

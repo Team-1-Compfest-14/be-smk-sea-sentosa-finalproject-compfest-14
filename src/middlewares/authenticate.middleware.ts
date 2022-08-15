@@ -5,7 +5,7 @@ import { Errors } from '../utils/error.util';
 
 function authenticate(tokenType: TokenType) {
     return async (req: Request, _: Response, next: NextFunction) => {
-        const payload = await authService.getTokenPayload(req, tokenType);
+        const payload = await authService.getPayload(req, tokenType);
         if (!payload) {
             throw Errors.NO_SESSION;
         }

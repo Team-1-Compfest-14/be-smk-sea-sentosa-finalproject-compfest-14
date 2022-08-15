@@ -7,7 +7,7 @@ import { sendResponse } from '../utils/api.util';
 class UserController {
 
     async getAllNewInstructor(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
         const listOfInstructor = await userService
             .getAllNewInstructor(userPayload!);
 

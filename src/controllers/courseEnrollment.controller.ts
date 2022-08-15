@@ -11,7 +11,7 @@ import {
 class CourseEnrollmentController {
 
     async enrollNewCourse(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
         const courseId = validate(req, courseEnrollmentSchema, 'params');
 
         await courseEnrollmentService.enrollNewCourse(

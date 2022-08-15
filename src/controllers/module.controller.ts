@@ -12,7 +12,7 @@ import {
 class ModuleController {
 
     async addLecture(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
         const body = validate(req, addLectureSchema, 'body');
         const params = validate(req, courseIdModuleSchema, 'params');
 
@@ -27,7 +27,7 @@ class ModuleController {
     }
 
     async addQuiz(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
         const body = validate(req, addQuizSchema, 'body');
         const params = validate(req, courseIdModuleSchema, 'params');
 
@@ -42,7 +42,7 @@ class ModuleController {
     }
 
     async getEnrolledLecturesForStudent(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
         const params = validate(req, courseIdModuleSchema, 'params');
 
         const modules = await moduleService
@@ -57,7 +57,7 @@ class ModuleController {
     }
 
     async deleteLecture(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
         const params = validate(req, deleteLectureSchema, 'params');
 
         await moduleService.deleteLecture(userPayload!, params);
@@ -70,7 +70,7 @@ class ModuleController {
     }
 
     async getCoursesInstructor(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
 
         const courses = await moduleService.getCoursesInstructor(userPayload!);
 
@@ -83,7 +83,7 @@ class ModuleController {
     }
 
     async getCoursesInstructorDetail(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
         const params = validate(req, courseIdModuleSchema, 'params');
 
         const course = await moduleService
@@ -98,7 +98,7 @@ class ModuleController {
     }
 
     async getEnrolledCourseQuizzes(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
         const params = validate(req, courseIdSchema, 'params');
 
         const quizzes = await moduleService
@@ -113,7 +113,7 @@ class ModuleController {
     }
 
     async getProgressDashboard(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
 
         const dashboardDatas = await moduleService.getProgress(userPayload!);
 
