@@ -1,8 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
 import { Course } from '../database/entities/Course';
-import { Lecture } from '../database/entities/Lecture';
-import { Module } from '../database/entities/Module';
-import { Quiz } from '../database/entities/Quiz';
 import { UserRole } from '../database/entities/User';
 import type { UserPayload } from '../typings/auth';
 import { ResponseError, Errors } from '../utils/error.util';
@@ -66,14 +63,14 @@ class CourseService {
     }
 
     async deleteCourse({ userId, role }: UserPayload, courseId: number) {
-        if (role !== UserRole.INSTRUCTOR) {
-            throw Errors.NO_PERMISSION;
-        }
-
         const course = await Course.findOneBy(
-            { id: courseId, instructorId: userId });
+            { id: courseId });
+
         if (!course) {
             throw Errors.COURSE_NOT_FOUND;
+        }
+        if (course.instructorId !== userId || role !== UserRole.INSTRUCTOR) {
+            throw Errors.NO_PERMISSION;
         }
 
         await Course.remove(course);
