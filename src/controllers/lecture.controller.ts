@@ -5,6 +5,7 @@ import { lectureService } from '../services/lecture.service';
 import { sendResponse } from '../utils/api.util';
 import { validate } from '../utils/validate.util';
 import {
+    deleteLecturParamsSchema,
     editLectureParamsSchema, editLectureSchema
 } from '../validations/lecture.validate';
 
@@ -21,6 +22,20 @@ class LectureController {
             statusCode: StatusCodes.OK,
             success: true,
             message: 'Successfully edited a lecture'
+        });
+    }
+
+    async deleteLecture(req: Request, res: Response) {
+        const userPayload = req.userPayload;
+        const params = validate(req, deleteLecturParamsSchema, 'params');
+
+        await lectureService.deleteLecture(userPayload!,
+            params.courseId, params.lectureId);
+
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully deleted a lecture'
         });
     }
 

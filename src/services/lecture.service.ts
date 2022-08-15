@@ -7,6 +7,7 @@ import { Errors } from '../utils/error.util';
 import type {
     EditLectureParamsType, EditLectureType
 } from '../validations/lecture.validate';
+import { courseService } from './course.service';
 
 class LectureService {
 
@@ -36,6 +37,27 @@ class LectureService {
 
         await Module.save(module);
         await Lecture.save(lecture);
+    }
+
+    async deleteLecture({ userId, role }: UserPayload,
+        courseId: number, lectureId: number) {
+
+        const course = await courseService.get(courseId);
+        if (course.instructorId !== userId || role !== UserRole.INSTRUCTOR) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const lecture = await Lecture.findOneBy({ id: lectureId });
+        if (!lecture) {
+            throw Errors.LECTURE_NOT_FOUND;
+        }
+
+        const module = await Module.findOneBy({ id: lecture.moduleId });
+        if (!module) {
+            throw Errors.MODULE_NOT_FOUND;
+        }
+
+        await Module.remove(module);
     }
 
 }

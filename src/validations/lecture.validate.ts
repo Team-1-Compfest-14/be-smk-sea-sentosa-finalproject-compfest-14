@@ -10,6 +10,12 @@ export interface EditLectureParamsType {
     moduleId: number;
 }
 
+export interface DeleteLectureParamsType {
+    courseId: number;
+    lectureId: number;
+}
+
+
 export const editLectureSchema = joi.object({
     name: joi.string()
         .min(4)
@@ -27,5 +33,13 @@ export const editLectureParamsSchema = joi.object({
         .required(),
 
     moduleId: joi.number()
+        .required()
+});
+
+export const deleteLecturParamsSchema = joi.object<DeleteLectureParamsType>({
+    courseId: joi.number()
+        .required(),
+
+    lectureId: joi.number()
         .required()
 });

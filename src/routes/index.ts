@@ -62,6 +62,7 @@ router.delete('/courses/:courseId/quizzes/:quizId', authenticate('ACCESS'),
 // Lectures
 router.put('/courses/:courseId/modules/:moduleId/lectures',
     authenticate('ACCESS'), lectureController.editLectureData);
+router.delete('/courses/:courseId/lectures/:lectureId', authenticate('ACCESS'));
 
 // Role Instructor and Student
 router.get('/courses/:courseId/quizzes/:quizId',
