@@ -64,6 +64,7 @@ class AuthService {
         user.refreshToken = null;
 
         await User.save(user);
+        console.log(user.refreshToken);
     }
 
     async refresh({ userId }: UserPayload) {
