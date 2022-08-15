@@ -12,5 +12,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "skipLibCheck": true
+  },
+  "ts-node": {
+    "files": true
   }
 }

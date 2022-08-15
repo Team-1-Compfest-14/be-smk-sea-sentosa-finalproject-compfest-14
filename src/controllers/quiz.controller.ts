@@ -86,6 +86,15 @@ class QuizController {
     async deleteQuiz(req: Request, res: Response) {
         const userPayload = req.userPayload;
         const params = validate(req, quizAnswerFeedbackSchema, 'params');
+
+        await quizService.deleteQuiz(
+            userPayload!, params.courseId, params.quizId);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully deleted a quiz'
+        });
     }
 
 }

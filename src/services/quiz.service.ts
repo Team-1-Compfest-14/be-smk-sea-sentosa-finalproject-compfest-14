@@ -1,6 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
+import { Module } from '../database/entities/Module';
 import { Question } from '../database/entities/Question';
 import { QuestionOption } from '../database/entities/QuestionOption';
+import { Quiz } from '../database/entities/Quiz';
 import { UserRole } from '../database/entities/User';
 import { UsersAnswer } from '../database/entities/UsersAnswer';
 import type { UserPayload } from '../typings/auth';
@@ -236,6 +238,27 @@ class QuizService {
             return feedback;
         }
 
+    }
+
+    async deleteQuiz({ userId, role }: UserPayload,
+        courseId: number, quizId: number) {
+
+        const course = await courseService.get(courseId);
+        if (course.instructorId !== userId || role !== UserRole.INSTRUCTOR) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const quiz = await Quiz.findOneBy({ id: quizId });
+        if (!quiz) {
+            throw new ResponseError('Cannot find quiz', StatusCodes.NOT_FOUND);
+        }
+
+        const module = await Module.findOneBy({ id: quiz.moduleId });
+        if (!module) {
+            throw Errors.MODULE_NOT_FOUND;
+        }
+
+        await Module.remove(module);
     }
 
 }
