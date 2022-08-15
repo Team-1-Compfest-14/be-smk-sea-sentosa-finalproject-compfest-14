@@ -1,5 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import { Course } from '../database/entities/Course';
+import { Lecture } from '../database/entities/Lecture';
+import { Module } from '../database/entities/Module';
+import { Quiz } from '../database/entities/Quiz';
 import { UserRole } from '../database/entities/User';
 import type { UserPayload } from '../typings/auth';
 import { ResponseError, Errors } from '../utils/error.util';
@@ -60,6 +63,25 @@ class CourseService {
 
         const course = await Course.findBy({ isVerified: false });
         return course;
+    }
+
+    async deleteCourse({ userId, role }: UserPayload, courseId: number) {
+        if (role !== UserRole.INSTRUCTOR) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const course = await Course.findOneBy({ instructorId: userId });
+        if (!course) {
+            throw Errors.COURSE_NOT_FOUND;
+        }
+
+        const modules = await Module.findBy({ courseId: course.id });
+        const quizzes = modules.map((module) => {
+            return Quiz.findBy({ moduleId: module.id });
+        });
+        const lectures = modules.map((module) => {
+            return Lecture.findBy({ moduleId: module.id });
+        });
     }
 
 }

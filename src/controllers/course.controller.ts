@@ -61,6 +61,13 @@ class CourseController {
         });
     }
 
+    async deleteCourse(req: Request, res: Response) {
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const params = validate(req, courseIdSchema, 'params');
+
+        await courseService.deleteCourse(userPayload!, params.courseId);
+    }
+
 }
 
 export const courseController = new CourseController();
