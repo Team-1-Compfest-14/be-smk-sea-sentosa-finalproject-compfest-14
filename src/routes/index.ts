@@ -46,6 +46,8 @@ router.get('/courses/instructor/own', authenticate('ACCESS'),
     moduleController.getCoursesInstructor);
 router.get('/courses/instructor/own/:courseId', authenticate('ACCESS'),
     moduleController.getCoursesInstructorDetail);
+router.get('/courses/dashboard/progress', authenticate('ACCESS'),
+    moduleController.getProgressDashboard);
 
 // Quizzes
 router.get('/courses/:courseId/quizzes', authenticate('ACCESS'),
@@ -62,6 +64,8 @@ router.get('/courses/:courseId/quizzes/:quizId',
     authenticate('ACCESS'), quizController.ViewAllQuestionsAndOptions);
 router.post('/courses/:courseId/quizzes/:quizId/answer',
     authenticate('ACCESS'), quizController.answerQuestion);
+router.get('/courses/:courseId/quizzes/:quizId/feedback',
+    authenticate('ACCESS'), quizController.answerFeedback);
 
 // Approval
 router.get('/approval/register', authenticate('ACCESS'),

@@ -112,6 +112,19 @@ class ModuleController {
         });
     }
 
+    async getProgressDashboard(req: Request, res: Response) {
+        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+
+        const dashboardDatas = await moduleService.getProgress(userPayload!);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            data: { dashboardDatas },
+            message: 'Sucessfully all progress dashboard courses',
+        });
+    }
+
 }
 
 export const moduleController = new ModuleController();

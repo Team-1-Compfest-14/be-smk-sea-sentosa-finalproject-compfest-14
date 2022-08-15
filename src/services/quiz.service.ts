@@ -13,6 +13,18 @@ import { courseService } from './course.service';
 import { courseEnrollmentService } from './courseEnrollment.service';
 import { moduleService } from './module.service';
 
+interface feedbackInterface {
+    questionId: number;
+    questionOptionId: number;
+    correct: boolean;
+}
+
+interface feedbackAnswersInterface {
+    totalQuestions: number;
+    correctAnswers: number;
+    feedback: feedbackInterface[];
+}
+
 class QuizService {
 
     async addNewQuestion(
@@ -156,6 +168,73 @@ class QuizService {
         }
 
         return question;
+
+    }
+
+    async feedbackAnswers(
+        courseId: number,
+        quizId: number,
+        { userId, role }: UserPayload
+    ) {
+        if (role !== UserRole.STUDENT) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        await courseEnrollmentService
+            .getCourseEnrollment(courseId, userId);
+
+        const quiz = await moduleService.getQuiz(quizId);
+
+        if (quiz) {
+            const isCompleted = await moduleService
+                .isModuleCompleted(userId, quiz.moduleId);
+
+            if (!isCompleted) {
+                throw new ResponseError(
+                    'Module not completed.',
+                    StatusCodes.BAD_REQUEST,
+                );
+            }
+
+            const quizQuestions = quiz.questions.length;
+            const userAnswers = await UsersAnswer.find({
+                where: { userId: userId },
+                relations: ['questionOption'],
+            });
+
+            if (userAnswers.length !== quizQuestions) {
+                throw new ResponseError(
+                    'Number of answers must be equal to number of questions.',
+                    StatusCodes.BAD_REQUEST,
+                );
+            }
+
+            const tempFeedback: feedbackInterface[] = [];
+
+            quiz.questions.map(async (question) => {
+                const userAnswer = userAnswers.find(
+                    (answer) => answer.questionId === question.id,
+                );
+
+                if (userAnswer) {
+                    tempFeedback.push({
+                        questionId: question.id,
+                        questionOptionId: userAnswer.questionOptionId,
+                        correct: userAnswer.questionOption.isCorrectAnswer,
+                    });
+                }
+            });
+
+            const feedback: feedbackAnswersInterface = {
+                totalQuestions: quiz.questions.length,
+                correctAnswers: tempFeedback.filter(
+                    (answer) => answer.correct === true,
+                ).length,
+                feedback: tempFeedback,
+            };
+
+            return feedback;
+        }
 
     }
 
