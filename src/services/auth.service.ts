@@ -61,7 +61,7 @@ class AuthService {
                 'User doesn\'t exists!', StatusCodes.BAD_REQUEST);
         }
 
-        user.refreshToken = undefined;
+        user.refreshToken = null;
 
         await User.save(user);
     }
