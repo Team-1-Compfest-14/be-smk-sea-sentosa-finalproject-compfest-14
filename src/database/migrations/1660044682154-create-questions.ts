@@ -10,7 +10,7 @@ export class createQuestions1660044682154 implements MigrationInterface {
                 "question" VARCHAR(128) NOT NULL,
 
                 PRIMARY KEY ("id"),
-                FOREIGN KEY ("quiz_id") REFERENCES "quizzes"("id")
+                FOREIGN KEY ("quiz_id") REFERENCES "quizzes"("id") ON DELETE CASCADE
             )`
         );
     }

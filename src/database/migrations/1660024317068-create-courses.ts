@@ -12,7 +12,7 @@ export class createCourses1660024317068 implements MigrationInterface {
                 "is_verified" BOOLEAN NOT NULL DEFAULT FALSE,
 
                 PRIMARY KEY ("id"),
-                FOREIGN KEY ("instructor_id") REFERENCES "users"("id")
+                FOREIGN KEY ("instructor_id") REFERENCES "users"("id") ON DELETE CASCADE
             )`
         );
     }

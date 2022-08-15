@@ -70,18 +70,13 @@ class CourseService {
             throw Errors.NO_PERMISSION;
         }
 
-        const course = await Course.findOneBy({ instructorId: userId });
+        const course = await Course.findOneBy(
+            { id: courseId, instructorId: userId });
         if (!course) {
             throw Errors.COURSE_NOT_FOUND;
         }
 
-        const modules = await Module.findBy({ courseId: course.id });
-        const quizzes = modules.map((module) => {
-            return Quiz.findBy({ moduleId: module.id });
-        });
-        const lectures = modules.map((module) => {
-            return Lecture.findBy({ moduleId: module.id });
-        });
+        await Course.remove(course);
     }
 
 }

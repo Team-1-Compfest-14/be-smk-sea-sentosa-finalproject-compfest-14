@@ -11,7 +11,7 @@ export class createQuestionOptions1660050021356 implements MigrationInterface {
                 "is_correct_answer" BOOLEAN NOT NULL,
 
                 PRIMARY KEY ("id"),
-                FOREIGN KEY ("question_id") REFERENCES "questions"("id")
+                FOREIGN KEY ("question_id") REFERENCES "questions"("id") ON DELETE CASCADE
             )`
         );
     }

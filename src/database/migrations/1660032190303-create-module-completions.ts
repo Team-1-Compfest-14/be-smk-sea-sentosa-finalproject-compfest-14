@@ -12,8 +12,8 @@ implements MigrationInterface {
                 "completion_time" TIMESTAMP NOT NULL,
 
                 PRIMARY KEY ("id"),
-                FOREIGN KEY ("module_id") REFERENCES "modules" ("id"),
-                FOREIGN KEY ("user_id") REFERENCES "users" ("id")
+                FOREIGN KEY ("module_id") REFERENCES "modules" ("id") ON DELETE CASCADE,
+                FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE
             );
         `);
     }

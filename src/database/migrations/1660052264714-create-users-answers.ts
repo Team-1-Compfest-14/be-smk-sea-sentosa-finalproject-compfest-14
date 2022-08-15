@@ -11,9 +11,9 @@ export class createUsersAnswers1660052264714 implements MigrationInterface {
                 "question_option_id" INT NOT NULL,
 
                 PRIMARY KEY ("id"),
-                FOREIGN KEY ("question_id") REFERENCES "questions"("id"),
-                FOREIGN KEY ("user_id") REFERENCES "users"("id"),
-                FOREIGN KEY ("question_option_id") REFERENCES "question_options"("id")
+                FOREIGN KEY ("question_id") REFERENCES "questions"("id") ON DELETE CASCADE,
+                FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE,
+                FOREIGN KEY ("question_option_id") REFERENCES "question_options"("id") ON DELETE CASCADE
             )`
         );
     }
