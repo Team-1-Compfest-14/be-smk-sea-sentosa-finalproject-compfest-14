@@ -56,6 +56,7 @@ router.get('/courses/:courseId/quizzes', authenticate('ACCESS'),
     moduleController.getEnrolledCourseQuizzes);
 router.post('/courses/:courseId/quizzes/:quizId/questions',
     authenticate('ACCESS'), quizController.addNewQuestion);
+router.delete('/courses/:courseId/quizzes/:quizId', authenticate('ACCESS'));
 
 // Lectures
 router.put('/courses/:courseId/modules/:moduleId/lectures',
