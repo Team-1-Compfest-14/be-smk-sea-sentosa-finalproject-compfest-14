@@ -1,6 +1,5 @@
 import type { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { authService } from '../services/auth.service';
 import { courseService } from '../services/course.service';
 import { sendResponse } from '../utils/api.util';
 import { validate } from '../utils/validate.util';
@@ -23,7 +22,7 @@ class CourseController {
 
     async getProposedCourses(req: Request, res: Response) {
         const userPayload = req.userPayload;
-        const courses = await courseService.getNewCourses(userPayload!.role);
+        const courses = await courseService.getProposedCourses(userPayload!);
 
         return sendResponse(res, {
             statusCode: StatusCodes.OK,
@@ -35,10 +34,10 @@ class CourseController {
 
     async getVerifiedCourse(req: Request, res: Response) {
         const userPayload = req.userPayload;
-        const body = validate(req, courseIdSchema, 'params');
+        const params = validate(req, courseIdSchema, 'params');
 
-        const course = await courseService
-            .getVerifiedCourse(userPayload!, body);
+        const course = await courseService.getVerifiedCourse(
+            userPayload!, params.courseId);
 
         return sendResponse(res, {
             statusCode: StatusCodes.OK,
@@ -49,9 +48,8 @@ class CourseController {
     }
 
     async getVerifiedCourses(req: Request, res: Response) {
-        const userPayload = await authService.getPayload(req, 'ACCESS');
-
-        const courses = await courseService.getCourses(userPayload!);
+        const userPayload = req.userPayload;
+        const courses = await courseService.getVerifiedCourses(userPayload!);
 
         return sendResponse(res, {
             statusCode: StatusCodes.OK,
@@ -62,7 +60,7 @@ class CourseController {
     }
 
     async deleteCourse(req: Request, res: Response) {
-        const userPayload = await authService.getPayload(req, 'ACCESS');
+        const userPayload = req.userPayload;
         const params = validate(req, courseIdSchema, 'params');
 
         await courseService.deleteCourse(userPayload!, params.courseId);

@@ -5,7 +5,6 @@ import type { UserPayload } from '../typings/auth';
 import { ResponseError, Errors } from '../utils/error.util';
 import type {
     CourseType,
-    CourseIdType
 } from '../validations/course.validate';
 
 class CourseService {
@@ -30,10 +29,7 @@ class CourseService {
         return course;
     }
 
-    async getVerifiedCourse(
-        { role }: UserPayload,
-        { courseId }: CourseIdType) {
-
+    async getVerifiedCourse({ role }: UserPayload, courseId: number) {
         if (role !== UserRole.STUDENT) {
             throw Errors.NO_PERMISSION;
         }
@@ -41,16 +37,16 @@ class CourseService {
         return this.get(courseId);
     }
 
-    async getCourses({ role }: UserPayload) {
+    async getVerifiedCourses({ role }: UserPayload) {
         if (role !== UserRole.STUDENT) {
             throw Errors.NO_PERMISSION;
         }
+        const courses = await Course.findBy({ isVerified: true });
 
-        const course = await Course.findBy({ isVerified: true });
-        return course;
+        return courses;
     }
 
-    async getNewCourses(role: number) {
+    async getProposedCourses({ role }: UserPayload) {
         if (role !== UserRole.ADMIN) {
             throw Errors.NO_PERMISSION;
         }
@@ -60,12 +56,11 @@ class CourseService {
     }
 
     async deleteCourse({ userId, role }: UserPayload, courseId: number) {
-        const course = await Course.findOneBy(
-            { id: courseId });
-
+        const course = await Course.findOneBy({ id: courseId });
         if (!course) {
             throw Errors.COURSE_NOT_FOUND;
         }
+
         if (course.instructorId !== userId || role !== UserRole.INSTRUCTOR) {
             throw Errors.NO_PERMISSION;
         }
