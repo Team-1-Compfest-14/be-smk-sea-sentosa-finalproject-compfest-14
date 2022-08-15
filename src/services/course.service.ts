@@ -10,14 +10,11 @@ import type {
 
 class CourseService {
 
-    async addNewCourse(
-        { userId: instructorId, role }: UserPayload,
-        rawCourse: CourseType) {
+    async addCourse({ userId, role }: UserPayload, rawCourse: CourseType) {
         if (role !== UserRole.INSTRUCTOR) {
             throw Errors.NO_PERMISSION;
         }
-
-        const course = Course.create({ instructorId, ...rawCourse });
+        const course = Course.create({ instructorId: userId, ...rawCourse });
 
         await Course.save(course);
     }
@@ -33,7 +30,7 @@ class CourseService {
         return course;
     }
 
-    async getSpecifyCourse(
+    async getVerifiedCourse(
         { role }: UserPayload,
         { courseId }: CourseIdType) {
 
@@ -53,13 +50,13 @@ class CourseService {
         return course;
     }
 
-    async getNewCourses({ role }: UserPayload) {
+    async getNewCourses(role: number) {
         if (role !== UserRole.ADMIN) {
             throw Errors.NO_PERMISSION;
         }
+        const courses = await Course.findBy({ isVerified: false });
 
-        const course = await Course.findBy({ isVerified: false });
-        return course;
+        return courses;
     }
 
     async deleteCourse({ userId, role }: UserPayload, courseId: number) {

@@ -10,6 +10,10 @@ export interface LoginType {
     password: string;
 }
 
+export interface UserIdType {
+    userId: number;
+}
+
 export const registerSchema = joi.object<RegisterType>({
     email: joi.string()
         .email()

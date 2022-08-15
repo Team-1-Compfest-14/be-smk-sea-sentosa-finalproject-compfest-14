@@ -29,14 +29,14 @@ router.post('/courses/:courseId/enroll', authenticate('ACCESS'),
 router.get('/courses', authenticate('ACCESS'),
     courseController.getVerifiedCourses);
 router.get('/courses/:courseId', authenticate('ACCESS'),
-    courseController.getCourseDetail);
+    courseController.getVerifiedCourse);
 router.get('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
     moduleController.getEnrolledLecturesForStudent);
 router.delete('/courses/:courseId', authenticate('ACCESS'),
     courseController.deleteCourse);
 
 // Role Instructor
-router.post('/courses', authenticate('ACCESS'), courseController.addNewCourse);
+router.post('/courses', authenticate('ACCESS'), courseController.addCourse);
 router.post('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
     moduleController.addLecture);
 router.post('/courses/:courseId/modules/quizzes', authenticate('ACCESS'),
@@ -78,7 +78,7 @@ router.get('/approval/register', authenticate('ACCESS'),
 router.post('/approval/:userId', authenticate('ACCESS'),
     approvalController.approvalActionForNewInstructor);
 router.get('/approval/course', authenticate('ACCESS'),
-    courseController.getProposedCourse);
+    courseController.getProposedCourses);
 router.post('/approval/course/:courseId', authenticate('ACCESS'),
     approvalController.approvalActionForProposedCourse);
 
