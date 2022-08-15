@@ -46,6 +46,8 @@ router.get('/courses/instructor/own', authenticate('ACCESS'),
     moduleController.getCoursesInstructor);
 router.get('/courses/instructor/own/:courseId', authenticate('ACCESS'),
     moduleController.getCoursesInstructorDetail);
+router.get('/courses/dashboard/progress', authenticate('ACCESS'),
+    moduleController.getProgressDashboard);
 
 // Quizzes
 router.get('/courses/:courseId/quizzes', authenticate('ACCESS'),
