@@ -4,19 +4,11 @@ import { UserRole } from '../database/entities/User';
 import type { UserPayload } from '../typings/auth';
 import { ResponseError, Errors } from '../utils/error.util';
 import type {
+    CourseIdType,
     CourseType,
 } from '../validations/course.validate';
 
 class CourseService {
-
-    async addCourse({ userId, role }: UserPayload, rawCourse: CourseType) {
-        if (role !== UserRole.INSTRUCTOR) {
-            throw Errors.NO_PERMISSION;
-        }
-        const course = Course.create({ instructorId: userId, ...rawCourse });
-
-        await Course.save(course);
-    }
 
     async get(courseId: number) {
         const course = await Course.findOneBy({ id: courseId });
@@ -27,6 +19,15 @@ class CourseService {
         }
 
         return course;
+    }
+
+    async addCourse({ userId, role }: UserPayload, rawCourse: CourseType) {
+        if (role !== UserRole.INSTRUCTOR) {
+            throw Errors.NO_PERMISSION;
+        }
+        const course = Course.create({ instructorId: userId, ...rawCourse });
+
+        await Course.save(course);
     }
 
     async getVerifiedCourse({ role }: UserPayload, courseId: number) {

@@ -41,7 +41,7 @@ router.delete('/courses/:courseId', authenticate('ACCESS'),
 
 // Course Enrollments
 router.post('/courses/:courseId/enrollment', authenticate('ACCESS'),
-    courseEnrollmentController.enrollNewCourse);
+    courseEnrollmentController.enrollCourse);
 
 // Course & Modules
 // Role Student

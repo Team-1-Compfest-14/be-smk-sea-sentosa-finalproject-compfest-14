@@ -1,14 +1,9 @@
 import type { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { approvalService } from '../services/approval.service';
-import { authService } from '../services/auth.service';
 import { sendResponse } from '../utils/api.util';
 import { validate } from '../utils/validate.util';
-import {
-    approvalInstructorSchema,
-    approvalCourseSchema,
-    ApprovalSchema,
-} from '../validations/approval.validate';
+import { ApprovalSchema } from '../validations/approval.validate';
 import { courseIdSchema } from '../validations/course.validate';
 import { userIdSchema } from '../validations/user.validate';
 
