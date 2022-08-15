@@ -22,7 +22,7 @@ router.delete('/auth/logout', authenticate('REFRESH'), authController.logout);
 
 // Users
 router.get('/users/approval', authenticate('ACCESS'),
-    userController.getAllNewInstructor);
+    userController.getUnverifiedInstructors);
 router.post('/users/approval/:userId', authenticate('ACCESS'),
     approvalController.approvalActionForNewInstructor);
 

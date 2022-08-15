@@ -4,6 +4,7 @@ import type { ActionType } from '../typings/action';
 export interface ApprovalInstructorType {
     userId: number;
 }
+
 export interface ApprovalCourseType {
     courseId: number;
 }
