@@ -9,6 +9,7 @@ import {
     addQuestionSchema,
     addUserAnswerSchema,
     quizAnswerParamsSchema,
+    quizAnswerFeedbackSchema,
 } from '../validations/quiz.validate';
 
 class QuizController {
@@ -80,6 +81,11 @@ class QuizController {
             data: feedback,
             message: 'Successfully retrieved feedback.',
         });
+    }
+
+    async deleteQuiz(req: Request, res: Response) {
+        const userPayload = req.userPayload;
+        const params = validate(req, quizAnswerFeedbackSchema, 'params');
     }
 
 }
