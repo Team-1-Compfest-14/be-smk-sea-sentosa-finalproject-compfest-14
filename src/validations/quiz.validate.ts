@@ -71,3 +71,11 @@ export const addQuestionOptionSchema = joi.object<QuestionOptionType>({
         .required()
 });
 
+
+export const quizAnswerFeedbackSchema = joi.object<QuizParamType>({
+    courseId: joi.number()
+        .required(),
+    quizId: joi.number()
+        .required()
+});
+

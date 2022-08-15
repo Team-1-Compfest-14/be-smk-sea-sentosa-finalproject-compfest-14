@@ -64,6 +64,8 @@ router.get('/courses/:courseId/quizzes/:quizId',
     authenticate('ACCESS'), quizController.ViewAllQuestionsAndOptions);
 router.post('/courses/:courseId/quizzes/:quizId/answer',
     authenticate('ACCESS'), quizController.answerQuestion);
+router.get('/courses/:courseId/quizzes/:quizId/feedback',
+    authenticate('ACCESS'), quizController.answerFeedback);
 
 // Approval
 router.get('/approval/register', authenticate('ACCESS'),
