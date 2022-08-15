@@ -10,7 +10,7 @@ export class createLectures1660034748577 implements MigrationInterface {
                 "lecture_link" VARCHAR(64) NOT NULL,
 
                 PRIMARY KEY ("id"),
-                FOREIGN KEY ("module_id") REFERENCES "modules"("id")
+                FOREIGN KEY ("module_id") REFERENCES "modules"("id") ON DELETE CASCADE
             )`
         );
     }

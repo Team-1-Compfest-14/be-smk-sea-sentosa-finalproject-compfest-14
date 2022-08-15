@@ -66,6 +66,12 @@ class CourseController {
         const params = validate(req, courseIdSchema, 'params');
 
         await courseService.deleteCourse(userPayload!, params.courseId);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully deleted a course'
+        });
     }
 
 }

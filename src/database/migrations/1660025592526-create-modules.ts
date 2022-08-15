@@ -14,7 +14,7 @@ export class createModules1660025592526 implements MigrationInterface {
                 "type" module_type NOT NULL,
 
                 PRIMARY KEY ("id"),
-                FOREIGN KEY ("course_id") REFERENCES "courses" ("id")
+                FOREIGN KEY ("course_id") REFERENCES "courses" ("id") ON DELETE CASCADE
             );
         `);
     }

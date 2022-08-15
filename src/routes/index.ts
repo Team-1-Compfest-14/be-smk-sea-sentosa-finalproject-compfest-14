@@ -32,6 +32,8 @@ router.get('/courses/:courseId', authenticate('ACCESS'),
     courseController.getCourseDetail);
 router.get('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
     moduleController.getEnrolledLecturesForStudent);
+router.delete('/courses/:courseId', authenticate('ACCESS'),
+    courseController.deleteCourse);
 
 // Role Instructor
 router.post('/courses', authenticate('ACCESS'), courseController.addNewCourse);

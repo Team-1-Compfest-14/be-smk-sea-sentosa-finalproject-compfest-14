@@ -9,7 +9,7 @@ export class createQuizzes1660032058666 implements MigrationInterface {
                 "module_id" INT NOT NULL,
 
                 PRIMARY KEY ("id"),
-                FOREIGN KEY ("module_id") REFERENCES "modules"("id")
+                FOREIGN KEY ("module_id") REFERENCES "modules"("id") ON DELETE CASCADE
             )`
         );
     }
