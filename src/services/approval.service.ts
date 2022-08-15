@@ -1,66 +1,58 @@
 import { User, UserRole } from '../database/entities/User';
 import type { UserPayload } from '../typings/auth';
-import { Errors } from '../utils/error.util';
-import type { ActionType } from '../typings/action';
-import type {
-    ApprovalQueryType,
-    ApprovalInstructorType,
-    ApprovalCourseType
-} from '../validations/approval.validate';
-import { Course } from '../database/entities/Course';
+import { Errors, ResponseError } from '../utils/error.util';
+import type { ApprovalType } from '../validations/approval.validate';
+import type { Course } from '../database/entities/Course';
+import type { UserIdType } from '../validations/user.validate';
+import { StatusCodes } from 'http-status-codes';
+import type { CourseIdType } from '../validations/course.validate';
+import { courseService } from './course.service';
 
 class ApprovalService {
 
     async approveOrRejectInstructor(
         { role }: UserPayload,
-        { userId }: ApprovalInstructorType,
-        { action }: ApprovalQueryType) {
+        { userId }: UserIdType,
+        { approved }: ApprovalType) {
 
         if (role !== UserRole.ADMIN) {
             throw Errors.NO_PERMISSION;
         }
 
-        const instructor = await User.findOneBy({ id: userId });
-        if (!instructor) {
+        const user = await User.findOneBy({ id: userId });
+        if (!user) {
             throw Errors.USER_NOT_FOUND;
         }
+        await this.authorization(user, approved);
 
-        const status = await this
-            .authorization(instructor, action);
-        return status;
+        return approved;
     }
 
     async approveOrRejectProposedCourse(
         { role }: UserPayload,
-        { courseId }: ApprovalCourseType,
-        { action }: ApprovalQueryType
-    ) {
+        { courseId }: CourseIdType,
+        { approved }: ApprovalType) {
+
         if (role !== UserRole.ADMIN) {
             throw Errors.NO_PERMISSION;
         }
 
-        const course = await Course.findOneBy({ id: courseId });
-        if (!course) {
-            throw Errors.COURSE_NOT_FOUND;
-        }
-        const status = await this.authorization(course, action);
+        const course = await courseService.get(courseId);
+        await this.authorization(course, approved);
 
-        return status;
+        return approved;
     }
 
-    async authorization(object: User | Course, action: ActionType) {
-        if (action === 'approve') {
+    async authorization(object: User | Course, approved: boolean) {
+        if (approved) {
             object.isVerified = true;
             await object.save();
-
-            return 'approve';
-        } else if (action === 'reject') {
+        } else {
             if (object.isVerified === true) {
-                throw Errors.USER_ALREADY_VERIFIED;
+                throw new ResponseError(
+                    'Already verified!', StatusCodes.BAD_REQUEST);
             }
             await object.remove();
-
-            return 'reject';
         }
     }
 

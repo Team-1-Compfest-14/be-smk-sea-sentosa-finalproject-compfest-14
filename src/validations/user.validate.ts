@@ -42,3 +42,8 @@ export const loginSchema = joi.object<LoginType>({
         .max(64)
         .required()
 });
+
+export const userIdSchema = joi.object<UserIdType>({
+    userId: joi.number()
+        .required()
+});
