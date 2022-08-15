@@ -3,8 +3,8 @@ import {
     Column,
     Entity,
     JoinColumn,
-    ManyToOne,
     OneToMany,
+    OneToOne,
     PrimaryGeneratedColumn
 } from 'typeorm';
 import { Module } from './Module';
@@ -19,11 +19,11 @@ export class Quiz extends BaseEntity {
     @Column({ name: 'module_id' })
     moduleId!: number;
 
-    @ManyToOne(() => Module, (module) => module.quizzes)
-    @JoinColumn({ name: 'module_id' })
-    module!: Module;
-
     @OneToMany(() => Question, (question) => question.quiz)
     questions!: Question[];
+
+    @OneToOne(() => Module)
+    @JoinColumn({ name: 'module_id' })
+    module!: Module;
 
 }

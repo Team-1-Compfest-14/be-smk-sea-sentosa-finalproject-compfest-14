@@ -3,7 +3,7 @@ import {
     Column,
     Entity,
     JoinColumn,
-    ManyToOne,
+    OneToOne,
     PrimaryGeneratedColumn
 } from 'typeorm';
 import { Module } from './Module';
@@ -20,7 +20,7 @@ export class Lecture extends BaseEntity {
     @Column({ name: 'lecture_link', length: 64 })
     lectureLink!: string;
 
-    @ManyToOne(() => Module, (module) => module.lectures)
+    @OneToOne(() => Module)
     @JoinColumn({ name: 'module_id' })
     module!: Module;
 

@@ -310,6 +310,15 @@ class ModuleService {
         return progressData;
     }
 
+    async getModule(courseId: number) {
+        const module = await Module.findOneBy({ courseId });
+        if (!module) {
+            return Errors.MODULE_NOT_FOUND;
+        }
+
+        return module;
+    }
+
 }
 
 export const moduleService = new ModuleService();
