@@ -7,12 +7,13 @@ import { Module, ModuleType } from '../database/entities/Module';
 import { Lecture } from '../database/entities/Lecture';
 import { Quiz } from '../database/entities/Quiz';
 import type { UserPayload } from '../typings/auth';
-import { UserRole } from '../database/entities/User';
+import { User, UserRole } from '../database/entities/User';
 import { CourseEnrollment } from '../database/entities/CourseEnrollment';
 import { Course } from '../database/entities/Course';
 import type {
     CourseWithTotalType,
-    CourseIdType
+    CourseIdType,
+    DashboardCourseType
 } from '../validations/course.validate';
 import { StatusCodes } from 'http-status-codes';
 import { ModuleCompletion } from '../database/entities/ModuleCompletion';
@@ -254,6 +255,59 @@ class ModuleService {
         });
 
         await ModuleCompletion.save(moduleCompletion);
+    }
+
+    async getProgress({ userId, role }: UserPayload) {
+        if (role !== UserRole.STUDENT) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const courseEnrollments = await CourseEnrollment.findBy({ userId });
+        if (!courseEnrollments) {
+            throw Errors.COURSE_ENROLLMENT_NOT_FOUND;
+        }
+
+        const progressData: DashboardCourseType[] = [];
+
+        for (const courseEnrollment of courseEnrollments) {
+            const { courseId } = courseEnrollment;
+            const course = await Course.findOneBy({ id: courseId });
+
+            if (!course) {
+                throw Errors.COURSE_NOT_FOUND;
+            }
+
+            const instructor = await User.findOneBy({
+                id: course.instructorId
+            });
+
+            if (!instructor) {
+                throw Errors.LECTURE_NOT_FOUND;
+            }
+
+            const modules = await Module.findBy({ courseId });
+            let moduleCompletionCount = 0;
+            for (const module of modules) {
+                const { id } = module;
+                const moduleCompletion = await ModuleCompletion.findOneBy({
+                    moduleId: id,
+                    userId
+                });
+                if (moduleCompletion) {
+                    moduleCompletionCount += 1;
+                }
+            }
+
+            const tempData = {
+                name: course.name,
+                teacher: instructor.name,
+                totalModule: modules.length,
+                totalModuleCompletion: moduleCompletionCount
+            };
+            progressData.push(tempData);
+        }
+
+        return progressData;
     }
 
 }

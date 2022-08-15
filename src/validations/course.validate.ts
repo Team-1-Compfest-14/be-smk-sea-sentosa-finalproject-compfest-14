@@ -18,6 +18,13 @@ export interface CourseWithTotalType {
     total: number;
 }
 
+export interface DashboardCourseType {
+    name: string;
+    teacher: string;
+    totalModule: number;
+    totalModuleCompletion: number;
+}
+
 export const courseSchema = joi.object<CourseType>({
     name: joi.string()
         .max(64)
