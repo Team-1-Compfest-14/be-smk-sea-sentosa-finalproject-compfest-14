@@ -3,7 +3,6 @@ import {
     Column,
     Entity,
     JoinColumn,
-    ManyToOne,
     OneToMany,
     OneToOne,
     PrimaryGeneratedColumn
@@ -19,10 +18,6 @@ export class Quiz extends BaseEntity {
 
     @Column({ name: 'module_id' })
     moduleId!: number;
-
-    // @ManyToOne(() => Module, (module) => module.quizzes)
-    // @JoinColumn({ name: 'module_id' })
-    // module!: Module;
 
     @OneToMany(() => Question, (question) => question.quiz)
     questions!: Question[];

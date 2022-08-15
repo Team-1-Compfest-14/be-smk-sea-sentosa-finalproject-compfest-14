@@ -21,10 +21,6 @@ export class Lecture extends BaseEntity {
     @Column({ name: 'lecture_link', length: 64 })
     lectureLink!: string;
 
-    // @ManyToOne(() => Module, (module) => module.lectures)
-    // @JoinColumn({ name: 'module_id' })
-    // module!: Module;
-
     @OneToOne(() => Module)
     @JoinColumn({ name: 'module_id' })
     module!: Module;
