@@ -1,6 +1,4 @@
-import type {
-    AddLectureType, DeleteLectureParams
-} from '../validations/module.validate';
+import type { DeleteLectureParams } from '../validations/module.validate';
 import { courseService } from '../services/course.service';
 import { Errors, ResponseError } from '../utils/error.util';
 import { Module, ModuleType } from '../database/entities/Module';
@@ -20,29 +18,16 @@ import { ModuleCompletion } from '../database/entities/ModuleCompletion';
 
 class ModuleService {
 
-    async addQuiz(
-        instructorId: number,
-        courseId: number,
-        rawModule: AddModuleType) {
+    async add(courseId: number, name: string, type: number) {
+        const modules = await Module.findBy({ courseId, type });
+        const lastOrder = modules.length;
 
-        rawModule.courseId = courseId;
-        rawModule.type = ModuleType.QUIZ;
-
-        const course = await courseService.get(courseId);
-        if (course.instructorId !== instructorId) {
-            throw Errors.NO_PERMISSION;
-        }
-
-        const moduleData = Module.create({ ...rawModule });
-        const module = await Module.save(moduleData);
-
-        const moduleId = module.id;
-
-        const quizData = Quiz.create({
-            moduleId
+        const newModule = Module.create({
+            courseId, name, type, order: lastOrder
         });
+        const module = await Module.save(newModule);
 
-        await Quiz.save(quizData);
+        return module;
     }
 
     async getQuiz(quizId: number) {

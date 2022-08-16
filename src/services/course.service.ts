@@ -27,12 +27,13 @@ class CourseService {
         await Course.save(course);
     }
 
-    async getVerifiedCourse({ role }: UserPayload, courseId: number) {
-        if (role !== UserRole.STUDENT) {
-            throw Errors.NO_PERMISSION;
+    async getVerifiedCourse(courseId: number) {
+        const course = await this.get(courseId);
+        if (!course.isVerified) {
+            throw new ResponseError(
+                'Course is not verified!', StatusCodes.FORBIDDEN);
         }
-
-        return this.get(courseId);
+        return course;
     }
 
     async getVerifiedCourses({ role }: UserPayload) {

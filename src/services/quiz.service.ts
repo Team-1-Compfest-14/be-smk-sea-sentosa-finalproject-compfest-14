@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
-import { Module } from '../database/entities/Module';
+import { Module, ModuleType } from '../database/entities/Module';
 import { Question } from '../database/entities/Question';
 import { QuestionOption } from '../database/entities/QuestionOption';
 import { Quiz } from '../database/entities/Quiz';
@@ -7,7 +7,9 @@ import { UserRole } from '../database/entities/User';
 import { UsersAnswer } from '../database/entities/UsersAnswer';
 import type { UserPayload } from '../typings/auth';
 import { Errors, ResponseError } from '../utils/error.util';
+import type { CourseIdType } from '../validations/course.validate';
 import type {
+    AddQuizType,
     AddUserAnswerType,
     QuestionOptionType, QuizType
 } from '../validations/quiz.validate';
@@ -28,6 +30,22 @@ interface feedbackAnswersInterface {
 }
 
 class QuizService {
+
+    async addQuiz(
+        { userId, role }: UserPayload,
+        { courseId }: CourseIdType,
+        { name }: AddQuizType) {
+
+        const course = await courseService.getVerifiedCourse(courseId);
+        if (course.instructorId !== userId || role !== UserRole.INSTRUCTOR) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const module = await moduleService.add(courseId, name, ModuleType.QUIZ);
+
+        const quiz = Quiz.create({ moduleId: module.id });
+        await Quiz.save(quiz);
+    }
 
     async addNewQuestion(
         courseId: number,

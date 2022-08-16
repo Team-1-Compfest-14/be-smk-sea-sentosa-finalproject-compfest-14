@@ -1,7 +1,7 @@
 import joi from 'joi';
+import type { AddModuleType } from './module.validate';
 
-export interface AddLectureType {
-    name: string;
+export interface AddLectureType extends AddModuleType {
     lectureLink: string;
 }
 

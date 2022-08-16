@@ -33,11 +33,8 @@ class CourseController {
     }
 
     async getVerifiedCourse(req: Request, res: Response) {
-        const userPayload = req.userPayload;
         const params = validate(req, courseIdSchema, 'params');
-
-        const course = await courseService.getVerifiedCourse(
-            userPayload!, params.courseId);
+        const course = await courseService.getVerifiedCourse(params.courseId);
 
         return sendResponse(res, {
             statusCode: StatusCodes.OK,

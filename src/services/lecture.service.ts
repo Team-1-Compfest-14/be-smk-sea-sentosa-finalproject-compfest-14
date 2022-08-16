@@ -6,11 +6,12 @@ import type { UserPayload } from '../typings/auth';
 import { Errors } from '../utils/error.util';
 import type { CourseIdType } from '../validations/course.validate';
 import type {
+    AddLectureType,
     EditLectureParamsType, EditLectureType
 } from '../validations/lecture.validate';
-import type { AddLectureType } from '../validations/module.validate';
+
 import { courseService } from './course.service';
-import { userService } from './user.service';
+import { moduleService } from './module.service';
 
 class LectureService {
 
@@ -24,14 +25,8 @@ class LectureService {
             throw Errors.NO_PERMISSION;
         }
 
-        const modules = await Module.findBy(
-            { courseId, type: ModuleType.LECTURE });
-        const lastOrder = modules.length;
-
-        const newModule = Module.create({
-            courseId, name, type: ModuleType.LECTURE, order: lastOrder
-        });
-        const module = await Module.save(newModule);
+        const module = await moduleService.add(
+            courseId, name, ModuleType.LECTURE);
 
         const lecture = Lecture.create({ moduleId: module.id, lectureLink });
         await Lecture.save(lecture);
