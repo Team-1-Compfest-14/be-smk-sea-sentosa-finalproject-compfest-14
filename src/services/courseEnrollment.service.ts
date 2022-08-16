@@ -32,16 +32,10 @@ class CourseEnrollmentService {
         courseId: number,
         userId: number) {
         const courseEnrollment = await CourseEnrollment
-            .findOne({
-                where: {
-                    userId,
-                    courseId
-                }
-            });
+            .findOneBy({ userId, courseId });
 
         if (!courseEnrollment) {
-            throw new ResponseError(
-                'Course not enrolled.',
+            throw new ResponseError('Course not enrolled.',
                 StatusCodes.BAD_REQUEST);
         }
 

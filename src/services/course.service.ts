@@ -28,18 +28,15 @@ class CourseService {
     }
 
     async getVerifiedCourse(courseId: number) {
-        const course = await this.get(courseId);
-        if (!course.isVerified) {
-            throw new ResponseError(
-                'Course is not verified!', StatusCodes.FORBIDDEN);
+        const course = await Course.findOneBy(
+            { id: courseId, isVerified: true });
+        if (!course) {
+            throw Errors.COURSE_NOT_FOUND;
         }
         return course;
     }
 
-    async getVerifiedCourses({ role }: UserPayload) {
-        if (role !== UserRole.STUDENT) {
-            throw Errors.NO_PERMISSION;
-        }
+    async getVerifiedCourses() {
         const courses = await Course.findBy({ isVerified: true });
 
         return courses;
@@ -50,6 +47,9 @@ class CourseService {
             throw Errors.NO_PERMISSION;
         }
         const courses = await Course.findBy({ isVerified: false });
+        if (!courses) {
+            return [];
+        }
 
         return courses;
     }

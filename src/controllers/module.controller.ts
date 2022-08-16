@@ -13,16 +13,16 @@ class ModuleController {
 
     async getEnrolledLecturesForStudent(req: Request, res: Response) {
         const userPayload = await authService.getPayload(req, 'ACCESS');
-        const params = validate(req, courseIdModuleSchema, 'params');
+        const params = validate(req, courseIdSchema, 'params');
 
         const modules = await moduleService
-            .getEnrolledLecturesForStudent(userPayload!, params.courseId);
+            .getEnrolledLecturesForStudent(userPayload!, params);
 
         return sendResponse(res, {
             statusCode: StatusCodes.CREATED,
-            data: { modules },
             success: true,
-            message: 'Successfully get all lecture from course'
+            message: 'Successfully get all enrolled course lectures',
+            data: { modules }
         });
     }
 

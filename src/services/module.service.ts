@@ -1,5 +1,4 @@
 import type { DeleteLectureParams } from '../validations/module.validate';
-import { courseService } from '../services/course.service';
 import { Errors, ResponseError } from '../utils/error.util';
 import { Module, ModuleType } from '../database/entities/Module';
 import { Lecture } from '../database/entities/Lecture';
@@ -50,31 +49,28 @@ class ModuleService {
 
     async getEnrolledLecturesForStudent(
         { userId, role }: UserPayload,
-        courseId: number) {
+        { courseId }: CourseIdType) {
 
         if (role !== UserRole.STUDENT) {
             throw Errors.NO_PERMISSION;
         }
 
-        const enroll = await CourseEnrollment.findBy({ userId, courseId });
-        if (!enroll) {
+        const courseEnrollment = await CourseEnrollment
+            .findOneBy({ userId, courseId });
+        if (!courseEnrollment) {
             throw Errors.NO_PERMISSION;
         }
 
-        const modules = await Module.find({
+        const lectureModules = await Module.find({
             where: {
                 courseId,
                 type: ModuleType.LECTURE
             },
-            order: {
-                order: 'ASC'
-            },
-            relations: {
-                lectures: true
-            }
+            order: { order: 'ASC' },
+            relations: { lectures: true }
         });
 
-        return modules;
+        return lectureModules;
     }
 
     async deleteLecture(

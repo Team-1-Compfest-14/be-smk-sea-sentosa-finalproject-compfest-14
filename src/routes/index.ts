@@ -43,13 +43,8 @@ router.delete('/courses/:courseId', authenticate('ACCESS'),
 router.post('/courses/:courseId/enrollment', authenticate('ACCESS'),
     courseEnrollmentController.enrollCourse);
 
-// Course & Modules
-// Role Student
-router.get('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
-    moduleController.getEnrolledLecturesForStudent);
-
 // Role Instructor
-router.delete('/courses/:courseId/modules/lectures/:lectureId',
+router.delete('/courses/:courseId/lectures/:lectureId',
     authenticate('ACCESS'),
     moduleController.deleteLecture);
 router.get('/courses/instructor/own', authenticate('ACCESS'),
@@ -70,6 +65,8 @@ router.delete('/courses/:courseId/quizzes/:quizId', authenticate('ACCESS'),
     quizController.deleteQuiz);
 
 // Lectures
+router.get('/courses/:courseId/lectures', authenticate('ACCESS'),
+    moduleController.getEnrolledLecturesForStudent);
 router.post('/courses/:courseId/lectures', authenticate('ACCESS'),
     lectureController.addLecture);
 router.put('/courses/:courseId/modules/:moduleId/lectures',
