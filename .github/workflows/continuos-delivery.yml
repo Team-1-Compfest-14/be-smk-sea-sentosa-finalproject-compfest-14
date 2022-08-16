@@ -30,7 +30,7 @@ jobs:
     #   run: yarn test
 
     - name: Build
-      run: yarn start
+      run: yarn tsc
 
     - name: Firebase Deployment
       uses: w9jds/firebase-action@master
