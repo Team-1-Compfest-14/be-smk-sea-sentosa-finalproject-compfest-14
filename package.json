@@ -4,6 +4,7 @@
     "author": "tim bebas",
     "license": "MIT",
     "scripts": {
+        "start": "node ./build/server.js",
         "dev": "ts-node ./src/server.ts",
         "test": "cross-env NODE_ENV=test yarn typeorm schema:drop -d src/database/data-source.ts && cross-env NODE_ENV=test yarn migration:run && cross-env NODE_ENV=test yarn seed && cross-env NODE_ENV=test jest --runInBand --forceExit",
         "test:coverage": "cross-env NODE_ENV=test jest --coverage --collectCoverageFrom='./src/__tests__/**' --runInBand --forceExit",
