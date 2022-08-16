@@ -7,7 +7,7 @@ import { sendResponse } from '../utils/api.util';
 class UserController {
 
     async getUnverifiedInstructors(req: Request, res: Response) {
-        const userPayload = await authService.getPayload(req, 'ACCESS');
+        const userPayload = req.userPayload;
         const users = await userService
             .getUnverifiedInstructors(userPayload!);
 

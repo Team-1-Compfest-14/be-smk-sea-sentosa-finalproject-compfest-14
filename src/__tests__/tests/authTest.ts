@@ -43,8 +43,8 @@ export const RegisterTest = () => {
             const response = await request(app)
                 .post('/auth/register')
                 .send({
-                    email: '',
-                    password: '',
+                    email: 'r@m',
+                    password: 'qweqw',
                     name: 'Sea Sentosa',
                     role: 0,
                 });

@@ -20,24 +20,28 @@ router.post('/auth/login', authController.login);
 router.post('/auth/refresh', authenticate('REFRESH'), authController.refresh);
 router.delete('/auth/logout', authenticate('REFRESH'), authController.logout);
 
-// Users
-router.get('/users/approval', authenticate('ACCESS'),
+// Users Approvals
+router.get('/approval/users', authenticate('ACCESS'),
     userController.getUnverifiedInstructors);
-router.post('/users/approval/:userId', authenticate('ACCESS'),
+router.post('/approval/users/:userId', authenticate('ACCESS'),
     approvalController.approvalActionForNewInstructor);
 
 // Courses
 router.post('/courses', authenticate('ACCESS'), courseController.addCourse);
-router.get('/courses', authenticate('ACCESS'),
+router.get('/courses/verified', authenticate('ACCESS'),
     courseController.getVerifiedCourses);
-router.get('/courses/:courseId', authenticate('ACCESS'),
+router.get('/courses/verified/:courseId', authenticate('ACCESS'),
     courseController.getVerifiedCourse);
-router.get('/courses/approval', authenticate('ACCESS'),
-    courseController.getProposedCourses);
-router.post('/courses/approval/:courseId', authenticate('ACCESS'),
-    approvalController.approvalActionForProposedCourse);
 router.delete('/courses/:courseId', authenticate('ACCESS'),
     courseController.deleteCourse);
+router.get('/courses/enrolled/', authenticate('ACCESS'),
+    courseController.getEnrolledCourses);
+
+// Courses approvals
+router.get('/approval/courses', authenticate('ACCESS'),
+    courseController.getProposedCourses);
+router.post('/approval/courses/:courseId', authenticate('ACCESS'),
+    approvalController.approvalActionForProposedCourse);
 
 // Course Enrollments
 router.post('/courses/:courseId/enrollment', authenticate('ACCESS'),

@@ -109,13 +109,13 @@ async function seedData() {
         }),
         Module.create({
             courseId: 1,
-            order: 3,
+            order: 1,
             name: 'Quiz 1',
             type: ModuleType.QUIZ
         }),
         Module.create({
             courseId: 1,
-            order: 4,
+            order: 2,
             name: 'Quiz 2',
             type: ModuleType.QUIZ
         }),
@@ -127,7 +127,7 @@ async function seedData() {
         }),
         Module.create({
             courseId: 2,
-            order: 2,
+            order: 1,
             name: 'Lecture 1',
             type: ModuleType.LECTURE
         })

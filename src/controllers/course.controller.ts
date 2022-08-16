@@ -68,6 +68,18 @@ class CourseController {
         });
     }
 
+    async getEnrolledCourses(req: Request, res: Response) {
+        const userPayload = req.userPayload;
+        const courses = await courseService.getEnrolledCourses(userPayload!);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully found all enrolled courses',
+            data: { courses }
+        });
+    }
+
 }
 
 export const courseController = new CourseController();
