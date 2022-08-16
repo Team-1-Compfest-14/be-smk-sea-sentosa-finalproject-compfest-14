@@ -1,15 +1,7 @@
 import joi from 'joi';
-import type { ModuleType } from '../database/entities/Module';
 
-export interface AddModuleType {
-    courseId: number;
-    order: number;
+export interface AddLectureType {
     name: string;
-    type: ModuleType;
-    moduleId: number;
-}
-
-export interface AddLectureType extends AddModuleType {
     lectureLink: string;
 }
 
@@ -26,10 +18,6 @@ export const courseIdModuleSchema = joi.object({
 
 // Lecture
 export const addLectureSchema = joi.object<AddLectureType>({
-    order: joi.number()
-        .required()
-        .description('The order of the module in the course.'),
-
     name: joi.string()
         .required()
         .max(64)

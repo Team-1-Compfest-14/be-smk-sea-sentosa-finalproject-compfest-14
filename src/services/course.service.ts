@@ -3,10 +3,7 @@ import { Course } from '../database/entities/Course';
 import { UserRole } from '../database/entities/User';
 import type { UserPayload } from '../typings/auth';
 import { ResponseError, Errors } from '../utils/error.util';
-import type {
-    CourseIdType,
-    CourseType,
-} from '../validations/course.validate';
+import type { CourseType } from '../validations/course.validate';
 
 class CourseService {
 

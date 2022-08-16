@@ -49,8 +49,6 @@ router.get('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
     moduleController.getEnrolledLecturesForStudent);
 
 // Role Instructor
-router.post('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
-    moduleController.addLecture);
 router.post('/courses/:courseId/modules/quizzes', authenticate('ACCESS'),
     moduleController.addQuiz);
 router.delete('/courses/:courseId/modules/lectures/:lectureId',
@@ -72,6 +70,8 @@ router.delete('/courses/:courseId/quizzes/:quizId', authenticate('ACCESS'),
     quizController.deleteQuiz);
 
 // Lectures
+router.post('/courses/:courseId/lectures', authenticate('ACCESS'),
+    lectureController.addLecture);
 router.put('/courses/:courseId/modules/:moduleId/lectures',
     authenticate('ACCESS'), lectureController.editLectureData);
 router.delete('/courses/:courseId/lectures/:lectureId', authenticate('ACCESS'));

@@ -1,5 +1,10 @@
 import joi from 'joi';
 
+export interface AddLectureType {
+    name: string;
+    lectureLink: string;
+}
+
 export interface EditLectureType {
     name: string;
     lectureLink: string;
@@ -15,6 +20,17 @@ export interface DeleteLectureParamsType {
     lectureId: number;
 }
 
+export const addLectureSchema = joi.object<AddLectureType>({
+    name: joi.string()
+        .min(4)
+        .max(64)
+        .required(),
+
+    lectureLink: joi.string()
+        .min(4)
+        .max(64)
+        .required()
+});
 
 export const editLectureSchema = joi.object({
     name: joi.string()

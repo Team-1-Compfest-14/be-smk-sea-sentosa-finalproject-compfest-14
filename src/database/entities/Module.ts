@@ -13,8 +13,8 @@ import { Quiz } from './Quiz';
 import { ModuleCompletion } from './ModuleCompletion';
 
 export enum ModuleType {
-    LECTURE = 'lecture',
-    QUIZ = 'quiz'
+    LECTURE,
+    QUIZ
 }
 
 @Entity('modules')
@@ -26,14 +26,14 @@ export class Module extends BaseEntity {
     @Column({ name: 'course_id' })
     courseId!: number;
 
-    @Column()
-    order!: number;
-
     @Column({ length: 64 })
     name!: string;
 
-    @Column({ type: 'enum', enum: ModuleType })
-    type!: ModuleType;
+    @Column()
+    order!: number;
+
+    @Column()
+    type!: number;
 
     @ManyToOne(() => Course, (course) => course.modules)
     @JoinColumn({ name: 'course_id' })
