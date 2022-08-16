@@ -6,10 +6,11 @@ import errorHandling from './middlewares/error.middleware';
 import cookieParser from 'cookie-parser';
 
 const app = express();
+const FE_PORT = '';
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({ credentials: true, origin: `localhost:${FE_PORT}` }));
 app.use(routes);
 app.use(errorHandling);
 
