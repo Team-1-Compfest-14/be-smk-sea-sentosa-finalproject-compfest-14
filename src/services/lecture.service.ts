@@ -78,6 +78,10 @@ class LectureService {
             throw Errors.MODULE_NOT_FOUND;
         }
 
+        const modules = await Module.findBy(
+            { courseId, type: ModuleType.LECTURE });
+
+        moduleService.resetModuleOrder(module, modules, false);
         await Module.remove(module);
     }
 

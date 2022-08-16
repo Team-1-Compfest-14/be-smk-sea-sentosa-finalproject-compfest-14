@@ -273,6 +273,22 @@ class ModuleService {
         return module;
     }
 
+    async resetModuleOrder(module: Module, modules: Module[], incr: boolean) {
+        const newModules = modules.map((md) => {
+            if (md.order >= module.order && md.id !== module.id) {
+                if (incr) {
+                    md.order++;
+                } else {
+                    md.order--;
+                }
+            }
+
+            return md;
+        });
+
+        await Module.save(newModules);
+    }
+
 }
 
 export const moduleService = new ModuleService();
