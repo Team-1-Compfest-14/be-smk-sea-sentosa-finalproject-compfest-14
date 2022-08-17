@@ -2,4 +2,3 @@
 /build
 coverage
 .env
-docker-compose.yml
