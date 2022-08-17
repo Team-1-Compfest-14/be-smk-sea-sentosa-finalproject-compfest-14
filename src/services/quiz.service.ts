@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
+import { In } from 'typeorm';
 import { Module, ModuleType } from '../database/entities/Module';
 import { Question } from '../database/entities/Question';
 import { QuestionOption } from '../database/entities/QuestionOption';
@@ -18,16 +19,26 @@ import { courseEnrollmentService } from './courseEnrollment.service';
 import { moduleService } from './module.service';
 
 interface feedbackInterface {
-    questionId: number;
-    questionOptionId: number;
-    correct: boolean;
+    question: {
+        id: number;
+        text: string;
+    };
+    questionOptions: questionOptionsInterface[];
+    isCorrect: boolean;
 }
 
-interface feedbackAnswersInterface {
-    totalQuestions: number;
-    correctAnswers: number;
-    feedback: feedbackInterface[];
+interface questionOptionsInterface {
+    id: number;
+    text: string;
+    isUserAnswer: boolean;
+    isQuestionCorrect: boolean;
 }
+
+// interface feedbackAnswersInterface {
+//     totalQuestions: number;
+//     correctAnswers: number;
+//     feedback: feedbackInterface[];
+// }
 
 class QuizService {
 
@@ -203,9 +214,14 @@ class QuizService {
         await courseEnrollmentService
             .getCourseEnrollment(courseId, userId);
 
-        const quiz = await moduleService.getQuiz(quizId);
+        const questions = await Question.find({
+            where: { quizId: quizId },
+            relations: ['questionOptions', 'quiz'],
+            select: ['id', 'question'],
+        });
 
-        if (quiz) {
+        if (questions) {
+            const quiz = questions[0].quiz;
             const isCompleted = await moduleService
                 .isModuleCompleted(userId, quiz.moduleId);
 
@@ -216,13 +232,17 @@ class QuizService {
                 );
             }
 
-            const quizQuestions = quiz.questions.length;
+            const quizQuestions = questions.length;
             const userAnswers = await UsersAnswer.find({
-                where: { userId: userId },
+                where: {
+                    userId: userId,
+                    questionId:
+                        In(questions.map((question) => question.id))
+                },
                 relations: ['questionOption'],
             });
 
-            if (userAnswers.length !== quizQuestions) {
+            if (userAnswers.length !== quizQuestions || !userAnswers) {
                 throw new ResponseError(
                     'Number of answers must be equal to number of questions.',
                     StatusCodes.BAD_REQUEST,
@@ -231,29 +251,35 @@ class QuizService {
 
             const tempFeedback: feedbackInterface[] = [];
 
-            quiz.questions.map(async (question) => {
-                const userAnswer = userAnswers.find(
-                    (answer) => answer.questionId === question.id,
-                );
-
-                if (userAnswer) {
-                    tempFeedback.push({
-                        questionId: question.id,
-                        questionOptionId: userAnswer.questionOptionId,
-                        correct: userAnswer.questionOption.isCorrectAnswer,
+            questions.map((question) => {
+                const tempOption: questionOptionsInterface[] = [];
+                question.questionOptions.map((option) => {
+                    const isUserAnswer =
+                        userAnswers.map((answer) => answer.questionOption.id)
+                            .includes(option.id);
+                    tempOption.push({
+                        id: option.id,
+                        text: option.option,
+                        isUserAnswer,
+                        isQuestionCorrect: option.isCorrectAnswer,
                     });
-                }
+                });
+
+                const feedback = {
+                    question: {
+                        id: question.id,
+                        text: question.question,
+                    },
+                    questionOptions: tempOption,
+                    isCorrect: tempOption.every(
+                        (option) =>
+                            option.isQuestionCorrect === option.isUserAnswer),
+                };
+
+                tempFeedback.push(feedback);
+
             });
-
-            const feedback: feedbackAnswersInterface = {
-                totalQuestions: quiz.questions.length,
-                correctAnswers: tempFeedback.filter(
-                    (answer) => answer.correct === true,
-                ).length,
-                feedback: tempFeedback,
-            };
-
-            return feedback;
+            return tempFeedback;
         }
 
     }
