@@ -31,14 +31,8 @@ interface questionOptionsInterface {
     id: number;
     text: string;
     isUserAnswer: boolean;
-    isQuestionCorrect: boolean;
+    isQuestionAnswer: boolean;
 }
-
-// interface feedbackAnswersInterface {
-//     totalQuestions: number;
-//     correctAnswers: number;
-//     feedback: feedbackInterface[];
-// }
 
 class QuizService {
 
@@ -125,6 +119,7 @@ class QuizService {
         const questions = await Question.find({
             where: { quizId: quizId },
             relations: ['questionOptions'],
+            select: ['id', 'question'],
         });
 
         return questions;
@@ -217,7 +212,6 @@ class QuizService {
         const questions = await Question.find({
             where: { quizId: quizId },
             relations: ['questionOptions', 'quiz'],
-            select: ['id', 'question'],
         });
 
         if (questions) {
@@ -261,7 +255,7 @@ class QuizService {
                         id: option.id,
                         text: option.option,
                         isUserAnswer,
-                        isQuestionCorrect: option.isCorrectAnswer,
+                        isQuestionAnswer: option.isCorrectAnswer,
                     });
                 });
 
@@ -273,7 +267,7 @@ class QuizService {
                     questionOptions: tempOption,
                     isCorrect: tempOption.every(
                         (option) =>
-                            option.isQuestionCorrect === option.isUserAnswer),
+                            option.isQuestionAnswer === option.isUserAnswer),
                 };
 
                 tempFeedback.push(feedback);
