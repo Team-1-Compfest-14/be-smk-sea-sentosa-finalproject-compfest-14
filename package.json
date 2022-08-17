@@ -12,6 +12,7 @@
         "migration:create": "ts-node ./scripts/migration.ts CREATE",
         "migration:show": "ts-node ./scripts/migration.ts SHOW",
         "migration:run": "ts-node ./scripts/migration.ts RUN",
+        "migration:run test": "cross-env NODE_ENV=test ts-node ./scripts/migration.ts RUN",
         "migration:revert": "ts-node ./scripts/migration.ts REVERT",
         "typeorm": "typeorm-ts-node-commonjs",
         "seed": "ts-node ./scripts/seeder.ts"

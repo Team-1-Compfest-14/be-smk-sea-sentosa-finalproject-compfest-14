@@ -2,13 +2,28 @@ import { DataSource } from 'typeorm';
 import 'reflect-metadata';
 import config from '../configs/config';
 
+// export const AppDataSource = new DataSource({
+//     type: 'postgres',
+//     host: config.isTest ? config.test.db.host : config.db.host,
+//     port: config.isTest ? config.test.db.port : config.db.port,
+//     username: config.isTest ? config.test.db.username : config.db.username,
+//     password: config.isTest ? config.test.db.password : config.db.password,
+//     database: config.isTest ? config.test.db.database : config.db.database,
+//     synchronize: false,
+//     migrationsRun: true,
+//     logging: true,
+//     entities: ['./src/database/entities/*.ts'],
+//     subscribers: [],
+//     migrations: ['./src/database/migrations/*.ts'],
+// });
+
 export const AppDataSource = new DataSource({
     type: 'postgres',
-    host: config.isTest ? config.test.db.host : config.db.host,
-    port: config.isTest ? config.test.db.port : config.db.port,
-    username: config.isTest ? config.test.db.username : config.db.username,
-    password: config.isTest ? config.test.db.password : config.db.password,
-    database: config.isTest ? config.test.db.database : config.db.database,
+    host: 'database',
+    port: 5432,
+    username: 'postgres',
+    password: 'kjsuhwkr',
+    database: 'sea_test',
     synchronize: false,
     migrationsRun: true,
     logging: true,
