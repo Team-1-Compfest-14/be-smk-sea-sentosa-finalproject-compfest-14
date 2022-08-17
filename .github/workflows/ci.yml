@@ -10,18 +10,18 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
 
-    # services:
-    #   postgres:
-    #     image: postgres:14
-    #     env:
-    #       POSTGRES_USER: postgres
-    #       POSTGRES_PASSWORD: kjsuhwkr
-    #       POSTGRES_DB: sea_test
-    #     options: >-
-    #       --health-cmd pg_isready
-    #       --health-interval 10s
-    #       --health-timeout 5s
-    #       --health-retries 5
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: kjsuhwkr
+          POSTGRES_DB: sea_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     
     steps:
     - name: Checkout repository
@@ -35,5 +35,11 @@ jobs:
     - name: Install dependencies
       run: yarn
 
-    - name: Run the tests
-      run: yarn test
+    - name: Run migrate
+      run: yarn migration:run
+
+    - name: Run seed
+      run: yarn seed
+
+    # - name: Run the tests
+    #   run: yarn test
