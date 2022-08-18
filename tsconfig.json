@@ -3,6 +3,7 @@
     "target": "ES6",
     "module": "CommonJS",
     "outDir": "./build",
+    "baseUrl": "./src",
     "moduleResolution": "Node",
     "strict": true,
     "removeComments": true,
