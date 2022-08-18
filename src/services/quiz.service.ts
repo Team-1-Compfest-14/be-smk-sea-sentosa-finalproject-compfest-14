@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
-import { In } from 'typeorm';
+import { createQueryBuilder, In } from 'typeorm';
 import { Module, ModuleType } from '../database/entities/Module';
 import { Question } from '../database/entities/Question';
 import { QuestionOption } from '../database/entities/QuestionOption';
@@ -117,9 +117,14 @@ class QuizService {
         await moduleService.getQuiz(quizId);
 
         const questions = await Question.find({
-            where: { quizId: quizId },
-            relations: ['questionOptions'],
-            select: ['id', 'question'],
+            where: { quizId },
+            relations: {
+                questionOptions: {
+                    id: true,
+                    questionId: true,
+                    question: true
+                }
+            }
         });
 
         return questions;
