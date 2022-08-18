@@ -2,7 +2,7 @@ import { DataSource } from 'typeorm';
 import 'reflect-metadata';
 import config from '../configs/config';
 
-console.log(__dirname);
+console.log(config.isTest);
 export const AppDataSource = new DataSource({
     type: 'postgres',
     url: process.env.DATABASE_URL,
