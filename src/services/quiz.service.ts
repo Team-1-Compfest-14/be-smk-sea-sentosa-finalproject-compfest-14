@@ -123,7 +123,12 @@ class QuizService {
                 .leftJoinAndSelect('questionOption.question', 'question')
                 .andWhere('question.id = :questionId',
                     { questionId: question.id })
-                .select(['id', 'questionId', 'option', 'isCorrectAnswer'])
+                .select([
+                    'questionOption.id',
+                    'questionId',
+                    'option',
+                    'isCorrectAnswer'
+                ])
                 .getMany();
             question.questionOptions = questionOptions;
         }
