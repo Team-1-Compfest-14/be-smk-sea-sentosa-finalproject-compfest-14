@@ -163,8 +163,6 @@ async function seedData() {
         })
     ];
     await Quiz.save(quizzes);
-
-    // const questions: Question
 }
 
 AppDataSource.initialize()

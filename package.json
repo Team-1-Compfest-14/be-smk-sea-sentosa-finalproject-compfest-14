@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "author": "tim bebas",
     "license": "MIT",
+    "type": "module",
     "scripts": {
         "start": "node ./build/src/server.js",
         "dev": "ts-node ./src/server.ts",
