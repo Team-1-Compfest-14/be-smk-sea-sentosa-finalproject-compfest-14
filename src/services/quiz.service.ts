@@ -116,16 +116,28 @@ class QuizService {
 
         await moduleService.getQuiz(quizId);
 
-        const questions = await Question.find({
-            where: { quizId },
-            relations: {
-                questionOptions: {
-                    id: true,
-                    questionId: true,
-                    option: true
-                }
-            }
-        });
+        const questions = await Question.findBy({ quizId });
+        for (const question of questions) {
+            const questionOptions = await QuestionOption
+                .createQueryBuilder('questionOption')
+                .leftJoinAndSelect('questionOption.question', 'question')
+                .andWhere('question.id = :questionId',
+                    { questionId: question.id })
+                .select(['id', 'questionId', 'option', 'isCorrectAnswer'])
+                .getMany();
+            question.questionOptions = questionOptions;
+        }
+
+        // const questions = await Question.find({
+        //     where: { quizId },
+        //     relations: {
+        //         questionOptions: {
+        //             id: true,
+        //             questionId: true,
+        //             option: true
+        //         }
+        //     }
+        // });
 
         return questions;
     }
