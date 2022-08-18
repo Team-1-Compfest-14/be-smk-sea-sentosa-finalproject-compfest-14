@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm';
 import 'reflect-metadata';
 import config from '../configs/config';
 
+console.log(__dirname);
 export const AppDataSource = new DataSource({
     type: 'postgres',
     url: process.env.DATABASE_URL,
@@ -13,9 +14,9 @@ export const AppDataSource = new DataSource({
     synchronize: false,
     migrationsRun: true,
     logging: true,
-    entities: [`${__dirname}/database/entities/*.{ts,js}`],
+    entities: [`${__dirname}/entities/*.{ts,js}`],
     subscribers: [],
-    migrations: [`${__dirname}/database/migrations/*.{ts,js}`],
+    migrations: [`${__dirname}/migrations/*.{ts,js}`],
     ssl: {
         rejectUnauthorized: false
     }
