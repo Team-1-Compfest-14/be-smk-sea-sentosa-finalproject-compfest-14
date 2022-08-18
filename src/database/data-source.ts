@@ -13,9 +13,9 @@ export const AppDataSource = new DataSource({
     synchronize: false,
     migrationsRun: true,
     logging: true,
-    entities: ['./src/database/entities/*.ts'],
+    entities: [`${__dirname}/database/entities/*.{ts,js}`],
     subscribers: [],
-    migrations: ['./src/database/migrations/*.ts'],
+    migrations: [`${__dirname}/src/database/migrations/*.{ts,js}`],
     ssl: {
         rejectUnauthorized: false
     }
