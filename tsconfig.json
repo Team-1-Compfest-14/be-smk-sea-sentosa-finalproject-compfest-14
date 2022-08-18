@@ -4,6 +4,9 @@
     "module": "CommonJS",
     "outDir": "./build",
     "baseUrl": "./src",
+    "include": [
+      "src/**/*.ts"
+    ],
     "moduleResolution": "Node",
     "strict": true,
     "removeComments": true,
