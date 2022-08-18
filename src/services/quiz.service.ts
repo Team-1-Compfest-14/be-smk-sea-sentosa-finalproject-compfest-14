@@ -126,8 +126,7 @@ class QuizService {
                 .select([
                     'questionOption.id',
                     'questionOption.questionId',
-                    'questionOption.option',
-                    'questionOption.isCorrectAnswer'
+                    'questionOption.option'
                 ])
                 .getMany();
             question.questionOptions = questionOptions;
