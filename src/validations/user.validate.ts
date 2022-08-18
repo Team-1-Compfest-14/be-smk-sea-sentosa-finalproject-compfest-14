@@ -1,8 +1,6 @@
 import joi from 'joi';
 
-export interface RegisterType {
-    email: string;
-    password: string;
+export interface RegisterType extends LoginType {
     name: string;
     role: number;
 }
@@ -10,6 +8,10 @@ export interface RegisterType {
 export interface LoginType {
     email: string;
     password: string;
+}
+
+export interface UserIdType {
+    userId: number;
 }
 
 export const registerSchema = joi.object<RegisterType>({
@@ -38,5 +40,10 @@ export const loginSchema = joi.object<LoginType>({
 
     password: joi.string()
         .max(64)
+        .required()
+});
+
+export const userIdSchema = joi.object<UserIdType>({
+    userId: joi.number()
         .required()
 });

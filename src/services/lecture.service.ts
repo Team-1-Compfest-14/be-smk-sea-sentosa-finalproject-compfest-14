@@ -1,15 +1,36 @@
 import { Course } from '../database/entities/Course';
 import { Lecture } from '../database/entities/Lecture';
-import { Module } from '../database/entities/Module';
+import { Module, ModuleType } from '../database/entities/Module';
 import { UserRole } from '../database/entities/User';
 import type { UserPayload } from '../typings/auth';
 import { Errors } from '../utils/error.util';
+import type { CourseIdType } from '../validations/course.validate';
 import type {
+    AddLectureType,
     EditLectureParamsType, EditLectureType
 } from '../validations/lecture.validate';
+
 import { courseService } from './course.service';
+import { moduleService } from './module.service';
 
 class LectureService {
+
+    async addLecture(
+        { userId, role }: UserPayload,
+        { courseId }: CourseIdType,
+        { name, lectureLink }: AddLectureType) {
+
+        const course = await courseService.get(courseId);
+        if (role !== UserRole.INSTRUCTOR || course.instructorId !== userId) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const module = await moduleService.add(
+            courseId, name, ModuleType.LECTURE);
+
+        const lecture = Lecture.create({ moduleId: module.id, lectureLink });
+        await Lecture.save(lecture);
+    }
 
     async editLecture(
         { userId, role }: UserPayload,
@@ -57,6 +78,10 @@ class LectureService {
             throw Errors.MODULE_NOT_FOUND;
         }
 
+        const modules = await Module.findBy(
+            { courseId, type: ModuleType.LECTURE });
+
+        moduleService.resetModuleOrder(module, modules, false);
         await Module.remove(module);
     }
 

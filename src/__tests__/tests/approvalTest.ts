@@ -1,11 +1,12 @@
 import request from 'supertest';
 import { StatusCodes } from 'http-status-codes';
 import app from '../../app';
-import { userAdminDataTest } from './userData';
+import { userAdminDataTest, userStudentDataTest } from './userData';
 
 export const ApprovalTest = () => {
 
-    let token: string;
+    let adminToken: string;
+    let studentToken: string;
 
     beforeAll(async () => {
         const response = await request(app)
@@ -15,14 +16,25 @@ export const ApprovalTest = () => {
                 password: userAdminDataTest.password,
             });
 
-        token = `Bearer ${response.body.data.accessToken}`;
+        adminToken = `Bearer ${response.body.data.accessToken}`;
     });
 
-    describe('GET /approval/register', () => {
+    beforeAll(async () => {
+        const response = await request(app)
+            .post('/auth/login')
+            .send({
+                email: userStudentDataTest.email,
+                password: userStudentDataTest.password,
+            });
+
+        studentToken = `Bearer ${response.body.data.accessToken}`;
+    });
+
+    describe('GET /approval/users', () => {
         it('should return OK IF logged in as admin', async () => {
             const response = await request(app)
-                .get('/approval/register')
-                .set('Authorization', token);
+                .get('/approval/users')
+                .set('Authorization', adminToken);
 
             expect(response.statusCode).toBe(StatusCodes.OK);
             expect(response.body).toMatchObject({
@@ -32,9 +44,9 @@ export const ApprovalTest = () => {
             });
         });
 
-        it('should return UNAUTHORIZED IF not logged in as admin', async () => {
+        it('should return UNAUTHORIZED IF not logged in', async () => {
             const response = await request(app)
-                .get('/approval/register');
+                .get('/approval/users');
 
             expect(response.statusCode).toBe(StatusCodes.UNAUTHORIZED);
             expect(response.body).toMatchObject({
@@ -42,13 +54,25 @@ export const ApprovalTest = () => {
                 message: expect.anything()
             });
         });
+
+        it('should return FORBIDDEN IF not logged in as admin', async () => {
+            const response = await request(app)
+                .get('/approval/users')
+                .set('Authorization', studentToken);
+
+            expect(response.statusCode).toBe(StatusCodes.FORBIDDEN);
+            expect(response.body).toMatchObject({
+                status: 'fail',
+                message: expect.anything()
+            });
+        });
     });
 
-    describe('GET /approval/course', () => {
+    describe('GET /approval/courses', () => {
         it('should return OK IF logged in as admin', async () => {
             const response = await request(app)
-                .get('/approval/course')
-                .set('Authorization', token);
+                .get('/approval/courses')
+                .set('Authorization', adminToken);
 
             expect(response.statusCode).toBe(StatusCodes.OK);
             expect(response.body).toMatchObject({
@@ -58,9 +82,9 @@ export const ApprovalTest = () => {
             });
         });
 
-        it('should return UNAUTHORIZED IF not logged in as admin', async () => {
+        it('should return UNAUTHORIZED IF not logged in', async () => {
             const response = await request(app)
-                .get('/approval/course');
+                .get('/approval/courses');
 
             expect(response.statusCode).toBe(StatusCodes.UNAUTHORIZED);
             expect(response.body).toMatchObject({
@@ -70,11 +94,14 @@ export const ApprovalTest = () => {
         });
     });
 
-    describe('POST /approval/:instructorId', () => {
+    describe('POST /approval/users/:userId', () => {
         it('should return OK IF Instructor Approved', async () => {
             const response = await request(app)
-                .post('/approval/3?action=approve')
-                .set('Authorization', token);
+                .post('/approval/users/3')
+                .set('Authorization', adminToken)
+                .send({
+                    approved: true
+                });
 
             expect(response.statusCode).toBe(StatusCodes.OK);
             expect(response.body).toMatchObject({
@@ -83,22 +110,28 @@ export const ApprovalTest = () => {
             });
         });
 
-        it('should return FORBIDDEN IF Instructor' +
+        it('should return BAD_REQUEST IF Instructor' +
             ' already verified got Rejected', async () => {
             const response = await request(app)
-                .post('/approval/3?action=reject')
-                .set('Authorization', token);
+                .post('/approval/users/3')
+                .set('Authorization', adminToken)
+                .send({
+                    approved: false
+                });
 
-            expect(response.statusCode).toBe(StatusCodes.FORBIDDEN);
+            expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
             expect(response.body).toMatchObject({
                 status: 'fail',
                 message: expect.anything()
             });
         });
 
-        it('should return UNAUTHORIZED IF not logged in as admin', async () => {
+        it('should return UNAUTHORIZED IF not logged in', async () => {
             const response = await request(app)
-                .post('/approval/3?action=approve');
+                .post('/approval/users/3')
+                .send({
+                    approved: true
+                });
 
             expect(response.statusCode).toBe(StatusCodes.UNAUTHORIZED);
             expect(response.body).toMatchObject({
@@ -108,11 +141,14 @@ export const ApprovalTest = () => {
         });
     });
 
-    describe('POST /approval/course/:courseId', () => {
+    describe('POST /approval/courses/:courseId', () => {
         it('should return OK IF Course Approved', async () => {
             const response = await request(app)
-                .post('/approval/1?action=approve')
-                .set('Authorization', token);
+                .post('/approval/courses/1')
+                .set('Authorization', adminToken)
+                .send({
+                    approved: true
+                });
 
             expect(response.statusCode).toBe(StatusCodes.OK);
             expect(response.body).toMatchObject({
@@ -121,13 +157,16 @@ export const ApprovalTest = () => {
             });
         });
 
-        it('should return FORBIDDEN IF Course' +
+        it('should return BAD_REQUEST IF Course' +
             ' already verified got Rejected', async () => {
             const response = await request(app)
-                .post('/approval/1?action=reject')
-                .set('Authorization', token);
+                .post('/approval/courses/1')
+                .set('Authorization', adminToken)
+                .send({
+                    approved: false
+                });
 
-            expect(response.statusCode).toBe(StatusCodes.FORBIDDEN);
+            expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
             expect(response.body).toMatchObject({
                 status: 'fail',
                 message: expect.anything()
@@ -136,7 +175,10 @@ export const ApprovalTest = () => {
 
         it('should return UNAUTHORIZED IF not logged in as admin', async () => {
             const response = await request(app)
-                .post('/approval/1?action=approve');
+                .post('/approval/courses/1')
+                .send({
+                    approved: true
+                });
 
             expect(response.statusCode).toBe(StatusCodes.UNAUTHORIZED);
             expect(response.body).toMatchObject({

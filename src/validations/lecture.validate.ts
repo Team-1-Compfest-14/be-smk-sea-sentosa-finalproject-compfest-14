@@ -1,4 +1,9 @@
 import joi from 'joi';
+import type { AddModuleType } from './module.validate';
+
+export interface AddLectureType extends AddModuleType {
+    lectureLink: string;
+}
 
 export interface EditLectureType {
     name: string;
@@ -15,6 +20,17 @@ export interface DeleteLectureParamsType {
     lectureId: number;
 }
 
+export const addLectureSchema = joi.object<AddLectureType>({
+    name: joi.string()
+        .min(4)
+        .max(64)
+        .required(),
+
+    lectureLink: joi.string()
+        .min(4)
+        .max(64)
+        .required()
+});
 
 export const editLectureSchema = joi.object({
     name: joi.string()

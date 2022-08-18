@@ -14,34 +14,41 @@ import authenticate from '../middlewares/authenticate.middleware';
 
 const router = Router();
 
-// Auth
+// Auths
 router.post('/auth/register', authController.register);
 router.post('/auth/login', authController.login);
 router.post('/auth/refresh', authenticate('REFRESH'), authController.refresh);
 router.delete('/auth/logout', authenticate('REFRESH'), authController.logout);
 
-// Course Enrollments
-router.post('/courses/:courseId/enroll', authenticate('ACCESS'),
-    courseEnrollmentController.enrollNewCourse);
+// Users Approvals
+router.get('/approval/users', authenticate('ACCESS'),
+    userController.getUnverifiedInstructors);
+router.post('/approval/users/:userId', authenticate('ACCESS'),
+    approvalController.approvalActionForNewInstructor);
 
-// Course & Modules
-// Role Student
-router.get('/courses', authenticate('ACCESS'),
+// Courses
+router.post('/courses', authenticate('ACCESS'), courseController.addCourse);
+router.get('/courses/verified', authenticate('ACCESS'),
     courseController.getVerifiedCourses);
-router.get('/courses/:courseId', authenticate('ACCESS'),
-    courseController.getCourseDetail);
-router.get('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
-    moduleController.getEnrolledLecturesForStudent);
+router.get('/courses/verified/:courseId', authenticate('ACCESS'),
+    courseController.getVerifiedCourse);
 router.delete('/courses/:courseId', authenticate('ACCESS'),
     courseController.deleteCourse);
+router.get('/courses/enrolled/', authenticate('ACCESS'),
+    courseController.getEnrolledCourses);
+
+// Courses approvals
+router.get('/approval/courses', authenticate('ACCESS'),
+    courseController.getProposedCourses);
+router.post('/approval/courses/:courseId', authenticate('ACCESS'),
+    approvalController.approvalActionForProposedCourse);
+
+// Course Enrollments
+router.post('/courses/:courseId/enrollment', authenticate('ACCESS'),
+    courseEnrollmentController.enrollCourse);
 
 // Role Instructor
-router.post('/courses', authenticate('ACCESS'), courseController.addNewCourse);
-router.post('/courses/:courseId/modules/lectures', authenticate('ACCESS'),
-    moduleController.addLecture);
-router.post('/courses/:courseId/modules/quizzes', authenticate('ACCESS'),
-    moduleController.addQuiz);
-router.delete('/courses/:courseId/modules/lectures/:lectureId',
+router.delete('/courses/:courseId/lectures/:lectureId',
     authenticate('ACCESS'),
     moduleController.deleteLecture);
 router.get('/courses/instructor/own', authenticate('ACCESS'),
@@ -52,6 +59,8 @@ router.get('/courses/dashboard/progress', authenticate('ACCESS'),
     moduleController.getProgressDashboard);
 
 // Quizzes
+router.post('/courses/:courseId/quizzes', authenticate('ACCESS'),
+    quizController.addQuiz);
 router.get('/courses/:courseId/quizzes', authenticate('ACCESS'),
     moduleController.getEnrolledCourseQuizzes);
 router.post('/courses/:courseId/quizzes/:quizId/questions',
@@ -60,9 +69,14 @@ router.delete('/courses/:courseId/quizzes/:quizId', authenticate('ACCESS'),
     quizController.deleteQuiz);
 
 // Lectures
+router.get('/courses/:courseId/lectures', authenticate('ACCESS'),
+    moduleController.getEnrolledLecturesForStudent);
+router.post('/courses/:courseId/lectures', authenticate('ACCESS'),
+    lectureController.addLecture);
 router.put('/courses/:courseId/modules/:moduleId/lectures',
     authenticate('ACCESS'), lectureController.editLectureData);
-router.delete('/courses/:courseId/lectures/:lectureId', authenticate('ACCESS'));
+router.delete('/courses/:courseId/lectures/:lectureId', authenticate('ACCESS'),
+    lectureController.deleteLecture);
 
 // Role Instructor and Student
 router.get('/courses/:courseId/quizzes/:quizId',
@@ -71,16 +85,5 @@ router.post('/courses/:courseId/quizzes/:quizId/answer',
     authenticate('ACCESS'), quizController.answerQuestion);
 router.get('/courses/:courseId/quizzes/:quizId/feedback',
     authenticate('ACCESS'), quizController.answerFeedback);
-
-// Approval
-router.get('/approval/register', authenticate('ACCESS'),
-    userController.getAllNewInstructor);
-router.post('/approval/:userId', authenticate('ACCESS'),
-    approvalController.approvalActionForNewInstructor);
-router.get('/approval/course', authenticate('ACCESS'),
-    courseController.getProposedCourse);
-router.post('/approval/course/:courseId', authenticate('ACCESS'),
-    approvalController.approvalActionForProposedCourse);
-
 
 export default router;

@@ -4,6 +4,7 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToOne,
     PrimaryGeneratedColumn
 } from 'typeorm';
 import { Module } from './Module';
@@ -24,7 +25,7 @@ export class ModuleCompletion extends BaseEntity {
     @Column({ name: 'completion_time' })
     completionTime!: Date;
 
-    @ManyToOne(() => Module, (module) => module.moduleCompletions)
+    @OneToOne(() => Module)
     @JoinColumn({ name: 'module_id' })
     module!: Module;
 

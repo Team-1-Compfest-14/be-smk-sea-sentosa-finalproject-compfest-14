@@ -1,26 +1,12 @@
 import { StatusCodes } from 'http-status-codes';
 import { Course } from '../database/entities/Course';
+import { CourseEnrollment } from '../database/entities/CourseEnrollment';
 import { UserRole } from '../database/entities/User';
 import type { UserPayload } from '../typings/auth';
 import { ResponseError, Errors } from '../utils/error.util';
-import type {
-    CourseType,
-    CourseIdType
-} from '../validations/course.validate';
+import type { CourseType } from '../validations/course.validate';
 
 class CourseService {
-
-    async addNewCourse(
-        { userId: instructorId, role }: UserPayload,
-        rawCourse: CourseType) {
-        if (role !== UserRole.INSTRUCTOR) {
-            throw Errors.NO_PERMISSION;
-        }
-
-        const course = Course.create({ instructorId, ...rawCourse });
-
-        await Course.save(course);
-    }
 
     async get(courseId: number) {
         const course = await Course.findOneBy({ id: courseId });
@@ -33,47 +19,64 @@ class CourseService {
         return course;
     }
 
-    async getSpecifyCourse(
-        { role }: UserPayload,
-        { courseId }: CourseIdType) {
-
-        if (role !== UserRole.STUDENT) {
+    async addCourse({ userId, role }: UserPayload, rawCourse: CourseType) {
+        if (role !== UserRole.INSTRUCTOR) {
             throw Errors.NO_PERMISSION;
         }
+        const course = Course.create({ instructorId: userId, ...rawCourse });
 
-        return this.get(courseId);
+        await Course.save(course);
     }
 
-    async getCourses({ role }: UserPayload) {
-        if (role !== UserRole.STUDENT) {
-            throw Errors.NO_PERMISSION;
-        }
-
-        const course = await Course.findBy({ isVerified: true });
-        return course;
-    }
-
-    async getNewCourses({ role }: UserPayload) {
-        if (role !== UserRole.ADMIN) {
-            throw Errors.NO_PERMISSION;
-        }
-
-        const course = await Course.findBy({ isVerified: false });
-        return course;
-    }
-
-    async deleteCourse({ userId, role }: UserPayload, courseId: number) {
+    async getVerifiedCourse(courseId: number) {
         const course = await Course.findOneBy(
-            { id: courseId });
-
+            { id: courseId, isVerified: true });
         if (!course) {
             throw Errors.COURSE_NOT_FOUND;
         }
+        return course;
+    }
+
+    async getVerifiedCourses() {
+        const courses = await Course.findBy({ isVerified: true });
+
+        return courses;
+    }
+
+    async getProposedCourses({ role }: UserPayload) {
+        if (role !== UserRole.ADMIN) {
+            throw Errors.NO_PERMISSION;
+        }
+        const courses = await Course.findBy({ isVerified: false });
+        if (!courses) {
+            return [];
+        }
+
+        return courses;
+    }
+
+    async deleteCourse({ userId, role }: UserPayload, courseId: number) {
+        const course = await Course.findOneBy({ id: courseId });
+        if (!course) {
+            throw Errors.COURSE_NOT_FOUND;
+        }
+
         if (course.instructorId !== userId || role !== UserRole.INSTRUCTOR) {
             throw Errors.NO_PERMISSION;
         }
 
         await Course.remove(course);
+    }
+
+    async getEnrolledCourses({ userId }: UserPayload) {
+        const courses = await CourseEnrollment.find({
+            where: { userId },
+            relations: {
+                course: true
+            }
+        });
+
+        return courses ? courses : [];
     }
 
 }

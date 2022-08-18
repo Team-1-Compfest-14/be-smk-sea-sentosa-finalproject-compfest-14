@@ -1,4 +1,5 @@
 import joi from 'joi';
+import type { AddModuleType } from './module.validate';
 
 export interface QuizParamType {
     courseId: number;
@@ -27,6 +28,8 @@ export interface userAnswerType {
     questionId: number;
     questionOptionId: number;
 }
+
+export type AddQuizType = AddModuleType;
 
 export const quizParamsSchema = joi.object<QuizParamType>({
     courseId: joi.number()

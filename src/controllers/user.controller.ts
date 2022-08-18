@@ -6,16 +6,16 @@ import { sendResponse } from '../utils/api.util';
 
 class UserController {
 
-    async getAllNewInstructor(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
-        const listOfInstructor = await userService
-            .getAllNewInstructor(userPayload!);
+    async getUnverifiedInstructors(req: Request, res: Response) {
+        const userPayload = req.userPayload;
+        const users = await userService
+            .getUnverifiedInstructors(userPayload!);
 
         return sendResponse(res, {
             statusCode: StatusCodes.OK,
             success: true,
-            data: { listOfInstructor },
-            message: 'Successfully get all new Instructor'
+            message: 'Successfully found all unverified instructors',
+            data: { users }
         });
     }
 

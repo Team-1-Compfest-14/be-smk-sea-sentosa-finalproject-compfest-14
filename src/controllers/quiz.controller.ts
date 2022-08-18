@@ -4,6 +4,8 @@ import { authService } from '../services/auth.service';
 import { quizService } from '../services/quiz.service';
 import { sendResponse } from '../utils/api.util';
 import { validate } from '../utils/validate.util';
+import { courseIdSchema } from '../validations/course.validate';
+import { addQuizSchema } from '../validations/module.validate';
 import {
     quizParamsSchema,
     addQuestionSchema,
@@ -14,8 +16,22 @@ import {
 
 class QuizController {
 
+    async addQuiz(req: Request, res: Response) {
+        const userPayload = req.userPayload;
+        const body = validate(req, addQuizSchema, 'body');
+        const params = validate(req, courseIdSchema, 'params');
+
+        await quizService.addQuiz(userPayload!, params, body);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.CREATED,
+            success: true,
+            message: 'Successfully created a quiz.'
+        });
+    }
+
     async addNewQuestion(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
         const params = validate(req, quizParamsSchema, 'params');
         const body = validate(req, addQuestionSchema, 'body');
 
@@ -32,7 +48,7 @@ class QuizController {
     }
 
     async ViewAllQuestionsAndOptions(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
         const params = validate(req, quizParamsSchema, 'params');
 
         const questions = await quizService.ViewAllQuestionsAndOptions(
@@ -49,7 +65,7 @@ class QuizController {
     }
 
     async answerQuestion(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
         const params = validate(req, quizAnswerParamsSchema, 'params');
         const body = validate(req, addUserAnswerSchema, 'body');
 
@@ -67,7 +83,7 @@ class QuizController {
     }
 
     async answerFeedback(req: Request, res: Response) {
-        const userPayload = await authService.getTokenPayload(req, 'ACCESS');
+        const userPayload = await authService.getPayload(req, 'ACCESS');
         const params = validate(req, quizAnswerParamsSchema, 'params');
 
         const feedback = await quizService.feedbackAnswers(

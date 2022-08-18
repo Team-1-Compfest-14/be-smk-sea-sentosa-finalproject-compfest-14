@@ -34,13 +34,13 @@ class AuthService {
         const user = await User.findOneBy({ email });
         if (!user) {
             throw new ResponseError(
-                'Account does not exists!', StatusCodes.BAD_REQUEST);
+                'User doesn\'t exists!', StatusCodes.BAD_REQUEST);
         }
 
         const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) {
             throw new ResponseError(
-                'Password is incorrect!', StatusCodes.BAD_REQUEST);
+                'Password is incorrect1', StatusCodes.BAD_REQUEST);
         }
 
         if (!user.isVerified) {
@@ -64,10 +64,11 @@ class AuthService {
         user.refreshToken = null;
 
         await User.save(user);
+        console.log(user.refreshToken);
     }
 
-    async refresh(userPayload: UserPayload) {
-        const user = await User.findOneBy({ id: userPayload.userId });
+    async refresh({ userId }: UserPayload) {
+        const user = await User.findOneBy({ id: userId });
 
         return this.generateToken(user!, 'ACCESS');
     }
@@ -82,7 +83,6 @@ class AuthService {
             role: user.role
         };
         const options: jwt.SignOptions = {};
-
         let tokenSecret;
 
         if (tokenType === 'ACCESS') {
@@ -97,7 +97,7 @@ class AuthService {
 
         if (tokenType === 'REFRESH') {
             user.refreshToken = token;
-            await user.save();
+            await User.save(user);
         }
 
         return token;
@@ -120,7 +120,7 @@ class AuthService {
         return token;
     }
 
-    async getTokenPayload(req: Request, tokenType: TokenType) {
+    async getPayload(req: Request, tokenType: TokenType) {
         const token = await this.getToken(req, tokenType);
         if (!token) {
             return;
@@ -142,8 +142,7 @@ class AuthService {
 
         return {
             userId: payload.userId,
-            role: payload.role
-        } as UserPayload;
+            role: payload.role } as UserPayload;
     }
 
 }

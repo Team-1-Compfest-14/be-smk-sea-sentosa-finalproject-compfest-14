@@ -1,10 +1,13 @@
 import request from 'supertest';
 import { StatusCodes } from 'http-status-codes';
-import { userInstructorVerifiedDataTest } from './userData';
+import {
+    userInstructorVerifiedDataTest, userStudentDataTest
+} from './userData';
 import app from '../../app';
 
 export const CourseInstructorTest = () => {
-    let token: string;
+    let instructorToken: string;
+    let studentToken: string;
     beforeAll(async () => {
         const response = await request(app)
             .post('/auth/login')
@@ -13,7 +16,18 @@ export const CourseInstructorTest = () => {
                 password: userInstructorVerifiedDataTest.password,
             });
 
-        token = `Bearer ${response.body.data.accessToken}`;
+        instructorToken = `Bearer ${response.body.data.accessToken}`;
+    });
+
+    beforeAll(async () => {
+        const response = await request(app)
+            .post('/auth/login')
+            .send({
+                email: userStudentDataTest.email,
+                password: userStudentDataTest.password,
+            });
+
+        studentToken = `Bearer ${response.body.data.accessToken}`;
     });
 
     describe('POST /courses', () => {
@@ -21,7 +35,7 @@ export const CourseInstructorTest = () => {
         'and logged in as instructor', async () => {
             const response = await request(app)
                 .post('/courses')
-                .set('Authorization', token)
+                .set('Authorization', instructorToken)
                 .send({
                     name: 'Test Course',
                     description: 'Test Course Description',
@@ -34,7 +48,7 @@ export const CourseInstructorTest = () => {
         'and logged in as instructor', async () => {
             const response = await request(app)
                 .post('/courses')
-                .set('Authorization', token)
+                .set('Authorization', instructorToken)
                 .send({
                     name: '',
                     description: 'Test Course Description',
@@ -51,13 +65,13 @@ export const CourseInstructorTest = () => {
             async () => {
                 const response = await request(app)
                     .post('/courses')
-                    .set('Authorization', 'Bearer invalid_token')
+                    .set('Authorization', studentToken)
                     .send({
                         name: 'Test Course',
                         description: 'Test Course Description',
                     });
 
-                expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
+                expect(response.status).toBe(StatusCodes.FORBIDDEN);
             });
 
         it('should return UNAUTHORIZED IF not logged in',

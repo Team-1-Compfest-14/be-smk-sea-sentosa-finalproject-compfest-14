@@ -1,15 +1,15 @@
 import joi from 'joi';
-import type { ActionType } from '../typings/action';
 
 export interface ApprovalInstructorType {
     userId: number;
 }
+
 export interface ApprovalCourseType {
     courseId: number;
 }
 
-export interface ApprovalQueryType {
-    action: ActionType;
+export interface ApprovalType {
+    approved: boolean;
 }
 
 export const approvalInstructorSchema = joi.object<ApprovalInstructorType>({
@@ -22,8 +22,7 @@ export const approvalCourseSchema = joi.object<ApprovalCourseType>({
         .required()
 });
 
-export const approvalQuerySchema = joi.object<ApprovalQueryType>({
-    action: joi.string()
-        .max(10)
+export const ApprovalSchema = joi.object<ApprovalType>({
+    approved: joi.boolean()
         .required()
 });

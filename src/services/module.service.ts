@@ -1,7 +1,4 @@
-import type {
-    AddLectureType, AddModuleType, DeleteLectureParams
-} from '../validations/module.validate';
-import { courseService } from '../services/course.service';
+import type { DeleteLectureParams } from '../validations/module.validate';
 import { Errors, ResponseError } from '../utils/error.util';
 import { Module, ModuleType } from '../database/entities/Module';
 import { Lecture } from '../database/entities/Lecture';
@@ -20,56 +17,16 @@ import { ModuleCompletion } from '../database/entities/ModuleCompletion';
 
 class ModuleService {
 
-    async addLecture(
-        instructorId: number,
-        courseId: AddLectureType['courseId'],
-        rawModule: AddLectureType) {
+    async add(courseId: number, name: string, type: number) {
+        const modules = await Module.findBy({ courseId, type });
+        const lastOrder = modules.length;
 
-        rawModule.courseId = courseId;
-        rawModule.type = ModuleType.LECTURE;
-
-        const course = await courseService.get(courseId);
-        if (course.instructorId !== instructorId) {
-            throw Errors.NO_PERMISSION;
-        }
-
-        const moduleData = Module.create({ ...rawModule });
-        const module = await Module.save(moduleData);
-
-        const moduleId = module.id;
-        const lectureLink = rawModule.lectureLink;
-
-        const lectureData = Lecture.create({
-            moduleId,
-            lectureLink
+        const newModule = Module.create({
+            courseId, name, type, order: lastOrder
         });
+        const module = await Module.save(newModule);
 
-        await Lecture.save(lectureData);
-    }
-
-    async addQuiz(
-        instructorId: number,
-        courseId: AddModuleType['courseId'],
-        rawModule: AddModuleType) {
-
-        rawModule.courseId = courseId;
-        rawModule.type = ModuleType.QUIZ;
-
-        const course = await courseService.get(courseId);
-        if (course.instructorId !== instructorId) {
-            throw Errors.NO_PERMISSION;
-        }
-
-        const moduleData = Module.create({ ...rawModule });
-        const module = await Module.save(moduleData);
-
-        const moduleId = module.id;
-
-        const quizData = Quiz.create({
-            moduleId
-        });
-
-        await Quiz.save(quizData);
+        return module;
     }
 
     async getQuiz(quizId: number) {
@@ -92,31 +49,28 @@ class ModuleService {
 
     async getEnrolledLecturesForStudent(
         { userId, role }: UserPayload,
-        courseId: AddLectureType['courseId']) {
+        { courseId }: CourseIdType) {
 
         if (role !== UserRole.STUDENT) {
             throw Errors.NO_PERMISSION;
         }
 
-        const enroll = await CourseEnrollment.findBy({ userId, courseId });
-        if (!enroll) {
+        const courseEnrollment = await CourseEnrollment
+            .findOneBy({ userId, courseId });
+        if (!courseEnrollment) {
             throw Errors.NO_PERMISSION;
         }
 
-        const modules = await Module.find({
+        const lectureModules = await Module.find({
             where: {
                 courseId,
                 type: ModuleType.LECTURE
             },
-            order: {
-                order: 'ASC'
-            },
-            relations: {
-                lectures: true
-            }
+            order: { order: 'ASC' },
+            relations: { lectures: true }
         });
 
-        return modules;
+        return lectureModules;
     }
 
     async deleteLecture(
@@ -317,6 +271,22 @@ class ModuleService {
         }
 
         return module;
+    }
+
+    async resetModuleOrder(module: Module, modules: Module[], incr: boolean) {
+        const newModules = modules.map((md) => {
+            if (md.order >= module.order && md.id !== module.id) {
+                if (incr) {
+                    md.order++;
+                } else {
+                    md.order--;
+                }
+            }
+
+            return md;
+        });
+
+        await Module.save(newModules);
     }
 
 }
