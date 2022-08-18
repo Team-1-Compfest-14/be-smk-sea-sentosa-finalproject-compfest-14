@@ -125,7 +125,7 @@ class QuizService {
                     { questionId: question.id })
                 .select([
                     'questionOption.id',
-                    'questionId',
+                    'questionOption.questionId',
                     'option',
                     'isCorrectAnswer'
                 ])
