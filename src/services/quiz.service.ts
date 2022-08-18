@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
-import { createQueryBuilder, In } from 'typeorm';
+import { In } from 'typeorm';
 import { Module, ModuleType } from '../database/entities/Module';
 import { Question } from '../database/entities/Question';
 import { QuestionOption } from '../database/entities/QuestionOption';
@@ -122,7 +122,7 @@ class QuizService {
                 questionOptions: {
                     id: true,
                     questionId: true,
-                    question: true
+                    option: true
                 }
             }
         });
