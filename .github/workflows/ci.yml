@@ -1,5 +1,5 @@
 name: PostgreSQL service example
-on: 
+on:
   push:
     branches:
       - "refactor"
@@ -22,7 +22,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -35,11 +35,7 @@ jobs:
     - name: Install dependencies
       run: yarn
 
-    - name: Run migrate
-      run: yarn migration:run
+    - name: Run the tests
+      run: yarn test
 
-    - name: Run seed
-      run: yarn seed
-
-    # - name: Run the tests
-    #   run: yarn test
+    
