@@ -89,6 +89,7 @@ class CourseService {
         }
 
         const verifiedCourse: VerifiedCourseType = {
+            course,
             instructorName: instructor.name,
             lectures: newLectures,
             totalLectures: lectures.length,

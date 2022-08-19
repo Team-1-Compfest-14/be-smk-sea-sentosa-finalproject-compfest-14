@@ -40,6 +40,7 @@ export interface QuizzesType {
 }
 
 export interface VerifiedCourseType {
+    course: Course;
     instructorName: string;
     lectures: LecturesType[];
     quizzes: QuizzesType[];
