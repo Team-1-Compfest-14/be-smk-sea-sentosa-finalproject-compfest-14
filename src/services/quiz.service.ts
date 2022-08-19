@@ -19,17 +19,15 @@ import { courseEnrollmentService } from './courseEnrollment.service';
 import { moduleService } from './module.service';
 
 interface feedbackInterface {
-    question: {
-        id: number;
-        text: string;
-    };
+    id: number;
+    question: string;
     questionOptions: questionOptionsInterface[];
     isCorrect: boolean;
 }
 
 interface questionOptionsInterface {
     id: number;
-    text: string;
+    option: string;
     isUserAnswer: boolean;
     isQuestionAnswer: boolean;
 }
@@ -284,17 +282,15 @@ class QuizService {
                             .includes(option.id);
                     tempOption.push({
                         id: option.id,
-                        text: option.option,
+                        option: option.option,
                         isUserAnswer,
                         isQuestionAnswer: option.isCorrectAnswer,
                     });
                 });
 
                 const feedback = {
-                    question: {
-                        id: question.id,
-                        text: question.question,
-                    },
+                    id: question.id,
+                    question: question.question,
                     questionOptions: tempOption,
                     isCorrect: tempOption.every(
                         (option) =>

@@ -94,7 +94,7 @@ class QuizController {
         return sendResponse(res, {
             statusCode: StatusCodes.OK,
             success: true,
-            data: feedback,
+            data: { questions: feedback },
             message: 'Successfully retrieved feedback.',
         });
     }
