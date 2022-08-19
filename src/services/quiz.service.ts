@@ -208,25 +208,6 @@ class QuizService {
 
     }
 
-    async getQuestionAndOptions(
-        questionId: number) {
-
-        const question = await Question.findOne({
-            where: { id: questionId },
-            relations: ['questionOptions'],
-        });
-
-        if (!question) {
-            throw new ResponseError(
-                'Question not found.',
-                StatusCodes.NOT_FOUND,
-            );
-        }
-
-        return question;
-
-    }
-
     async feedbackAnswers(
         courseId: number,
         quizId: number,
@@ -353,6 +334,24 @@ class QuizService {
 
         module.name = name ?? module.name;
         await Module.save(module);
+    }
+
+    async getAllQuizzesForInstructor(
+        { userId, role }: UserPayload, { courseId }: CourseIdType) {
+
+        const course = await courseService.get(courseId);
+        if (course.instructorId !== userId || role !== UserRole.INSTRUCTOR) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const quizzes = await Module.find({
+            where: { courseId },
+            relations: {
+                quiz: true
+            }
+        });
+
+        return quizzes;
     }
 
 }

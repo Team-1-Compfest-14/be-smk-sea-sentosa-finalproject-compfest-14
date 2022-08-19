@@ -90,6 +90,8 @@ router.delete('/courses/:courseId/lectures/:lectureId', authenticate('ACCESS'),
     lectureController.deleteLecture);
 
 // Role Instructor and Student
+router.get('/courses/:courseId/quizzes', authenticate('ACCESS'),
+    quizController.getAllQuizzesForInstructor);
 router.get('/courses/:courseId/quizzes/:quizId',
     authenticate('ACCESS'), quizController.ViewAllQuestionsAndOptions);
 router.post('/courses/:courseId/quizzes/:quizId/answer',

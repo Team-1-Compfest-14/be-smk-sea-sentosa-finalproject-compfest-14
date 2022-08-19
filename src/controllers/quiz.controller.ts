@@ -128,6 +128,21 @@ class QuizController {
         });
     }
 
+    async getAllQuizzesForInstructor(req: Request, res: Response) {
+        const userPayload = req.userPayload;
+        const params = validate(req, courseIdSchema, 'params');
+
+        const quizzes = await quizService
+            .getAllQuizzesForInstructor(userPayload!, params);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully found all quizzes instructors',
+            data: { quizzes }
+        });
+    }
+
 }
 
 export const quizController = new QuizController();
