@@ -38,9 +38,6 @@ jobs:
     - name: Install dependencies
       run: yarn
 
-    # - name: Run the test
-    #   run: yarn test
-
     - name: Add remote origin
       if: github.ref == 'refs/heads/main' && job.status == 'success'
       run: |
