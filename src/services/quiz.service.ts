@@ -114,7 +114,17 @@ class QuizService {
             }
         }
 
-        await moduleService.getQuiz(quizId);
+        const quiz = await moduleService.getQuiz(quizId);
+
+        const isCompleted = await moduleService
+            .isModuleCompleted(userId, quiz.moduleId);
+
+        if (isCompleted) {
+            throw new ResponseError(
+                'Module already completed.',
+                StatusCodes.BAD_REQUEST,
+            );
+        }
 
         const questions = await Question.findBy({ quizId });
         for (const question of questions) {
