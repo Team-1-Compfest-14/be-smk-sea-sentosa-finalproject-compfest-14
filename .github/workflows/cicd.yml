@@ -45,4 +45,5 @@ jobs:
 
     - name: Deploy to heroku
       run: |
+        git filter-branch -- --all
         git push heroku HEAD:main -f
