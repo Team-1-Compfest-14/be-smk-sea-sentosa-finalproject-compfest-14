@@ -121,7 +121,7 @@ class QuizService {
 
         if (isCompleted) {
             throw new ResponseError(
-                'Module already completed.',
+                'Quiz already completed.',
                 StatusCodes.BAD_REQUEST,
             );
         }
@@ -185,7 +185,7 @@ class QuizService {
 
             if (isCompleted) {
                 throw new ResponseError(
-                    'Module already completed.',
+                    'Quiz already completed.',
                     StatusCodes.BAD_REQUEST,
                 );
             }
