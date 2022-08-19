@@ -1,5 +1,5 @@
-import type { Course } from 'database/entities/Course';
-import type { Module } from 'database/entities/Module';
+import type { Course } from '../database/entities/Course';
+import type { Module } from '../database/entities/Module';
 import joi from 'joi';
 
 export interface CourseType {

@@ -1,4 +1,4 @@
-import { Course } from 'database/entities/Course';
+import { Course } from '../database/entities/Course';
 import { StatusCodes } from 'http-status-codes';
 import { In } from 'typeorm';
 import { Module, ModuleType } from '../database/entities/Module';
