@@ -38,6 +38,9 @@ jobs:
     - name: Install dependencies
       run: yarn
 
+    - name: Run eslint
+      run: yarn lint
+
     - name: Add remote origin
       if: github.ref == 'refs/heads/main' && job.status == 'success'
       run: |

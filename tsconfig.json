@@ -1,23 +1,11 @@
 {
-  "compilerOptions": {
-    "target": "ES6",
-    "module": "CommonJS",
-    "outDir": "./build",
-    "baseUrl": "./src",
-    "moduleResolution": "Node",
-    "strict": true,
-    "removeComments": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "skipLibCheck": true
-  },
-  "ts-node": {
-    "files": true
-  },
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./tsconfig.base.json",
   "include": [
-    "src/**/*.ts"
-  ]
+      "./src/**/*.ts"
+  ],
+  "ts-node": {
+      "files": true,
+      "require": ["tsconfig-paths/register"]
+  }
 }

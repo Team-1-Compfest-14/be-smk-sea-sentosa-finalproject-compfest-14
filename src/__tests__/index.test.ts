@@ -19,7 +19,7 @@ describe('Testing Instructor Functions', () => {
         CourseInstructorTest();
     });
 
-//     describe('Testing Question Functions', () => {
-//         QuestionInstructorTest();
-//     });
+    describe('Testing Question Functions', () => {
+        QuestionInstructorTest();
+    });
 });

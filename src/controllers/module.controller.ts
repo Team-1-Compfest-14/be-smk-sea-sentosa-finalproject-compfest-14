@@ -6,7 +6,7 @@ import { sendResponse } from '../utils/api.util';
 import { validate } from '../utils/validate.util';
 import { courseIdSchema } from '../validations/course.validate';
 import {
-    courseIdModuleSchema, addQuizSchema, deleteLectureSchema
+    courseIdModuleSchema, deleteLectureSchema
 } from '../validations/module.validate';
 
 class ModuleController {

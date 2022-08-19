@@ -1,6 +1,5 @@
 import type { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { authService } from '../services/auth.service';
 import { userService } from '../services/user.service';
 import { sendResponse } from '../utils/api.util';
 

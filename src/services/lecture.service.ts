@@ -89,6 +89,10 @@ class LectureService {
         { userId, role }: UserPayload, { courseId }: CourseIdType) {
 
         const course = await courseService.get(courseId);
+        if (course.instructorId !== userId || role !== UserRole.INSTRUCTOR) {
+            throw Errors.NO_PERMISSION;
+        }
+
         const modules = await Module.find({
             where: { courseId, type: ModuleType.LECTURE },
             relations: {
