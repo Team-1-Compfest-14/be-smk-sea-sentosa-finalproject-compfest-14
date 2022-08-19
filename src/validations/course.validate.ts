@@ -1,3 +1,4 @@
+import type { Course } from 'database/entities/Course';
 import type { Module } from 'database/entities/Module';
 import joi from 'joi';
 
@@ -46,6 +47,12 @@ export interface VerifiedCourseType {
     totalQuizzes: number;
     totalCompleteLectures: number;
     totalCompleteQuizzes: number;
+}
+
+export interface VerifiedCourseTypeMinor {
+    course: Course;
+    instructorName: string;
+    totalModule: number;
 }
 
 export const courseSchema = joi.object<CourseType>({

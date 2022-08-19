@@ -10,7 +10,8 @@ import type {
     CourseType,
     LecturesType,
     QuizzesType,
-    VerifiedCourseType
+    VerifiedCourseType,
+    VerifiedCourseTypeMinor
 } from '../validations/course.validate';
 import { userService } from './user.service';
 
@@ -103,13 +104,19 @@ class CourseService {
     async getVerifiedCourses({ userId }: UserPayload) {
         const courses = await Course.findBy({ isVerified: true });
 
-        const newCourses: Course[] = [];
+        const newCourses: VerifiedCourseTypeMinor[] = [];
         for (const course of courses) {
             const enrollment = await CourseEnrollment
                 .findOneBy({ courseId: course.id, userId });
+            const user = await userService.get(course.id);
+            const modules = await Module.findBy({ courseId: course.id });
 
             if (!enrollment) {
-                newCourses.push(course);
+                newCourses.push({
+                    course,
+                    instructorName: user.name,
+                    totalModule: modules.length
+                });
             }
         }
 
