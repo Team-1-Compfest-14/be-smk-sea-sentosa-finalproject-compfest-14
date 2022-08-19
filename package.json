@@ -7,7 +7,7 @@
         "start": "node ./build/server.js",
         "dev": "cross-env NODE_ENV=development ts-node ./src/server.ts",
         "build": "tsc",
-        "lint": "eslint .",
+        "lint": "eslint ./src",
         "test": "cross-env NODE_ENV=test jest",
         "test:auto": "cross-env NODE_ENV=test yarn typeorm schema:drop -d src/database/data-source.ts && yarn migration:test && yarn seed:test && cross-env NODE_ENV=test jest --runInBand --forceExit",
         "test:coverage": "cross-env NODE_ENV=test jest --coverage --collectCoverageFrom='./src/__tests__/**' --runInBand --forceExit",
