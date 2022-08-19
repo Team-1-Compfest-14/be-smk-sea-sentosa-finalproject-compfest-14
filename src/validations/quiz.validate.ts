@@ -29,6 +29,10 @@ export interface userAnswerType {
     questionOptionId: number;
 }
 
+export interface editQuizNameType {
+    name: string;
+}
+
 export type AddQuizType = AddModuleType;
 
 export const quizParamsSchema = joi.object<QuizParamType>({
@@ -79,6 +83,13 @@ export const quizAnswerFeedbackSchema = joi.object<QuizParamType>({
     courseId: joi.number()
         .required(),
     quizId: joi.number()
+        .required()
+});
+
+export const editQuizNameSchema = joi.object<editQuizNameType>({
+    name: joi.string()
+        .min(4)
+        .max(64)
         .required()
 });
 

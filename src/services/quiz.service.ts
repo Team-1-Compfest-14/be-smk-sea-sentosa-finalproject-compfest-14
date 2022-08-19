@@ -4,7 +4,7 @@ import { Module, ModuleType } from '../database/entities/Module';
 import { Question } from '../database/entities/Question';
 import { QuestionOption } from '../database/entities/QuestionOption';
 import { Quiz } from '../database/entities/Quiz';
-import { UserRole } from '../database/entities/User';
+import { User, UserRole } from '../database/entities/User';
 import { UsersAnswer } from '../database/entities/UsersAnswer';
 import type { UserPayload } from '../typings/auth';
 import { Errors, ResponseError } from '../utils/error.util';
@@ -12,7 +12,8 @@ import type { CourseIdType } from '../validations/course.validate';
 import type {
     AddQuizType,
     AddUserAnswerType,
-    QuestionOptionType, QuizType
+    editQuizNameType,
+    QuestionOptionType, QuizParamType, QuizType
 } from '../validations/quiz.validate';
 import { courseService } from './course.service';
 import { courseEnrollmentService } from './courseEnrollment.service';
@@ -131,17 +132,6 @@ class QuizService {
                 .getMany();
             question.questionOptions = questionOptions;
         }
-
-        // const questions = await Question.find({
-        //     where: { quizId },
-        //     relations: {
-        //         questionOptions: {
-        //             id: true,
-        //             questionId: true,
-        //             option: true
-        //         }
-        //     }
-        // });
 
         return questions;
     }
@@ -318,6 +308,29 @@ class QuizService {
         }
 
         await Module.remove(module);
+    }
+
+    async editQuizName({ userId, role }: UserPayload,
+        { courseId, quizId }: QuizParamType,
+        { name }: editQuizNameType) {
+
+        const course = await courseService.get(courseId);
+        if (course.instructorId !== userId || role !== UserRole.INSTRUCTOR) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const quiz = await Quiz.findOneBy({ id: quizId });
+        if (!quiz) {
+            throw new ResponseError('Cannot find quiz', StatusCodes.NOT_FOUND);
+        }
+
+        const module = await Module.findOneBy({ id: quiz.moduleId });
+        if (!module) {
+            throw Errors.MODULE_NOT_FOUND;
+        }
+
+        module.name = name ?? module.name;
+        await Module.save(module);
     }
 
 }

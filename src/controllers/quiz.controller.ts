@@ -12,6 +12,7 @@ import {
     addUserAnswerSchema,
     quizAnswerParamsSchema,
     quizAnswerFeedbackSchema,
+    editQuizNameSchema,
 } from '../validations/quiz.validate';
 
 class QuizController {
@@ -110,6 +111,20 @@ class QuizController {
             statusCode: StatusCodes.OK,
             success: true,
             message: 'Successfully deleted a quiz'
+        });
+    }
+
+    async editQuizName(req: Request, res: Response) {
+        const userPayload = req.userPayload;
+        const params = validate(req, quizParamsSchema, 'params');
+        const body = validate(req, editQuizNameSchema, 'body');
+
+        await quizService.editQuizName(userPayload!, params, body);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully updated a quiz name'
         });
     }
 
