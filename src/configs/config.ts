@@ -29,7 +29,8 @@ const config = {
             password: env.DB_PASSWORD_TEST!
         }
     },
-    isTest: (env.NODE_ENV === 'test')
+    isTest: (env.NODE_ENV === 'test'),
+    isDev: (env.NODE_ENV === 'development')
 };
 
 export default config;

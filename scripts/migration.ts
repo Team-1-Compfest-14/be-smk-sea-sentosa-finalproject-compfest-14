@@ -9,7 +9,7 @@ if (!args) {
 }
 
 const subCommand = args.shift();
-let command;
+let command: string;
 
 switch (subCommand) {
     case 'CREATE':
