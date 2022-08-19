@@ -61,9 +61,16 @@ class LectureController {
         const userPayload = req.userPayload;
         const params = validate(req, courseIdSchema, 'params');
 
-        await lectureService
+        const lectures = await lectureService
             .getAllLecturesFromSpecificCourseForInstructor(
                 userPayload!, params);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully found all lectures from specific course',
+            data: { lectures }
+        });
     }
 
 }
