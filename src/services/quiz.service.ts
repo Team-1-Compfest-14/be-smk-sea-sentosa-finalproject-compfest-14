@@ -268,6 +268,7 @@ class QuizService {
             }
 
             const tempFeedback: feedbackInterface[] = [];
+            const quizData = await moduleService.getQuiz(quizId);
 
             questions.map((question) => {
                 const tempOption: questionOptionsInterface[] = [];
@@ -295,7 +296,11 @@ class QuizService {
                 tempFeedback.push(feedback);
 
             });
-            return tempFeedback;
+            const questionsData = {
+                quizName: quizData.module.name,
+                questions: tempFeedback
+            };
+            return questionsData;
         }
 
     }
