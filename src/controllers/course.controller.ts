@@ -45,7 +45,8 @@ class CourseController {
     }
 
     async getVerifiedCourses(req: Request, res: Response) {
-        const courses = await courseService.getVerifiedCourses();
+        const userPayload = req.userPayload;
+        const courses = await courseService.getVerifiedCourses(userPayload!);
 
         return sendResponse(res, {
             statusCode: StatusCodes.OK,

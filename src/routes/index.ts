@@ -32,7 +32,7 @@ router.post('/approval/users/:userId', authenticate('ACCESS'),
 
 // Courses
 router.post('/courses', authenticate('ACCESS'), courseController.addCourse);
-router.get('/courses/verified', authenticate('ACCESS'),
+router.get('/courses/verified', authenticate('ACCESS'), authenticate('ACCESS'),
     courseController.getVerifiedCourses);
 router.get('/courses/verified/:courseId', authenticate('ACCESS'),
     courseController.getVerifiedCourse);

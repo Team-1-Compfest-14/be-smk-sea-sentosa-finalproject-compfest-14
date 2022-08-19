@@ -37,10 +37,20 @@ class CourseService {
         return course;
     }
 
-    async getVerifiedCourses() {
+    async getVerifiedCourses({ userId }: UserPayload) {
         const courses = await Course.findBy({ isVerified: true });
 
-        return courses;
+        const newCourses: Course[] = [];
+        for (const course of courses) {
+            const enrollment = await CourseEnrollment
+                .findOneBy({ courseId: course.id, userId });
+
+            if (!enrollment) {
+                newCourses.push(course);
+            }
+        }
+
+        return newCourses;
     }
 
     async getProposedCourses({ role }: UserPayload) {
