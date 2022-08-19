@@ -1,12 +1,15 @@
+import { ModuleCompletion } from 'database/entities/ModuleCompletion';
+import { StatusCodes } from 'http-status-codes';
 import { Course } from '../database/entities/Course';
 import { Lecture } from '../database/entities/Lecture';
 import { Module, ModuleType } from '../database/entities/Module';
 import { UserRole } from '../database/entities/User';
 import type { UserPayload } from '../typings/auth';
-import { Errors } from '../utils/error.util';
+import { Errors, ResponseError } from '../utils/error.util';
 import type { CourseIdType } from '../validations/course.validate';
 import type {
     AddLectureType,
+    CompleteLectureType,
     EditLectureParamsType, EditLectureType
 } from '../validations/lecture.validate';
 
@@ -101,6 +104,29 @@ class LectureService {
         });
 
         return modules;
+    }
+
+    async completeLectureModule({ userId }: UserPayload,
+        { lectureId }: CompleteLectureType) {
+
+        const lecture = await Lecture.findOneBy({ id: lectureId });
+        if (!lecture) {
+            throw Errors.LECTURE_NOT_FOUND;
+        }
+
+        const module = await Module.findOneBy({ id: lecture.moduleId });
+        if (!module) {
+            throw Errors.MODULE_NOT_FOUND;
+        }
+
+        const isCompleted = await moduleService
+            .isModuleCompleted(userId, module.id);
+        if (isCompleted) {
+            throw new ResponseError(
+                'Lecture has been completed', StatusCodes.BAD_REQUEST);
+        }
+
+        await moduleService.addModuleCompleted(userId, module.id);
     }
 
 }

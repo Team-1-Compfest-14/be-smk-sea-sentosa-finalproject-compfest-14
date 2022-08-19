@@ -10,7 +10,7 @@ const FE_PORT = '3000';
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: `http://localhost:${FE_PORT}` }));
+app.use(cors({ credentials: true, origin: [`http://localhost:${FE_PORT}`] }));
 app.use(routes);
 app.use(errorHandling);
 

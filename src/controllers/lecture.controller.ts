@@ -7,6 +7,7 @@ import { validate } from '../utils/validate.util';
 import { courseIdSchema } from '../validations/course.validate';
 import {
     addLectureSchema,
+    completeLectureSchema,
     deleteLecturParamsSchema,
     editLectureParamsSchema, editLectureSchema
 } from '../validations/lecture.validate';
@@ -70,6 +71,19 @@ class LectureController {
             success: true,
             message: 'Successfully found all lectures from specific course',
             data: { lectures }
+        });
+    }
+
+    async completeLecture(req: Request, res: Response) {
+        const userPayload = req.userPayload;
+        const params = validate(req, completeLectureSchema, 'params');
+
+        await lectureService.completeLectureModule(userPayload!, params);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully completed a lecture'
         });
     }
 

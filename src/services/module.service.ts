@@ -266,15 +266,6 @@ class ModuleService {
         return progressData;
     }
 
-    async getModule(courseId: number) {
-        const module = await Module.findOneBy({ courseId });
-        if (!module) {
-            return Errors.MODULE_NOT_FOUND;
-        }
-
-        return module;
-    }
-
     async resetModuleOrder(module: Module, modules: Module[], incr: boolean) {
         const newModules = modules.map((md) => {
             if (md.order >= module.order && md.id !== module.id) {
