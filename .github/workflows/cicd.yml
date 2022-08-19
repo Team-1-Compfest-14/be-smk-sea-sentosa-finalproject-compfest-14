@@ -35,7 +35,14 @@ jobs:
     - name: Install dependencies
       run: yarn
 
-    - name: Run the tests
-      run: yarn test
+    # - name: Run the tests
+    #   run: yarn test
 
-    
+    - name: Add remote origin
+      if: github.ref == 'refs/heads/main' && job.status == 'success'
+      run: |
+        git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
+
+    - name: Deploy to heroku
+      run: |
+        git push heroku HEAD:main -f
