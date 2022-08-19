@@ -4,7 +4,7 @@ import { Module, ModuleType } from '../database/entities/Module';
 import { Question } from '../database/entities/Question';
 import { QuestionOption } from '../database/entities/QuestionOption';
 import { Quiz } from '../database/entities/Quiz';
-import { User, UserRole } from '../database/entities/User';
+import { UserRole } from '../database/entities/User';
 import { UsersAnswer } from '../database/entities/UsersAnswer';
 import type { UserPayload } from '../typings/auth';
 import { Errors, ResponseError } from '../utils/error.util';
