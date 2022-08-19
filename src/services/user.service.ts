@@ -33,8 +33,11 @@ class UserService {
     async getUserProfile({ userId }: UserPayload) {
         const user = await User.createQueryBuilder('user')
             .where('user.id = :id', { id: userId })
-            .select('name', 'email')
-            .getOneOrFail();
+            .select('user.name', 'user.email')
+            .getOne();
+        if (!user) {
+            throw Errors.USER_NOT_FOUND;
+        }
 
         return user;
     }
