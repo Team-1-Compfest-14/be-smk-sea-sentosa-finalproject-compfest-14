@@ -16,6 +16,7 @@ export const ApprovalTest = () => {
                 password: userAdminDataTest.password,
             });
 
+        console.log('BUGGG');
         console.log(response.body);
 
         adminToken = `Bearer ${response.body.data.accessToken}`;

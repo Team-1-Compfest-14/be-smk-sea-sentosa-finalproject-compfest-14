@@ -4,7 +4,7 @@ import config from '../configs/config';
 
 export const AppDataSource = new DataSource({
     type: 'postgres',
-    url: config.isDev || config.isTest ? undefined : process.env.DATABASE_URL,
+    url: process.env.DATABASE_URL,
     host: config.isTest ? config.test.db.host : config.db.host,
     port: config.isTest ? config.test.db.port : config.db.port,
     username: config.isTest ? config.test.db.username : config.db.username,
@@ -16,7 +16,7 @@ export const AppDataSource = new DataSource({
     entities: [`${__dirname}/entities/*.{ts,js}`],
     subscribers: [],
     migrations: [`${__dirname}/migrations/*.{ts,js}`],
-    ssl: config.isDev || config.isTest ? undefined : {
+    ssl: {
         rejectUnauthorized: false
     }
 });
