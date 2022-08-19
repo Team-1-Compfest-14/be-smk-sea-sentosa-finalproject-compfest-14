@@ -27,6 +27,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+      run: |
+        git fetch --prune --unshallow
+
     - name: Set up Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
@@ -45,5 +48,4 @@ jobs:
 
     - name: Deploy to heroku
       run: |
-        git filter-branch -- --all
         git push heroku HEAD:main -f
