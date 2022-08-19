@@ -62,7 +62,8 @@ class LectureController {
         const params = validate(req, courseIdSchema, 'params');
 
         await lectureService
-            .getAllLecturesFromSpecificCourseForInstructor(userPayload!, params);
+            .getAllLecturesFromSpecificCourseForInstructor(
+                userPayload!, params);
     }
 
 }
