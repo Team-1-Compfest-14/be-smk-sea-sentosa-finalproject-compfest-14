@@ -8,7 +8,7 @@ export class createCourses1660024317068 implements MigrationInterface {
                 "id" SERIAL NOT NULL,
                 "instructor_id" INT NOT NULL,
                 "name" VARCHAR(64) NOT NULL,
-                "description" VARCHAR(128) NOT NULL,
+                "description" VARCHAR(255) NOT NULL,
                 "is_verified" BOOLEAN NOT NULL DEFAULT FALSE,
 
                 PRIMARY KEY ("id"),

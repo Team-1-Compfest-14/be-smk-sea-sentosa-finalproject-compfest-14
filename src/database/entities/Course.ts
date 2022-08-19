@@ -23,7 +23,7 @@ export class Course extends BaseEntity {
     @Column({ length: 64 })
     name!: string;
 
-    @Column({ length: 128 })
+    @Column({ length: 255 })
     description!: string;
 
     @Column({ name: 'is_verified', default: false })

@@ -31,7 +31,7 @@ export const courseSchema = joi.object<CourseType>({
         .required(),
 
     description: joi.string()
-        .max(128)
+        .max(255)
         .required()
 });
 
