@@ -18,9 +18,7 @@ export class createModules1660025592526 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
-            DROP TABLE "modules";
-        `);
+        await queryRunner.query('DROP TABLE "modules"');
     }
 
 }
