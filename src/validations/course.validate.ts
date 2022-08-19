@@ -1,3 +1,4 @@
+import type { Module } from 'database/entities/Module';
 import joi from 'joi';
 
 export interface CourseType {
@@ -25,6 +26,26 @@ export interface DashboardCourseType {
     totalModuleCompletion: number;
     courseId: number;
     isComplete: boolean;
+}
+
+export interface LecturesType {
+    lecture: Module;
+    isComplete: boolean;
+}
+
+export interface QuizzesType {
+    quiz: Module;
+    isComplete: boolean;
+}
+
+export interface VerifiedCourseType {
+    instructorName: string;
+    lectures: LecturesType[];
+    quizzes: QuizzesType[];
+    totalLectures: number;
+    totalQuizzes: number;
+    totalCompleteLectures: number;
+    totalCompleteQuizzes: number;
 }
 
 export const courseSchema = joi.object<CourseType>({

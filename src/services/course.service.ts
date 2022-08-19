@@ -1,10 +1,18 @@
+import { Module, ModuleType } from 'database/entities/Module';
+import { ModuleCompletion } from 'database/entities/ModuleCompletion';
 import { StatusCodes } from 'http-status-codes';
 import { Course } from '../database/entities/Course';
 import { CourseEnrollment } from '../database/entities/CourseEnrollment';
 import { UserRole } from '../database/entities/User';
 import type { UserPayload } from '../typings/auth';
 import { ResponseError, Errors } from '../utils/error.util';
-import type { CourseType } from '../validations/course.validate';
+import type {
+    CourseType,
+    LecturesType,
+    QuizzesType,
+    VerifiedCourseType
+} from '../validations/course.validate';
+import { userService } from './user.service';
 
 class CourseService {
 
@@ -34,7 +42,62 @@ class CourseService {
         if (!course) {
             throw Errors.COURSE_NOT_FOUND;
         }
-        return course;
+
+        const instructor = await userService.get(course.instructorId);
+        const lectures = await Module.find({
+            where: { courseId, type: ModuleType.LECTURE },
+            relations: {
+                lecture: true
+            }
+        });
+        const quizzes = await Module.find({
+            where: { courseId, type: ModuleType.QUIZ },
+            relations: {
+                quiz: true
+            }
+        });
+
+        const newLectures: LecturesType[] = [];
+        let totalCompleteLectures = 0;
+
+        for (const lecture of lectures) {
+            const moduleCompletion = await ModuleCompletion
+                .findOneBy({ moduleId: lecture.id });
+
+            if (moduleCompletion) {
+                newLectures.push({ lecture, isComplete: true });
+                totalCompleteLectures++;
+            } else {
+                newLectures.push({ lecture, isComplete: false });
+            }
+        }
+
+        const newQuizzes: QuizzesType[] = [];
+        let totalCompleteQuizzes = 0;
+
+        for (const quiz of quizzes) {
+            const moduleCompletion = await ModuleCompletion
+                .findOneBy({ moduleId: quiz.id });
+
+            if (moduleCompletion) {
+                newQuizzes.push({ quiz, isComplete: true });
+                totalCompleteQuizzes++;
+            } else {
+                newQuizzes.push({ quiz, isComplete: false });
+            }
+        }
+
+        const verifiedCourse: VerifiedCourseType = {
+            instructorName: instructor.name,
+            lectures: newLectures,
+            totalLectures: lectures.length,
+            quizzes: newQuizzes,
+            totalQuizzes: quizzes.length,
+            totalCompleteLectures,
+            totalCompleteQuizzes
+        };
+
+        return verifiedCourse;
     }
 
     async getVerifiedCourses({ userId }: UserPayload) {

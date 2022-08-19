@@ -1,3 +1,4 @@
+import { Course } from 'database/entities/Course';
 import { StatusCodes } from 'http-status-codes';
 import { In } from 'typeorm';
 import { Module, ModuleType } from '../database/entities/Module';
@@ -40,7 +41,12 @@ class QuizService {
         { courseId }: CourseIdType,
         { name }: AddQuizType) {
 
-        const course = await courseService.getVerifiedCourse(courseId);
+        const course = await Course.findOneBy(
+            { id: courseId, isVerified: true });
+        if (!course) {
+            throw Errors.COURSE_NOT_FOUND;
+        }
+
         if (course.instructorId !== userId || role !== UserRole.INSTRUCTOR) {
             throw Errors.NO_PERMISSION;
         }

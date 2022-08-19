@@ -67,7 +67,7 @@ class ModuleService {
                 type: ModuleType.LECTURE
             },
             order: { order: 'ASC' },
-            relations: { lectures: true }
+            relations: { lecture: true }
         });
 
         return lectureModules;
@@ -179,7 +179,7 @@ class ModuleService {
                 order: 'ASC'
             },
             relations: {
-                quizzes: true
+                quiz: true
             }
         });
 

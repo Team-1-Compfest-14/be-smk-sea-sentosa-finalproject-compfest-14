@@ -5,6 +5,7 @@ import {
     JoinColumn,
     ManyToOne,
     OneToMany,
+    OneToOne,
     PrimaryGeneratedColumn
 } from 'typeorm';
 import { Course } from './Course';
@@ -39,14 +40,14 @@ export class Module extends BaseEntity {
     @JoinColumn({ name: 'course_id' })
     course!: Course;
 
-    @OneToMany(() => Quiz, (quiz) => quiz.module)
-    quizzes!: Quiz[];
+    @OneToOne(() => Quiz, (quiz) => quiz.module)
+    quiz!: Quiz;
 
-    @OneToMany(() => Lecture, (lecture) => lecture.module)
-    lectures!: Lecture[];
+    @OneToOne(() => Lecture, (lecture) => lecture.module)
+    lecture!: Lecture;
 
-    @OneToMany(() => ModuleCompletion,
+    @OneToOne(() => ModuleCompletion,
         (moduleCompletion) => moduleCompletion.module)
-    moduleCompletions!: ModuleCompletion[];
+    moduleCompletion!: ModuleCompletion;
 
 }

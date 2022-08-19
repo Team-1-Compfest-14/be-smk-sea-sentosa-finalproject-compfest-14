@@ -1,4 +1,3 @@
-import { ModuleCompletion } from 'database/entities/ModuleCompletion';
 import { StatusCodes } from 'http-status-codes';
 import { Course } from '../database/entities/Course';
 import { Lecture } from '../database/entities/Lecture';
@@ -99,7 +98,7 @@ class LectureService {
         const modules = await Module.find({
             where: { courseId, type: ModuleType.LECTURE },
             relations: {
-                lectures: true
+                lecture: true
             }
         });
 
