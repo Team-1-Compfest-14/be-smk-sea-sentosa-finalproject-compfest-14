@@ -2,7 +2,7 @@ name: PostgreSQL service example
 on:
   push:
     branches:
-      - "refactor"
+      - "main"
 
 jobs:
 
