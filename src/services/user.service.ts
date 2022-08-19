@@ -31,10 +31,13 @@ class UserService {
     }
 
     async getUserProfile({ userId }: UserPayload) {
-        const user = await User.createQueryBuilder('user')
-            .where('user.id = :id', { id: userId })
-            .select('user.name', 'user.email')
-            .getOne();
+        const user = await User.findOne({
+            where: { id: userId },
+            select: {
+                name: true,
+                email: true
+            }
+        });
         if (!user) {
             throw Errors.USER_NOT_FOUND;
         }
