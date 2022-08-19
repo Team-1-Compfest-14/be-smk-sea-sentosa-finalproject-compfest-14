@@ -19,6 +19,18 @@ class UserController {
         });
     }
 
+    async getUserProfile(req: Request, res: Response) {
+        const userPayload = req.userPayload;
+        const user = await userService.getUserProfile(userPayload!);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully found user profile',
+            data: { user }
+        });
+    }
+
 }
 
 export const userController = new UserController();

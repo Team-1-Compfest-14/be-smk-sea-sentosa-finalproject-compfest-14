@@ -30,6 +30,15 @@ class UserService {
         return users;
     }
 
+    async getUserProfile({ userId }: UserPayload) {
+        const user = await User.createQueryBuilder('user')
+            .where('user.id = :id', { id: userId })
+            .select('name', 'email')
+            .getOneOrFail();
+
+        return user;
+    }
+
 }
 
 export const userService = new UserService();

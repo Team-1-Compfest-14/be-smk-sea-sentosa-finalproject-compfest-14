@@ -20,6 +20,10 @@ router.post('/auth/login', authController.login);
 router.post('/auth/refresh', authenticate('REFRESH'), authController.refresh);
 router.delete('/auth/logout', authenticate('REFRESH'), authController.logout);
 
+// Users
+router.get('/users/profile', authenticate('ACCESS'),
+    userController.getUserProfile);
+
 // Users Approvals
 router.get('/approval/users', authenticate('ACCESS'),
     userController.getUnverifiedInstructors);
