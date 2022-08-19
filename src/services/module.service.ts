@@ -35,7 +35,7 @@ class ModuleService {
                 where: {
                     id: quizId
                 },
-                relations: ['questions']
+                relations: ['questions', 'module']
             }
         );
         if (!quiz) {

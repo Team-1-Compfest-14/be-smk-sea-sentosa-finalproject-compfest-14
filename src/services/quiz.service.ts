@@ -141,7 +141,12 @@ class QuizService {
             question.questionOptions = questionOptions;
         }
 
-        return questions;
+        const questionsData = {
+            quizName: quiz.module.name,
+            questions
+        };
+
+        return questionsData;
     }
 
     async addUserAnswer(
@@ -263,6 +268,7 @@ class QuizService {
             }
 
             const tempFeedback: feedbackInterface[] = [];
+            const quizData = await moduleService.getQuiz(quizId);
 
             questions.map((question) => {
                 const tempOption: questionOptionsInterface[] = [];
@@ -290,7 +296,11 @@ class QuizService {
                 tempFeedback.push(feedback);
 
             });
-            return tempFeedback;
+            const questionsData = {
+                quizName: quizData.module.name,
+                questions: tempFeedback
+            };
+            return questionsData;
         }
 
     }
