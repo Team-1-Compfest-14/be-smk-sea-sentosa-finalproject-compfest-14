@@ -63,6 +63,8 @@ router.get('/courses/dashboard/progress', authenticate('ACCESS'),
     moduleController.getProgressDashboard);
 router.delete('/courses/:courseId/quizzes/:quizId', authenticate('ACCESS'),
     quizController.deleteQuiz);
+router.get('/courses/instructor/own/:courseId/lectures', authenticate('ACCESS'),
+    lectureController.getAllLecturesFromSpecificCourseForInstructor);
 
 // Quizzes
 router.post('/courses/:courseId/quizzes', authenticate('ACCESS'),
@@ -77,6 +79,7 @@ router.put('/courses/:courseId/quizzes/:quizId', authenticate('ACCESS'),
 // Lectures
 router.get('/courses/:courseId/lectures', authenticate('ACCESS'),
     moduleController.getEnrolledLecturesForStudent);
+
 router.post('/courses/:courseId/lectures', authenticate('ACCESS'),
     lectureController.addLecture);
 router.put('/courses/:courseId/modules/:moduleId/lectures',

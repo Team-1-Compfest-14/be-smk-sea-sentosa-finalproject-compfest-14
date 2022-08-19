@@ -55,6 +55,16 @@ class LectureController {
         });
     }
 
+    async getAllLecturesFromSpecificCourseForInstructor(
+        req: Request, res: Response) {
+
+        const userPayload = req.userPayload;
+        const params = validate(req, courseIdSchema, 'params');
+
+        await lectureService
+            .getAllLecturesFromSpecificCourseForInstructor(userPayload!, params);
+    }
+
 }
 
 export const lectureController = new LectureController();

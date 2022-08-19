@@ -85,6 +85,20 @@ class LectureService {
         await Module.remove(module);
     }
 
+    async getAllLecturesFromSpecificCourseForInstructor(
+        { userId, role }: UserPayload, { courseId }: CourseIdType) {
+
+        const course = await courseService.get(courseId);
+        const modules = await Module.find({
+            where: { courseId, type: ModuleType.LECTURE },
+            relations: {
+                lectures: true
+            }
+        });
+
+        return modules;
+    }
+
 }
 
 export const lectureService = new LectureService();
