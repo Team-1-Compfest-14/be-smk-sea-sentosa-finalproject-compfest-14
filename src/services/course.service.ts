@@ -1,5 +1,5 @@
-import { Module, ModuleType } from 'database/entities/Module';
-import { ModuleCompletion } from 'database/entities/ModuleCompletion';
+import { Module, ModuleType } from '../database/entities/Module';
+import { ModuleCompletion } from '../database/entities/ModuleCompletion';
 import { StatusCodes } from 'http-status-codes';
 import { Course } from '../database/entities/Course';
 import { CourseEnrollment } from '../database/entities/CourseEnrollment';
