@@ -138,7 +138,12 @@ class AuthService {
             return;
         }
 
-        const payload = jwt.verify(token, secret) as JwtPayload;
+        let payload: JwtPayload;
+        try {
+            payload = jwt.verify(token, secret) as JwtPayload;
+        } catch (error) {
+            throw new ResponseError('JWT expired', StatusCodes.UNAUTHORIZED);
+        }
 
         return {
             userId: payload.userId,
