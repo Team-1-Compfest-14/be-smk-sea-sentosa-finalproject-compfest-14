@@ -60,7 +60,7 @@ class QuizController {
         return sendResponse(res, {
             statusCode: StatusCodes.OK,
             success: true,
-            data: { questions },
+            data: questions,
             message: 'Successfully retrieved all questions and options.',
         });
     }

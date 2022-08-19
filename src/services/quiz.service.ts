@@ -141,7 +141,12 @@ class QuizService {
             question.questionOptions = questionOptions;
         }
 
-        return questions;
+        const questionsData = {
+            quizName: quiz.module.name,
+            questions
+        };
+
+        return questionsData;
     }
 
     async addUserAnswer(
