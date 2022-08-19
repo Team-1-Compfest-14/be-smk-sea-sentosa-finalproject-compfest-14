@@ -23,6 +23,8 @@ export interface DashboardCourseType {
     teacher: string;
     totalModule: number;
     totalModuleCompletion: number;
+    courseId: number;
+    isComplete: boolean;
 }
 
 export const courseSchema = joi.object<CourseType>({

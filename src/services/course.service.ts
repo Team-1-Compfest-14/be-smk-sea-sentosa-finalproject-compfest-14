@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import { Course } from '../database/entities/Course';
 import { CourseEnrollment } from '../database/entities/CourseEnrollment';
-import { UserRole } from '../database/entities/User';
+import { User, UserRole } from '../database/entities/User';
 import type { UserPayload } from '../typings/auth';
 import { ResponseError, Errors } from '../utils/error.util';
 import type { CourseType } from '../validations/course.validate';

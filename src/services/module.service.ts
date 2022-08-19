@@ -256,7 +256,9 @@ class ModuleService {
                 name: course.name,
                 teacher: instructor.name,
                 totalModule: modules.length,
-                totalModuleCompletion: moduleCompletionCount
+                totalModuleCompletion: moduleCompletionCount,
+                courseId,
+                isComplete: moduleCompletionCount === modules.length
             };
             progressData.push(tempData);
         }
