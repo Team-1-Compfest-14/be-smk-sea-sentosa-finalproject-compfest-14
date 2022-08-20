@@ -49,13 +49,14 @@ class QuizController {
         });
     }
 
-    async ViewAllQuestionsAndOptions(req: Request, res: Response) {
+    async ViewAllQuestionsAndOptionsForStudent(req: Request, res: Response) {
         const userPayload = await authService.getPayload(req, 'ACCESS');
         const params = validate(req, quizParamsSchema, 'params');
 
-        const questions = await quizService.ViewAllQuestionsAndOptions(
-            params.courseId,
-            params.quizId,
+        const questions = await quizService
+            .ViewAllQuestionsAndOptionsForStudent(
+                params.courseId,
+                params.quizId,
             userPayload!);
 
         return sendResponse(res, {
@@ -154,6 +155,22 @@ class QuizController {
             statusCode: StatusCodes.OK,
             success: true,
             message: 'Successfully deleted a question'
+        });
+    }
+
+    async ViewAllQuestionsAndOptionsForInstructor(req: Request, res: Response) {
+        const userPayload = await authService.getPayload(req, 'ACCESS');
+        const params = validate(req, quizParamsSchema, 'params');
+
+        const questions = await quizService
+            .ViewAllQuestionsAndOptionsForInstructor(userPayload!, params);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully found all' +
+                ' questions and options for instructor',
+            data: { questions }
         });
     }
 

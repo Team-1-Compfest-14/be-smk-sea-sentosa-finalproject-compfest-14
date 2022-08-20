@@ -104,7 +104,7 @@ class QuizService {
         });
     }
 
-    async ViewAllQuestionsAndOptions(
+    async ViewAllQuestionsAndOptionsForStudent(
         courseId: number,
         quizId: number,
         { userId, role }: UserPayload) {
@@ -375,6 +375,29 @@ class QuizService {
         }
 
         await Question.remove(question);
+    }
+
+    async ViewAllQuestionsAndOptionsForInstructor({ userId, role }: UserPayload,
+        { courseId, quizId }: QuizParamType) {
+
+        const course = await courseService.get(courseId);
+        if (course.instructorId !== userId || role !== UserRole.INSTRUCTOR) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const quiz = await Quiz.findOneBy({ id: quizId });
+        if (!quiz) {
+            throw new ResponseError('Quiz not found', StatusCodes.NOT_FOUND);
+        }
+
+        const questions = await Question.find({
+            where: { quizId },
+            relations: {
+                questionOptions: true
+            }
+        });
+
+        return questions;
     }
 
 }

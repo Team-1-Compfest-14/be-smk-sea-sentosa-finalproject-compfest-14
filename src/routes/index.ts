@@ -92,10 +92,14 @@ router.delete('/courses/:courseId/lectures/:lectureId', authenticate('ACCESS'),
 router.get('/courses/:courseId/quizzes/instructor', authenticate('ACCESS'),
     quizController.getAllQuizzesForInstructor);
 router.get('/courses/:courseId/quizzes/:quizId',
-    authenticate('ACCESS'), quizController.ViewAllQuestionsAndOptions);
+    authenticate('ACCESS'),
+    quizController.ViewAllQuestionsAndOptionsForStudent);
 router.post('/courses/:courseId/quizzes/:quizId/answer',
     authenticate('ACCESS'), quizController.answerQuestion);
 router.get('/courses/:courseId/quizzes/:quizId/feedback',
     authenticate('ACCESS'), quizController.answerFeedback);
+router.get('/courses/:courseId/quizzes/:quizId/instructor',
+    authenticate('ACCESS'),
+    quizController.ViewAllQuestionsAndOptionsForInstructor);
 
 export default router;
