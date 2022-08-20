@@ -109,7 +109,7 @@ class CourseService {
         for (const course of courses) {
             const enrollment = await CourseEnrollment
                 .findOneBy({ courseId: course.id, userId });
-            const user = await userService.get(course.id);
+            const user = await userService.get(course.instructorId);
             const modules = await Module.findBy({ courseId: course.id });
 
             if (!enrollment) {
