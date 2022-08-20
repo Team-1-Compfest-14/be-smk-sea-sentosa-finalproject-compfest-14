@@ -16,7 +16,7 @@ export interface QuizType extends QuizParamType {
 }
 
 export interface AddUserAnswerType {
-    answers: userAnswerType[];
+    answers: UserAnswerType[];
 }
 
 export interface QuestionOptionType {
@@ -24,13 +24,19 @@ export interface QuestionOptionType {
     isCorrectAnswer: boolean;
 }
 
-export interface userAnswerType {
+export interface UserAnswerType {
     questionId: number;
     questionOptionId: number;
 }
 
-export interface editQuizNameType {
+export interface EditQuizNameType {
     name: string;
+}
+
+export interface DeleteQuestionParamsType {
+    courseId: number;
+    quizId: number;
+    questionId: number;
 }
 
 export type AddQuizType = AddModuleType;
@@ -63,7 +69,7 @@ export const addQuestionSchema = joi.object<QuizType>({
 
 export const addUserAnswerSchema = joi.object<AddUserAnswerType>({
     answers: joi.array()
-        .items(joi.object<userAnswerType>({
+        .items(joi.object<UserAnswerType>({
             questionId: joi.number()
                 .required(),
             questionOptionId: joi.number()
@@ -86,10 +92,19 @@ export const quizAnswerFeedbackSchema = joi.object<QuizParamType>({
         .required()
 });
 
-export const editQuizNameSchema = joi.object<editQuizNameType>({
+export const editQuizNameSchema = joi.object<EditQuizNameType>({
     name: joi.string()
         .min(4)
         .max(64)
+        .required()
+});
+
+export const deleteQuestionParamsSchema = joi.object<DeleteQuestionParamsType>({
+    courseId: joi.number()
+        .required(),
+    quizId: joi.number()
+        .required(),
+    questionId: joi.number()
         .required()
 });
 

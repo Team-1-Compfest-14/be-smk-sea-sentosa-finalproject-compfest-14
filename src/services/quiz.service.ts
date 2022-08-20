@@ -13,7 +13,8 @@ import type { CourseIdType } from '../validations/course.validate';
 import type {
     AddQuizType,
     AddUserAnswerType,
-    editQuizNameType,
+    DeleteQuestionParamsType,
+    EditQuizNameType,
     QuestionOptionType, QuizParamType, QuizType
 } from '../validations/quiz.validate';
 import { courseService } from './course.service';
@@ -315,7 +316,7 @@ class QuizService {
 
     async editQuizName({ userId, role }: UserPayload,
         { courseId, quizId }: QuizParamType,
-        { name }: editQuizNameType) {
+        { name }: EditQuizNameType) {
 
         const course = await courseService.get(courseId);
         if (course.instructorId !== userId || role !== UserRole.INSTRUCTOR) {
@@ -352,6 +353,28 @@ class QuizService {
         });
 
         return quizzes;
+    }
+
+    async deleteQuestion({ userId, role }: UserPayload,
+        { courseId, quizId, questionId }: DeleteQuestionParamsType) {
+
+        const course = await courseService.get(courseId);
+        if (course.instructorId !== userId || role !== UserRole.INSTRUCTOR) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const quiz = await Quiz.findOneBy({ id: quizId });
+        if (!quiz) {
+            throw new ResponseError('Quiz not found', StatusCodes.NOT_FOUND);
+        }
+
+        const question = await Question.findOneBy({ id: questionId });
+        if (!question) {
+            throw new ResponseError(
+                'Question not found', StatusCodes.NOT_FOUND);
+        }
+
+        await Question.remove(question);
     }
 
 }

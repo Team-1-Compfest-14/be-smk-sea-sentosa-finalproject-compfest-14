@@ -13,6 +13,7 @@ import {
     quizAnswerParamsSchema,
     quizAnswerFeedbackSchema,
     editQuizNameSchema,
+    deleteQuestionParamsSchema,
 } from '../validations/quiz.validate';
 
 class QuizController {
@@ -140,6 +141,19 @@ class QuizController {
             success: true,
             message: 'Successfully found all quizzes instructors',
             data: { quizzes }
+        });
+    }
+
+    async deleteQuestion(req: Request, res: Response) {
+        const userPayload = req.userPayload;
+        const params = validate(req, deleteQuestionParamsSchema, 'params');
+
+        await quizService.deleteQuestion(userPayload!, params);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully deleted a question'
         });
     }
 
