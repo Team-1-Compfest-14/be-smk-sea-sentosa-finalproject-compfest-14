@@ -107,7 +107,7 @@ class AuthService {
         let token: string;
 
         if (tokenType === 'ACCESS') {
-            const rawToken = req.header('authorization');
+            const rawToken = req.header('Authorization');
             if (!rawToken || !rawToken.startsWith('Bearer ')) {
                 return;
             }
