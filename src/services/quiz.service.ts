@@ -345,7 +345,7 @@ class QuizService {
         }
 
         const quizzes = await Module.find({
-            where: { courseId },
+            where: { courseId, type: ModuleType.QUIZ },
             relations: {
                 quiz: true
             }
