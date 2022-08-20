@@ -9,7 +9,10 @@ import {
     addLectureSchema,
     completeLectureSchema,
     deleteLecturParamsSchema,
-    editLectureParamsSchema, editLectureSchema
+    editLectureParamsSchema,
+    editLectureSchema,
+    modifyLectureOrderParamsSchema,
+    modifyLectureOrderSchema,
 } from '../validations/lecture.validate';
 
 class LectureController {
@@ -84,6 +87,20 @@ class LectureController {
             statusCode: StatusCodes.OK,
             success: true,
             message: 'Successfully completed a lecture'
+        });
+    }
+
+    async modifyLectureOrder(req: Request, res: Response) {
+        const userPayload = req.userPayload;
+        const params = validate(req, modifyLectureOrderParamsSchema, 'params');
+        const body = validate(req, modifyLectureOrderSchema, 'body');
+
+        await lectureService.modifyLectureOrder(userPayload!, params, body);
+
+        return sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Successfully reorder all lectures'
         });
     }
 

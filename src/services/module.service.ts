@@ -266,7 +266,9 @@ class ModuleService {
         return progressData;
     }
 
-    async resetModuleOrder(module: Module, modules: Module[], incr: boolean) {
+    async resetModuleOrderWhenDeleteModule(
+        module: Module, modules: Module[], incr: boolean) {
+
         const newModules = modules.map((md) => {
             if (md.order >= module.order && md.id !== module.id) {
                 if (incr) {
@@ -280,6 +282,33 @@ class ModuleService {
         });
 
         await Module.save(newModules);
+    }
+
+    async resetModuleOrderWhenModifyOrder(
+        module: Module, modules: Module[], newOrder: number) {
+
+        const newModules = modules.map((md) => {
+            // new order increasing
+            if (module.order < newOrder) {
+                if (md.order > module.order && md.order < newOrder) {
+                    md.order--;
+                }
+                if (md.order >= newOrder) {
+                    md.order++;
+                }
+            } else { // new order decreasing
+                if (md.order >= newOrder && md.order < module.order) {
+                    md.order--;
+                }
+            }
+
+            return md;
+        });
+
+        await Module.save(newModules);
+
+        module.order = newOrder;
+        await Module.save(module);
     }
 
 }

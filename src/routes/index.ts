@@ -80,13 +80,15 @@ router.get('/courses/:courseId/lectures', authenticate('ACCESS'),
     moduleController.getEnrolledLecturesForStudent);
 router.post('/courses/lectures/:lectureId/complete', authenticate('ACCESS'),
     lectureController.completeLecture);
-
 router.post('/courses/:courseId/lectures', authenticate('ACCESS'),
     lectureController.addLecture);
 router.put('/courses/:courseId/modules/:moduleId/lectures',
     authenticate('ACCESS'), lectureController.editLectureData);
 router.delete('/courses/:courseId/lectures/:lectureId', authenticate('ACCESS'),
     lectureController.deleteLecture);
+router.put('/courses/:courseId/lectures/:lectureId/modify-order',
+    authenticate('ACCESS'),
+    lectureController.modifyLectureOrder);
 
 // Role Instructor and Student
 router.get('/courses/:courseId/quizzes/instructor', authenticate('ACCESS'),

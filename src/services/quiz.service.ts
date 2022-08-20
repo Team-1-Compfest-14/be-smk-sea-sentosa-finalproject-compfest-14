@@ -311,6 +311,10 @@ class QuizService {
             throw Errors.MODULE_NOT_FOUND;
         }
 
+        const modules = await Module.findBy(
+            { courseId, type: ModuleType.QUIZ });
+
+        moduleService.resetModuleOrderWhenDeleteModule(module, modules, false);
         await Module.remove(module);
     }
 

@@ -20,8 +20,14 @@ export interface DeleteLectureParamsType {
     lectureId: number;
 }
 
+export type ModifyLectureOrderParamsType = DeleteLectureParamsType;
+
 export interface CompleteLectureType {
     lectureId: number;
+}
+
+export interface ModifyLectureOrderType {
+    newOrder: number;
 }
 
 export const addLectureSchema = joi.object<AddLectureType>({
@@ -66,5 +72,20 @@ export const deleteLecturParamsSchema = joi.object<DeleteLectureParamsType>({
 
 export const completeLectureSchema = joi.object<CompleteLectureType>({
     lectureId: joi.number()
+        .required()
+});
+
+export const modifyLectureOrderParamsSchema = joi
+    .object<ModifyLectureOrderParamsType>({
+
+        courseId: joi.number()
+            .required(),
+
+        lectureId: joi.number()
+            .required()
+    });
+
+export const modifyLectureOrderSchema = joi.object<ModifyLectureOrderType>({
+    newOrder: joi.number()
         .required()
 });

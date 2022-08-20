@@ -9,7 +9,10 @@ import type { CourseIdType } from '../validations/course.validate';
 import type {
     AddLectureType,
     CompleteLectureType,
-    EditLectureParamsType, EditLectureType
+    EditLectureParamsType,
+    EditLectureType,
+    ModifyLectureOrderParamsType,
+    ModifyLectureOrderType
 } from '../validations/lecture.validate';
 
 import { courseService } from './course.service';
@@ -83,7 +86,7 @@ class LectureService {
         const modules = await Module.findBy(
             { courseId, type: ModuleType.LECTURE });
 
-        moduleService.resetModuleOrder(module, modules, false);
+        moduleService.resetModuleOrderWhenDeleteModule(module, modules, false);
         await Module.remove(module);
     }
 
@@ -126,6 +129,32 @@ class LectureService {
         }
 
         await moduleService.addModuleCompleted(userId, module.id);
+    }
+
+    async modifyLectureOrder({ userId, role }: UserPayload,
+        { courseId, lectureId }: ModifyLectureOrderParamsType,
+        { newOrder }: ModifyLectureOrderType) {
+
+        const course = await courseService.get(courseId);
+        if (course.instructorId !== userId || role !== UserRole.INSTRUCTOR) {
+            throw Errors.NO_PERMISSION;
+        }
+
+        const lecture = await Lecture.findOneBy({ id: lectureId });
+        if (!lecture) {
+            throw Errors.LECTURE_NOT_FOUND;
+        }
+
+        const module = await Module.findOneBy({ id: lecture.moduleId });
+        if (!module) {
+            throw Errors.MODULE_NOT_FOUND;
+        }
+
+        const modules = await Module.findBy(
+            { courseId, type: ModuleType.LECTURE });
+
+        await moduleService.resetModuleOrderWhenModifyOrder(
+            module, modules, newOrder);
     }
 
 }
