@@ -97,37 +97,37 @@ async function seedData() {
     const modules: Module[] = [
         Module.create({
             courseId: 1,
-            order: 1,
+            order: 0,
             name: 'Lecture 1',
             type: ModuleType.LECTURE
         }),
         Module.create({
             courseId: 1,
-            order: 2,
+            order: 1,
             name: 'Lecture 2',
             type: ModuleType.LECTURE
         }),
         Module.create({
             courseId: 1,
-            order: 1,
+            order: 0,
             name: 'Quiz 1',
             type: ModuleType.QUIZ
         }),
         Module.create({
             courseId: 1,
-            order: 2,
+            order: 1,
             name: 'Quiz 2',
             type: ModuleType.QUIZ
         }),
         Module.create({
             courseId: 2,
-            order: 1,
+            order: 0,
             name: 'Quiz 1',
             type: ModuleType.QUIZ
         }),
         Module.create({
             courseId: 2,
-            order: 1,
+            order: 0,
             name: 'Lecture 1',
             type: ModuleType.LECTURE
         })
