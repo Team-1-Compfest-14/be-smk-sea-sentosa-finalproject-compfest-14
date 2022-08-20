@@ -6,7 +6,6 @@ import { authService } from '../src/services/auth.service';
 import { AppDataSource } from '../src/database/data-source';
 import { Lecture } from '../src/database/entities/Lecture';
 import { Quiz } from '../src/database/entities/Quiz';
-// import { Question } from '../src/database/entities/Question';
 
 async function seedData() {
     const { hashPassword } = authService;
