@@ -1,5 +1,6 @@
 ## Deployed
-https://sea-team-1.herokuapp.com/
+Frontend: https://fe-smk-sea-sentosa-finalproject-compfest-14.vercel.app/
+Backend: https://sea-team-1.herokuapp.com/
 
 ## Quick Start
 1. Make sure you have installed [Yarn](https://classic.yarnpkg.com/lang/en/) and [PostgreSQL](https://www.postgresql.org/download/).
