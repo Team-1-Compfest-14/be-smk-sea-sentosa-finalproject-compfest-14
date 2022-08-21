@@ -1,3 +1,6 @@
+## Deployed
+https://sea-team-1.herokuapp.com/
+
 ## Quick Start
 1. Make sure you have installed [Yarn](https://classic.yarnpkg.com/lang/en/) and [PostgreSQL](https://www.postgresql.org/download/).
 1. Clone the repo
